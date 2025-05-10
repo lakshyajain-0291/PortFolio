@@ -1,0 +1,100 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142 100% 50%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.75rem;
+  }
+
+  body {
+    @apply bg-darktech-background font-inter text-darktech-text antialiased overflow-x-hidden;
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, rgba(40, 40, 70, 0.1) 1px, transparent 1px), 
+                     linear-gradient(to bottom, rgba(40, 40, 70, 0.1) 1px, transparent 1px);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-rajdhani font-bold;
+  }
+
+  /* Width */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    @apply bg-darktech-lighter;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    @apply bg-darktech-border rounded-full;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-darktech-neon-green/50;
+  }
+}
+
+@layer components {
+  .tech-card {
+    @apply relative flex items-center justify-center p-4 bg-darktech-card border border-darktech-border rounded-lg overflow-hidden backdrop-blur-md;
+  }
+  
+  .tech-card::before {
+    content: "";
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 140, 0.15), transparent 70%);
+  }
+  
+  .tech-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .glass-panel {
+    @apply bg-darktech-lighter/40 backdrop-blur-md border border-darktech-border rounded-xl;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-text-gradient animate-text-shimmer bg-[length:200%_auto];
+  }
+
+  .glow-border {
+    @apply relative;
+  }
+
+  .glow-border::before {
+    content: "";
+    @apply absolute -inset-0.5 rounded-lg opacity-0 transition duration-300 bg-gradient-to-r from-darktech-neon-green via-darktech-holo-cyan to-darktech-cyber-pink blur;
+  }
+
+  .glow-border:hover::before {
+    @apply opacity-70;
+  }
+}
