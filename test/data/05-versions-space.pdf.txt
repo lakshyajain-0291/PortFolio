@@ -1,0 +1,164 @@
+
+
+Lakshya J.+91-7976123107
+B.Tech. in Computer Science and Engineering#lakshyajainrj19@gmail.com
+Indian Institute of Technology, Jodhpur§GitHub
+ïLinkedInÐCodeforces
+Education
+Degree/CertificateInstitute/SchoolCGPA/PercentageYear
+B.Tech. CSEIndian Institute of Technology, Jodhpur9.24/10 (Current)2023-Present
+Senior SecondaryR.S. Memorial International School94.6%2020-22
+SecondarySt. Anne’s Sr. Sec. School95.4%2012-20
+Experience
+•
+SDE Intern - Android DevelopmentDec. 2024 - Apr. 2025
+PMStack¶Playstore Link
+–EngineeredPinnzo, an application for organizing and summarizing reading materials for working professionals.
+–Partnered with startup founders to conceive and develop product features, reducing production time by30%
+through implementingAgilemethodologies and2-weeksprint cycles.
+–Executed comprehensive testing and performance optimization routines that decreased crash rates by40%and
+improved app load speed by25%.
+Projects
+•
+LIBR - A Moderated, Censorship-Resilient Digital ForumFeb. 2025 - Apr. 2025
+Go, Docker, Distributed Hash Tables, Cryptography, Modular Design, PostgreSQL§GitHub Link
+–UtilizedByzantine Consistent Broadcast, cryptography, andDHTsto ensure90% message delivery accuracyacross
+dynamically changing groups of nodes.
+–Engineered amodular systemwith dynamic role-specific installation, including UI and moderation APIs, achieving
+independent module deployment and integration for3 distinct roles.
+–Executedrisk analysiscovering20+ identified risks, optimizing system reliability with rigorousend-to-end testing.
+•
+GitCury - Git Companion for AutomationApr. 2025
+Go, Cobra, RESTful APIs, Gemini API, CLI Utilities§GitHub Link
+–Engineered a Git automation tool that generatesprecise, context-aware commit messagesusing the Gemini API,
+improving code clarity for5+multi-developer workflows.
+–Developed RESTful server mode and15+alias-based CLI commands to streamline operations across20+reposi-
+tories, supporting both batch and single-file workflows reducing commit time by atleast42%.
+–Integrated manyconfigurable parametersfor dynamic workflow adaptation, enabling precise root folder filtering
+and custom command mappings, resulting in significantlybetter user experience.
+•
+2nd Swap - Secure, Intelligent Second-Hand TradingFeb. 2025 - Mar. 2025
+Node.js, Express.js, MongoDB, Google OAuth 2.0, CloudinaryWebsite Link
+–Architected and deployed the complete backend within1.5 weeks, implementing12+RESTful API endpoints with
+99.8% uptimefor this startup.
+–Developed an AI-powered verification system that generates personalized, item-specific questions and automates
+the validation process, reducing manual intervention by20%while processing over30+daily queries.
+–Implemented a secure object verification mechanism usingOCR-based code recognitionto uniquely identify and
+validate items, ensuring accurate verification for all listings.
+•
+C3P - Collaborative Content PlatformDec. 2024
+React.js, Express.js, Node.js, MongoDB, Social Media APIs§GitHub Link
+–Constructed a full-stack platform enabling collaborative content creation with8user roles and streamlined pub-
+lishing to4major social media platforms, reducing publishing time by65%.
+–Devised role-based access control mechanisms and content ranking algorithms driven by6key engagement metrics,
+increasing user retention by22%.
+–Orchestrated automated publishing workflows and revenue-sharing schemes for monetized content, processing
+$1200+in transactions with0payment errors.
+•
+GenCLI - Semantic File Retrieval ToolMay 2024 - Jun. 2024
+Go, Cobra, Gemini API§GitHub Link
+
+–Optimized file indexing performance from19.2 seconds/fileto1.2 seconds/fileby implementing batch processing
+and parallelization techniques, significantly improving efficiency.
+–Enhanced user experience with7+ customizable themes, providing a visually appealing and easy-to-use interface
+tailored to diverse user preferences.
+–Achievedsub-second search response time, enabling fast retrieval of indexed content across50+ fileswith advanced
+AI-driven semantic search capabilities.
+•
+Travel Companion App - Your Adventure, SimplifiedJan. 2024 - Mar. 2024
+Flutter, Firebase, Figma¶Playstore Link
+–Developed a feature-rich mobile application exclusively for our college community, achieving360+ registered users
+and maintaining a5-star ratingon user feedback.
+–Incorporated7 core functionalitiesincluding trip sharing, advanced filtering, and seamless search, enhancing the
+overall user experience.
+–Integrated a real-time user request system using Firebase, deliveringsub-1sresponse times to ensure smooth
+coordination of trip join requests among10+ concurrent users.
+•
+RealmWeaver - Dynamic Game EnvironmentSep. 2024 - Nov. 2024
+C++, GEMINI API, Data Structures and Algorithms§GitHub Link
+–Engineered a dynamic game world with automated, AI-driven content generation, allowing the creation ofNPCs,
+quests, and locations in real-time, ensuring a constantly evolving and personalized gameplay experience.
+–Optimized content generation by integratingmultiple round-robin API keys, exponentially reducing creation time,
+speeding up the overall content creation from5 minstoless than a 1 minsfor 3 keys.
+–Developed a centralized content management system that reduced the manual creation of NPCs, quests, and
+storylines by100x, enabling seamless and efficient world-building with minimal human input.
+•
+The Vindication - Text-Based Adventure GameApr. 2024 - May. 2024
+C, JSON, ASCII Graphics§GitHub Link
+–Crafted an open-world adventure game featuring27 questsand7 mini-gamesusing modular JSON-based data
+structures, achieving10+ hoursof gameplay.
+–Programmed120+ASCII terminal graphics elements and integrated15in-game audio tracks to enhance user
+immersion, increasing average play session by45%.
+–Formulated save/load functionality via JSON parsing to supportunlimitedunique game states and25+customiza-
+tion options with100%data integrity.
+•
+Image Filtration Program - C-Based Image ProcessingMar. 2024
+C, GCC, BMP File Format§GitHub Link
+–Programmed6image filters (Grayscale, Blur, Sharpen, Sobel Edge Detection, Reflect, Negative) for BMP file
+manipulation with100%format compatibility.
+–Devised a robust image I/O system for processing 24-bit BMP files up to4K resolution, achieving an average
+processing time of under3 secondsfor standard images.
+–Enhanced application reliability by debugging and refining filter algorithms to manage15+edge cases, reducing
+processing failures by96%.
+Skills
+•
+Programming Languages:Go, C, C++, Java, Dart, Python, JavaScript
+•
+Frameworks & Libraries:Flutter, Node.js, React.js, Express.js, Firebase, Cobra, MongoDB, Multer, Cloudinary
+•
+NLP & AI Concepts:Vectorization, Embeddings, Semantic Search, AI-driven Querying, GPT Integration, Chatbot
+Development
+•
+Tools & Platforms:Git, Docker, Postman, Trello, CI/CD (GitHub Actions), REST APIs
+•
+Soft Skills:Critical Thinking, Teamwork, Problem Solving, Communication, Leadership, Time Management
+•
+Software Concepts:System Design, Computer Networks basics, Cryptography basics, Risk Analysis
+•
+Other Skills:Google OAuth 2.0, Cloud Services (AWS, Firebase Hosting), Responsive Design, Unit Testing,
+Debugging
+
+Coursework
+•
+Mathematics for ComputingGraded A
+•
+Foundations of Quantum InformationGraded B
+•
+Probability, Statistics, and Stochastic Processes (PSSP)Graded A-
+•
+Mathematics-I (Calculus)Graded A
+•
+Mathematics-II (Linear Algebra)Graded A-
+•
+Introduction to Computer ScienceGraded A*
+•
+Data Structures and AlgorithmsGraded A
+•
+Software Engineering
+•
+Pattern Recognition and Machine Learning (PRML)
+Achievements
+•
+OrganizedVandre, a large-scale entrepreneurial event, achieving a500% increase in revenue and profit.
+•
+Led the team toGold MedalinBug Bounty ’25, an open-source competition, by resolving critical bugs projects.
+•
+Secured1st placeinCADastraatPrometeo ’25, IIT Jodhpur’s Tech Fest, for innovative CAD design solutions.
+•
+Won1st placeinPitch ItatInitio ’23, E-Cell IIT J’s startup competition, with a compelling business proposal.
+Positions of Responsibility
+•
+Core Member, DevlUp Labs, Indian Institute of Technology, JodhpurMar 25 - Present
+•
+Core Member, Quant Club, Indian Institute of Technology, JodhpurMay 24 - Present
+•
+Associate, Product Club, Indian Institute of Technology, JodhpurMay 24 - Present
+•
+Senior Executive, E-cell, Indian Institute of Technology, JodhpurJun 24 - Present
+Extracurricular
+•
+Student Guide,Student Wellbeing Committee @ Indian Institute of Technology, JodhpurJun 24 - Apr 25
+•
+Assistant Head,Prometeo X Econclave (Tech Fest) @ Indian Institute of Technology, Jodhpur
+•
+Volunteer,Varshas (Sports Fest) @ Indian Institute of Technology, Jodhpur
