@@ -12,20 +12,34 @@ import Footer from './components/Footer';
 import ParticleBackground from './components/ParticleBackground';
 import { PortfolioProvider } from './hooks/PortfolioContext';
 import { Toaster } from '@/components/ui/toaster';
+import { SECTION_NUMBERS } from '@/config/env';
 
 const App = () => {
+  // Create an array of section components with their order numbers
+  const sections = [
+    { component: <Hero />, order: SECTION_NUMBERS.HERO },
+    { component: <Experience />, order: SECTION_NUMBERS.EXPERIENCE },
+    { component: <Projects />, order: SECTION_NUMBERS.PROJECTS },
+    { component: <GitHubStats />, order: SECTION_NUMBERS.GITHUB_STATS },
+    { component: <TechStack />, order: SECTION_NUMBERS.TECH_STACK },
+    { component: <Education />, order: SECTION_NUMBERS.EDUCATION },
+    { component: <Contact />, order: SECTION_NUMBERS.CONTACT }
+  ];
+
+  // Sort sections by their order number
+  const sortedSections = [...sections].sort((a, b) => a.order - b.order);
+
   return (
     <PortfolioProvider>
       <div className="min-h-screen bg-darktech-background text-darktech-text">
         <ParticleBackground />
         <Header />
-        <Hero />
-        <Projects />
-        <GitHubStats />
-        <TechStack />
-        <Experience />
-        <Education />
-        <Contact />
+        {/* Render sections in the order specified in env.ts */}
+        {sortedSections.map((section, index) => (
+          <React.Fragment key={index}>
+            {section.component}
+          </React.Fragment>
+        ))}
         <Footer />
         <Toaster />
       </div>
