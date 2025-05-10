@@ -94,10 +94,8 @@ const Header = () => {
           <div className="flex items-center gap-3 ml-4">
             {/* Resume Download Button */}
             <a
-              href={resumeUrl}
-              download="resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/resume/resume.pdf"
+              download
               className="p-2 rounded-full bg-darktech-card hover:bg-darktech-lighter text-darktech-holo-cyan transition-all duration-300 hover:scale-105"
               title="Download Resume"
             >
