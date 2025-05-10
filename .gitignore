@@ -15,7 +15,8 @@ thumb
 sketch
 
 .env*
+!.env.sample
 
-/src
-/public/resume
-/data
+# /src
+# /public/resume
+# /data
