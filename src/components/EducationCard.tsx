@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SECTION_NUMBERS } from '@/config/env';
 
 interface EducationCardProps {
   school: string;
@@ -32,7 +33,13 @@ const EducationCard: FC<EducationCardProps> = ({
   url
 }) => {
   return (
-    <Card className="bg-darktech-card border-darktech-border hover:border-darktech-neon-green/50 transition-all duration-300 group overflow-hidden">
+    <Card className={`bg-darktech-card border-darktech-border hover:border-darktech-neon-green/50 transition-all duration-300 group overflow-hidden max-w-[90%] ${
+      SECTION_NUMBERS.EDUCATION === 0 
+      ? 'mx-auto' 
+      : SECTION_NUMBERS.EDUCATION % 2 === 0 
+        ? 'ml-auto' 
+        : 'mr-auto'
+    }`}>
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <div>
