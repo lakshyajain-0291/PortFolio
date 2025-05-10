@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
@@ -59,6 +58,41 @@
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-darktech-neon-green/50;
+  }
+
+  /* Section positioning based on section number */
+  section[data-section-number] {
+    position: relative;
+    counter-increment: section-counter;
+  }
+
+  section[data-section-number]:not([data-section-number="0"]):not(.last-section)::before {
+    content: "0" counter(section-counter);
+    position: absolute;
+    top: 5%;
+    font-size: 10rem;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(74, 222, 128, 0.07);
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  section[data-section-number="1"]::before,
+  section[data-section-number="3"]::before,
+  section[data-section-number="5"]::before,
+  section[data-section-number="7"]::before,
+  section[data-section-number="9"]::before {
+    left: 5%;
+  }
+
+  section[data-section-number="2"]::before,
+  section[data-section-number="4"]::before,
+  section[data-section-number="6"]::before,
+  section[data-section-number="8"]::before,
+  section[data-section-number="10"]::before {
+    right: 5%;
   }
 }
 
