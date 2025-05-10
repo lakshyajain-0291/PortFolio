@@ -3,6 +3,7 @@ import { useInView } from 'react-intersection-observer';
 import { motion, useAnimation } from 'framer-motion';
 import EducationCard from './EducationCard';
 import { usePortfolio } from '@/hooks/PortfolioContext';
+import { SECTION_NUMBERS } from '@/config/env';
 
 const Education: FC = () => {
   const { portfolio } = usePortfolio();
@@ -61,48 +62,52 @@ const Education: FC = () => {
   console.log("Education data:", portfolio?.education);
 
   return (
-    <section id="education" className="py-16 bg-darktech-bg">
+    <section id="education" className="py-16 bg-darktech-bg" data-section-number={SECTION_NUMBERS.EDUCATION !== 0 ? SECTION_NUMBERS.EDUCATION : 0}>
       <div className="container mx-auto px-4 md:px-8 text-left">
-        <motion.div
-          className="mb-12 text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-darktech-holo-cyan">
-            Education
-          </h2>
-          <div className="w-24 h-1 bg-darktech-neon-green mx-auto rounded-full opacity-70"></div>
-        </motion.div>
+        <div className={`w-4/5 ${SECTION_NUMBERS.EDUCATION === 0 ? 'mx-auto' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'ml-auto mr-0' : 'mr-auto ml-0'}`}>
+          <motion.div
+            className={`mb-12 ${SECTION_NUMBERS.EDUCATION === 0 ? 'text-center' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'text-right' : 'text-left'}`}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h2 className="text-4xl font-bold mb-4">
+              Education
+            </h2>
+            <p className={`text-darktech-muted max-w-2xl mb-6 ${SECTION_NUMBERS.EDUCATION === 0 ? 'mx-auto' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
+              My academic background and qualifications.
+            </p>
+          </motion.div>
 
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="grid grid-cols-1 gap-6"
-        >
-          {portfolio?.education && portfolio.education.length > 0 ? (
-            portfolio.education.map((edu, index) => {
-              const { startDate, endDate } = parseDates(edu.dates);
-              return (
-                <motion.div key={index} variants={itemVariants}>
-                  <EducationCard
-                    school={edu.institution}
-                    degree={edu.degree}
-                    fieldOfStudy=""
-                    startDate={startDate}
-                    endDate={endDate}
-                    location=""
-                    grade={edu.cgpa}
-                  />
-                </motion.div>
-              );
-            })
-          ) : (
-            <p className="text-center text-darktech-text/70">Education information not available</p>
-          )}
-        </motion.div>
+          <motion.div
+            ref={ref}
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+            className="grid grid-cols-1 gap-6"
+          >
+            {portfolio?.education && portfolio.education.length > 0 ? (
+              portfolio.education.map((edu, index) => {
+                const { startDate, endDate } = parseDates(edu.dates);
+                return (
+                  <motion.div key={index} variants={itemVariants}>
+                    <EducationCard
+                      school={edu.institution}
+                      degree={edu.degree}
+                      fieldOfStudy=""
+                      startDate={startDate}
+                      endDate={endDate}
+                      location=""
+                      grade={edu.cgpa}
+                    />
+                  </motion.div>
+                );
+              })
+            ) : (
+              <p className="text-center text-darktech-text/70">Education information not available</p>
+            )}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
