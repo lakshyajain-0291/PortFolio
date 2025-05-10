@@ -39,3 +39,32 @@ export const APP_SETTINGS = {
     META_DESCRIPTION: import.meta.env.VITE_META_DESCRIPTION || 'Professional portfolio showcasing my projects and skills'
 };
 
+export const SECTION_NUMBERS = {
+    HERO: 1,
+    PROJECTS: 3,
+    GITHUB_STATS: 4,
+    TECH_STACK: 5,
+    EXPERIENCE: 2,
+    EDUCATION: 6,
+    CONTACT: 7
+};
+
+// export const SECTION_NUMBERS = {
+//     HERO: 0,
+//     PROJECTS: 0,
+//     GITHUB_STATS: 0,
+//     TECH_STACK: 0,
+//     EXPERIENCE: 0,
+//     EDUCATION: 0,
+//     CONTACT: 0
+// };
+
+// Form Settings
+export const FORM_SETTINGS = {
+    // Example Google Form URL - replace with actual form URL from .env
+    GOOGLE_FORM_URL: import.meta.env.VITE_GOOGLE_FORM_URL || 'https://docs.google.com/forms/d/e/1FAIpQLScJNBMiU714RJjpTokSEgVVFWI1Q0YGF1zc6vkOtwQLD38vTw/formResponse',
+    // Field IDs from the Google Form
+    GOOGLE_FORM_NAME_FIELD: import.meta.env.VITE_GOOGLE_FORM_NAME_FIELD || 'entry.1234567890',
+    GOOGLE_FORM_EMAIL_FIELD: import.meta.env.VITE_GOOGLE_FORM_EMAIL_FIELD || 'entry.0987654321',
+    GOOGLE_FORM_MESSAGE_FIELD: import.meta.env.VITE_GOOGLE_FORM_MESSAGE_FIELD || 'entry.1357924680'
+};
