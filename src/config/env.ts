@@ -3,6 +3,11 @@
  * This provides defaults for all environment-dependent values
  */
 
+// Template Configuration
+export const TEMPLATE_CONFIG = {
+    TEMPLATE_NUMBER: parseInt(import.meta.env.VITE_TEMPLATE_NUMBER || '1', 10)
+};
+
 // API URLs
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -12,7 +17,8 @@ export const DEFAULT_USER = {
     TITLE: import.meta.env.VITE_DEFAULT_TITLE || 'Full-Stack Developer',
     EMAIL: import.meta.env.VITE_DEFAULT_EMAIL || 'lakshyajainrj19@gmail.com',
     BIO: import.meta.env.VITE_DEFAULT_BIO || 
-        'I build innovative applications that leverage AI to solve complex problems. My portfolio showcases projects automatically updated from my LinkedIn, GitHub, and resume data.'
+        'I build innovative applications that leverage AI to solve complex problems. My portfolio showcases projects automatically updated from my LinkedIn, GitHub, and resume data.',
+    LOCATION: import.meta.env.VITE_DEFAULT_LOCATION || 'Remote',
 };
 
 // Default Social Links
@@ -39,14 +45,16 @@ export const APP_SETTINGS = {
     META_DESCRIPTION: import.meta.env.VITE_META_DESCRIPTION || 'Professional portfolio showcasing my projects and skills'
 };
 
+// Section ordering configuration - all will be 0 if template is set to 0
 export const SECTION_NUMBERS = {
-    HERO: 1,
-    PROJECTS: 3,
-    GITHUB_STATS: 4,
-    TECH_STACK: 5,
-    EXPERIENCE: 2,
-    EDUCATION: 6,
-    CONTACT: 7
+    HERO: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 1,
+    PROJECTS: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 3,
+    GITHUB_STATS: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 4,
+    TECH_STACK: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 5,
+    INSIGHTS: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 8,
+    EXPERIENCE: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 2,
+    EDUCATION: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 6,
+    CONTACT: TEMPLATE_CONFIG.TEMPLATE_NUMBER === 0 ? 0 : 7
 };
 
 // export const SECTION_NUMBERS = {
@@ -54,6 +62,7 @@ export const SECTION_NUMBERS = {
 //     PROJECTS: 0,
 //     GITHUB_STATS: 0,
 //     TECH_STACK: 0,
+//     INSIGHTS: 0,
 //     EXPERIENCE: 0,
 //     EDUCATION: 0,
 //     CONTACT: 0
