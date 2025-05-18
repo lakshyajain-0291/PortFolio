@@ -41,6 +41,7 @@ export interface PortfolioData {
     name?: string;
     title?: string;
     summary?: string;
+    image?: string;
   };
   experience?: Array<{
     company?: string;
@@ -329,7 +330,8 @@ async saveToFile(data: PortfolioData): Promise<void> {
         if (resumeBlob.type === 'application/pdf') {
           formData.append('resume', resumeBlob, 'Resume.pdf');
         } else {
-          console.error('Resume file is not a PDF (received type:', resumeBlob.type, ')');
+          console.log('Resume file is not a PDF (received type:', resumeBlob.type, ')');
+          console.error('Received response:', await resumeBlob.text());
           // Optionally handle this error, perhaps by notifying the user
         }
       }
