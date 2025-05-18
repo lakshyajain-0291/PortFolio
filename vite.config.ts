@@ -20,6 +20,15 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@src2": path.resolve(__dirname, "./src2"),
+      "@components": path.resolve(__dirname, "./src/components"),
+      "@components2": path.resolve(__dirname, "./src2/components"),
+      "@lib": path.resolve(__dirname, "./src/lib"),
+      "@lib2": path.resolve(__dirname, "./src2/lib"),
+      "@/store": path.resolve(__dirname, "./src2/store"),
+      // Add these new aliases for src2
+      "src2": path.resolve(__dirname, "./src2"),
+      "@/lib": path.resolve(__dirname, "./src2/lib")
     },
   },
   // Add environment variable handling for HTML template
