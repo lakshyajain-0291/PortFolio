@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Loader2, Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { Loader2, Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, ChevronDown, ChevronUp, X, Terminal, CircuitBoard, Zap } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { usePortfolio } from '@/hooks/PortfolioContext';
 import { getTechStackWithIcons } from '@/lib/portfolioReader';
 import { SECTION_NUMBERS } from '@/config/env';
@@ -24,54 +25,45 @@ const getCategoryIcon = (category: string) => {
   return icons[category] || <Database size={20} className="text-darktech-holo-cyan" />;
 };
 
-// Function to get color based on proficiency level
+// Function to get color based on proficiency level with enhanced cyberpunk colors
 const getProficiencyColor = (proficiency: number) => {
-  if (proficiency >= 80) return 'from-green-400 to-green-600';
-  if (proficiency >= 60) return 'from-blue-400 to-blue-600';
-  if (proficiency >= 40) return 'from-yellow-400 to-yellow-600';
-  return 'from-gray-400 to-gray-600';
+  if (proficiency >= 80) return 'from-emerald-400 to-green-500 via-teal-400';
+  if (proficiency >= 60) return 'from-blue-400 to-indigo-600 via-violet-500';
+  if (proficiency >= 40) return 'from-yellow-300 to-amber-500 via-orange-400';
+  return 'from-slate-400 to-gray-600 via-zinc-500';
+};
+
+// Get proficiency level label
+const getProficiencyLabel = (proficiency: number) => {
+  if (proficiency >= 85) return 'Expert';
+  if (proficiency >= 70) return 'Advanced';
+  if (proficiency >= 50) return 'Intermediate';
+  if (proficiency >= 30) return 'Beginner';
+  return 'Novice';
+};
+
+// Function to generate tech-themed background patterns
+const getBackgroundPattern = (categoryName: string) => {
+  const patterns = {
+    'Frontend': 'radial-gradient(circle, rgba(255,204,0,0.03) 1px, transparent 1px)',
+    'Backend': 'radial-gradient(circle, rgba(0,255,0,0.03) 1px, transparent 1px)', 
+    'DevOps': 'radial-gradient(circle, rgba(0,128,255,0.03) 1px, transparent 1px)',
+    'Data/AI': 'radial-gradient(circle, rgba(255,0,255,0.03) 1px, transparent 1px)',
+    'default': 'radial-gradient(circle, rgba(0,255,255,0.03) 1px, transparent 1px)'
+  };
+  
+  return patterns[categoryName as keyof typeof patterns] || patterns.default;
 };
 
 const TechStack = () => {
   const { portfolio, isLoading, error } = usePortfolio();
   const [showTechModal, setShowTechModal] = useState<boolean>(false);
-  const { ref, inView } = useInView({ triggerOnce: true });
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const animationControls = useAnimation();
-
-  useEffect(() => {
-    if (inView) {
-      animationControls.start({ opacity: 1, y: 0 });
-    }
-  }, [inView, animationControls]);
-
-  if (isLoading) {
-    return (
-      <section id="tech-stack" className="py-20 relative">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8">Tech Stack</h2>
-          <div className="flex justify-center items-center h-40">
-            <Loader2 className="animate-spin text-darktech-neon-green h-8 w-8" />
-            <span className="ml-2">Loading tech stack...</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section id="tech-stack" className="py-20 relative">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8">Tech Stack</h2>
-          <div className="glass-panel p-6">
-            <p className="text-darktech-cyber-pink">Error loading tech data. Using default data.</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Get tech stack icons
+  
+  // Get tech stack icons - moved up to ensure consistent hook ordering
   const techStackWithIcons = getTechStackWithIcons(portfolio);
 
   // Extract top skills from insights with safe fallbacks
@@ -100,8 +92,92 @@ const TechStack = () => {
     skillsByCategory[skill.category].push(skill);
   });
 
-  // Check if we have any data to show
+  // Check if we have any data to show - moved up before hooks
   const hasNoData = filteredTopSkills.length === 0 && techStackWithIcons.length === 0;
+  
+  // Group tech stack items by category for the modal - moved up before conditional hooks
+  const techStackByCategory = techStackWithIcons.reduce((acc: Record<string, typeof techStackWithIcons>, tech) => {
+    // Using a type assertion since the category property may be added dynamically
+    const category = (tech as any).category || 'Other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(tech);
+    return acc;
+  }, {});
+
+  // Animation effect - this hook should run on every render
+  useEffect(() => {
+    if (inView) {
+      animationControls.start('visible');
+    }
+  }, [inView, animationControls]);
+
+  // Category selection effect - always run this hook, but conditionally execute logic inside
+  useEffect(() => {
+    // Only set a category if we have categories and none is selected
+    if (Object.keys(skillsByCategory).length > 0 && !selectedCategory) {
+      setSelectedCategory(Object.keys(skillsByCategory)[0]);
+    }
+  }, [skillsByCategory, selectedCategory]); // Added selectedCategory as a dependency
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: 'spring',
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <section id="tech-stack" className="py-20 relative">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-8">Tech Stack</h2>
+          <div className="flex flex-col justify-center items-center h-40">
+            <div className="relative w-16 h-16 mb-4">
+              <div className="absolute inset-0 rounded-full border-t-2 border-darktech-neon-green animate-spin"></div>
+              <div className="absolute inset-2 rounded-full border-t-2 border-darktech-cyber-pink animate-spin" style={{ animationDuration: '1.5s' }}></div>
+              <div className="absolute inset-4 rounded-full border-t-2 border-darktech-holo-cyan animate-spin" style={{ animationDuration: '2s', animationDirection: 'reverse' }}></div>
+            </div>
+            <span className="text-darktech-neon-green font-mono tracking-wider">Analyzing tech profile...</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="tech-stack" className="py-20 relative">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-8">Tech Stack</h2>
+          <div className="glass-panel p-6 border-l-2 border-darktech-cyber-pink">
+            <div className="flex items-center justify-center gap-3">
+              <Terminal size={24} className="text-darktech-cyber-pink" />
+              <p className="text-darktech-cyber-pink font-mono">Error loading tech data. Using default profile.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (hasNoData) {
     return (
@@ -119,98 +195,240 @@ const TechStack = () => {
   return (
     <motion.section 
       id="tech-stack" 
-      className="py-20 relative" 
+      className="py-20 relative overflow-hidden" 
       data-section-number={SECTION_NUMBERS.TECH_STACK !== 0 ? SECTION_NUMBERS.TECH_STACK : 0}
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
+      initial="hidden"
       animate={animationControls}
+      variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
-        <div className={`w-4/5 ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : SECTION_NUMBERS.TECH_STACK % 2 === 0 ? 'ml-auto mr-0' : 'mr-auto ml-0'}`}>
+      {/* Tech-themed decorative elements */}
+      <div className="absolute top-20 left-0 w-[150px] h-[150px] border border-darktech-neon-green/20 rounded-full opacity-10"></div>
+      <div className="absolute bottom-20 right-0 w-[200px] h-[200px] border border-darktech-cyber-pink/20 rounded-full opacity-10"></div>
+      <div className="absolute bottom-40 left-1/4 w-[50px] h-[50px] border border-darktech-holo-cyan/30 rounded-full opacity-20"></div>
+      
+      {/* Circuit lines */}
+      <div className="absolute top-0 left-1/3 w-[1px] h-full bg-gradient-to-b from-transparent via-darktech-neon-green/30 to-transparent opacity-20"></div>
+      <div className="absolute top-0 right-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-darktech-cyber-pink/20 to-transparent opacity-10"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div 
+          className={`w-4/5 ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : SECTION_NUMBERS.TECH_STACK % 2 === 1 ? 'mr-auto ml-0' : 'ml-auto mr-0'}`}
+          variants={itemVariants}
+        >
           <div className={`${SECTION_NUMBERS.TECH_STACK === 0 ? 'text-center' : 
-            SECTION_NUMBERS.TECH_STACK % 2 === 0 ? 'text-right' : 'text-left'} mb-16`}>
-            <h2 className="text-4xl font-bold mb-4">Tech Stack</h2>
-            <p className={`text-darktech-muted max-w-2xl ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : 
-              SECTION_NUMBERS.TECH_STACK % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
+            SECTION_NUMBERS.TECH_STACK % 2 === 1 ? 'text-left' : 'text-right'} mb-16`}>
+            <motion.div 
+              className="inline-block relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h2 className="text-5xl font-bold mb-2 relative z-10 inline-flex items-center gap-3">
+                <CircuitBoard className="text-darktech-neon-green h-8 w-8" />
+                <span>Tech Stack</span>
+                <span className="ml-2 h-1 w-6 bg-darktech-cyber-pink rounded-full inline-block"></span>
+              </h2>
+              <div className="absolute -inset-1 bg-darktech-neon-green/10 blur-md rounded-lg -z-10"></div>
+            </motion.div>
+            <motion.p 
+              className={`text-darktech-muted max-w-2xl mt-4 ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : 
+                SECTION_NUMBERS.TECH_STACK % 2 === 1 ? 'mr-auto' : 'ml-auto'}`}
+              variants={itemVariants}
+            >
               My technical skills automatically analyzed from GitHub repositories and contributions.
-            </p>
+            </motion.p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Top Skills Section - Grouped by Category */}
+        {/* Skill Categories Navigation Tabs */}
         {Object.keys(skillsByCategory).length > 0 && (
-          <div className={`glass-panel p-8 rounded-xl mb-12 border border-darktech-border hover:border-darktech-neon-green/50 transition-colors max-w-[80%] ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : SECTION_NUMBERS.TECH_STACK % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
-            <h3 className={`text-2xl font-bold mb-6 pl-4 ${SECTION_NUMBERS.TECH_STACK === 0 ? 'text-center' : 
-            SECTION_NUMBERS.TECH_STACK % 2 === 0 ? 'text-right' : 'text-left'}`}>Top Skills by Category</h3>
+          <motion.div 
+            className={`glass-panel p-8 rounded-xl mb-12 border border-darktech-border hover:border-darktech-neon-green/50 transition-all relative max-w-[90%] lg:max-w-[80%] backdrop-blur-sm ${SECTION_NUMBERS.TECH_STACK === 0 ? 'mx-auto' : SECTION_NUMBERS.TECH_STACK % 2 === 1 ? 'mr-auto' : 'ml-auto'}`}
+            style={{ boxShadow: '0 0 30px rgba(0, 255, 0, 0.05)' }}
+            variants={containerVariants}
+          >
+            <div className="absolute inset-0 rounded-xl overflow-hidden -z-10">
+              <div className="w-full h-full" style={{ 
+                backgroundImage: selectedCategory ? getBackgroundPattern(selectedCategory) : undefined,
+                backgroundSize: '20px 20px'
+              }}></div>
+            </div>
+
+            <motion.h3 
+              className={`text-2xl font-bold mb-6 pl-4 flex items-center gap-2 ${SECTION_NUMBERS.TECH_STACK === 0 ? 'justify-center' : 
+              SECTION_NUMBERS.TECH_STACK % 2 === 1 ? 'justify-start' : 'justify-end'}`}
+              variants={itemVariants}
+            >
+              <Zap size={20} className="text-darktech-neon-green" />
+              <span>Skills Analysis</span>
+            </motion.h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {Object.entries(skillsByCategory).map(([category, skills]) => (
-                <div key={category} className="bg-darktech-card/20 rounded-lg p-5 hover:bg-darktech-card/30 transition-colors">
-                  <div className="flex items-center gap-2 mb-4 pb-2 border-b border-darktech-border/40">
-                    {getCategoryIcon(category)}
-                    <h4 className="text-lg font-semibold text-darktech-neon-green">{category}</h4>
-                  </div>
-                  
-                  <div className="space-y-5">
-                    {skills.slice(0, 3).map((skill, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium">{skill.name}</span>
+            {/* Category Selection Tabs */}
+            <motion.div className="mb-8" variants={itemVariants}>
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
+                {Object.entries(skillsByCategory).map(([category]) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`rounded-full text-sm py-1 px-4 border ${
+                      selectedCategory === category 
+                        ? 'bg-darktech-card border-darktech-neon-green text-darktech-neon-green shadow-md shadow-darktech-neon-green/20' 
+                        : 'bg-darktech-background/20 hover:bg-darktech-card/40 border-darktech-border/50'
+                    }`}
+                    size="sm"
+                  >
+                    <div className="flex items-center gap-2">
+                      {getCategoryIcon(category)}
+                      <span>{category}</span>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </motion.div>
+            
+            {/* Selected Category Skills */}
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={selectedCategory}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="relative"
+              >
+                {selectedCategory && skillsByCategory[selectedCategory] && (
+                  <div className="space-y-6">
+                    {skillsByCategory[selectedCategory].map((skill, index) => (
+                        <motion.div 
+                        key={skill.name} 
+                        className={`p-4 rounded-lg bg-darktech-background/40 border border-transparent ${hoveredSkill === skill.name ? 'border-darktech-neon-green/50 shadow-lg shadow-darktech-neon-green/5' : ''} transition-all duration-300`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        onMouseEnter={() => setHoveredSkill(skill.name)}
+                        onMouseLeave={() => setHoveredSkill(null)}
+                        >
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-semibold text-lg">{skill.name}</span>
+                          <Badge variant="outline" className="bg-darktech-card/50 font-mono text-xs py-0">
+                          {getProficiencyLabel(skill.proficiency)}
+                          </Badge>
                         </div>
-                        <div className="h-2 w-full bg-darktech-background/50 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full rounded-full bg-gradient-to-r ${getProficiencyColor(skill.proficiency)}`}
-                            style={{ width: `${skill.proficiency}%` }}
-                          ></div>
+                        
+                        <div className="h-2.5 w-full bg-darktech-background/70 rounded-full overflow-hidden relative">
+                          <motion.div 
+                          className={`h-full rounded-full bg-gradient-to-r ${getProficiencyColor(skill.proficiency)}`}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${skill.proficiency}%` }}
+                          transition={{ delay: 0.2 + index * 0.1, duration: 1, ease: "easeOut" }}
+                          >
+                          {hoveredSkill === skill.name && (
+                            <div className="absolute top-0 right-0 h-full w-1.5 bg-white animate-pulse"></div>
+                          )}
+                          </motion.div>
                         </div>
+                        
+                        {/* Digital percentage display */}
+                        <div className="flex justify-end mt-1">
+                          <span className="text-xs font-mono text-darktech-muted">{Math.round(skill.proficiency)}%</span>
+                        </div>
+                        
                         {skill.justification && (
-                          <p className="text-xs text-darktech-muted line-clamp-2 text-left">
-                            {skill.justification}
-                          </p>
+                          <motion.p 
+                          className={`text-sm text-darktech-muted mt-2 mb-2 text-left bg-darktech-card/20 rounded border-l-2 border-darktech-border font-mono ${
+                            skill.justification.length > 100 ? 'p-4 line-clamp-2' : 
+                            skill.justification.length > 50 ? 'p-2 line-clamp-1' : 'p-1.5'
+                          }`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 + index * 0.1 }}
+                          >
+                          {skill.justification}
+                          </motion.p>
                         )}
-                      </div>
+                        
+                        </motion.div>
                     ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
         )}
+
         {/* Tech Stack Modal Button */}
-        <div className="text-center mb-6">
+        <motion.div 
+          className="text-center mb-6"
+          variants={itemVariants}
+        >
           <Dialog open={showTechModal} onOpenChange={setShowTechModal}>
             <DialogTrigger asChild>
               <Button 
                 variant="default" 
-                className="bg-darktech-neon-green hover:bg-darktech-neon-green/90 text-darktech-background font-medium px-6 py-6 text-lg shadow-lg shadow-darktech-neon-green/20 hover:scale-105 transition-all"
+                className="bg-darktech-card hover:bg-darktech-card/90 border-2 border-darktech-neon-green text-darktech-neon-green font-medium px-6 py-6 text-lg relative group overflow-hidden"
               >
-                <Code2 className="mr-2 h-5 w-5" />
-                View Complete Tech Stack
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-darktech-neon-green/20 via-transparent to-darktech-neon-green/20 opacity-0 group-hover:opacity-100 group-hover:animate-scan transition-opacity"></span>
+                <Code2 className="mr-2 h-5 w-5 animate-pulse" />
+                <span className="relative z-10">View Complete Tech Stack</span>
               </Button>
             </DialogTrigger>
             
-            <DialogContent className="sm:max-w-3xl max-h-[80vh] bg-darktech-background border-darktech-border flex flex-col">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-center">Complete Tech Stack</DialogTitle>
-                <DialogDescription className="text-darktech-muted text-center">
-                  Tools, frameworks, and technologies I work with
+            <DialogContent className="sm:max-w-4xl max-h-[85vh] bg-darktech-background border border-darktech-border rounded-xl flex flex-col">
+              <div className="absolute inset-0 border-2 border-darktech-neon-green/10 rounded-xl -m-px blur-sm"></div>
+              
+              <DialogHeader className="relative">
+                <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
+                  <div className="w-full h-full border-t-2 border-r-2 border-darktech-neon-green/50 rounded-tr-xl"></div>
+                </div>
+                <div className="absolute top-0 left-0 w-24 h-24 opacity-10">
+                  <div className="w-full h-full border-t-2 border-l-2 border-darktech-cyber-pink/50 rounded-tl-xl"></div>
+                </div>
+                
+                <DialogTitle className="text-2xl font-bold text-center flex justify-center items-center gap-3">
+                  <Terminal size={20} className="text-darktech-neon-green" />
+                  <span>Complete Tech Stack</span>
+                </DialogTitle>
+                <DialogDescription className="text-darktech-muted text-center font-mono">
+                  &lt; Tools, frameworks, and technologies I work with /&gt;
                 </DialogDescription>
               </DialogHeader>
               
-              {/* Scrollable content area */}
-              <div className="overflow-y-auto flex-grow pb-16">
-                {/* Tech Icons Grid */}
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-4">Technologies & Tools</h3>
-                  {techStackWithIcons.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+              {/* Scrollable content area with tabs for categories */}
+              <div className="overflow-y-auto flex-grow pb-16 mt-4">
+                <Tabs defaultValue="all" className="w-full">
+                  <TabsList className="w-full flex flex-wrap justify-center mb-4 bg-darktech-card/20">
+                    <TabsTrigger value="all" className="data-[state=active]:bg-darktech-card data-[state=active]:text-darktech-neon-green">
+                      All Technologies
+                    </TabsTrigger>
+                    {Object.keys(techStackByCategory).map((category) => (
+                      <TabsTrigger 
+                        key={category} 
+                        value={category}
+                        className="data-[state=active]:bg-darktech-card data-[state=active]:text-darktech-neon-green"
+                      >
+                        {category}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                  
+                  <TabsContent value="all" className="p-2">
+                    <motion.div 
+                      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                      variants={containerVariants}
+                      initial="hidden"
+                      animate="visible"
+                    >
                       {techStackWithIcons.map((tech, index) => (
-                        <div 
+                        <motion.div 
                           key={index} 
-                          className="flex flex-col items-center p-3 hover:scale-110 transition-transform rounded-lg bg-darktech-card/40 hover:bg-darktech-card/60"
+                          className="flex flex-col items-center p-3 hover:scale-110 transition-all rounded-lg bg-darktech-card/30 hover:bg-darktech-card/60 border border-darktech-border/30 hover:border-darktech-neon-green/30 group"
+                          variants={itemVariants}
+                          whileHover={{ y: -5 }}
                         >
                           {tech.icon ? (
-                            <div className="w-16 h-16 flex items-center justify-center bg-white/95 rounded-md mb-2 p-2">
+                            <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-white to-gray-100 rounded-lg mb-2 p-2 shadow-md group-hover:shadow-darktech-neon-green/20 transition-all">
                               <img 
                                 src={tech.icon} 
                                 alt={tech.name} 
@@ -231,23 +449,79 @@ const TechStack = () => {
                               />
                             </div>
                           ) : (
-                            <div className="w-16 h-16 mb-2 flex items-center justify-center bg-darktech-card rounded-md">
+                            <div className="w-16 h-16 mb-2 flex items-center justify-center bg-darktech-card rounded-lg group-hover:bg-darktech-card/80">
                               <Code2 size={32} className="text-darktech-neon-green" />
                             </div>
                           )}
-                          <span className="text-sm font-medium text-center">{tech.name}</span>
-                        </div>
+                          <span className="text-sm font-medium text-center group-hover:text-darktech-neon-green transition-colors">{tech.name}</span>
+                          {/* Use type assertion for tech.category */}
+                          {(tech as any).category && (
+                            <span className="text-xs text-darktech-muted mt-1 opacity-70">{(tech as any).category}</span>
+                          )}
+                        </motion.div>
                       ))}
-                    </div>
-                  )}
-                </div>
+                    </motion.div>
+                  </TabsContent>
+                  
+                  {Object.entries(techStackByCategory).map(([category, techs]) => (
+                    <TabsContent key={category} value={category} className="p-2">
+                      <motion.div 
+                        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        {techs.map((tech, index) => (
+                          <motion.div 
+                            key={index} 
+                            className="flex flex-col items-center p-3 hover:scale-110 transition-all rounded-lg bg-darktech-card/30 hover:bg-darktech-card/60 border border-darktech-border/30 hover:border-darktech-neon-green/30 group"
+                            variants={itemVariants}
+                            whileHover={{ y: -5 }}
+                          >
+                            {tech.icon ? (
+                              <div className="w-16 h-16 flex items-center justify-center bg-gradient-to-br from-white to-gray-100 rounded-lg mb-2 p-2 shadow-md group-hover:shadow-darktech-neon-green/20 transition-all">
+                                <img 
+                                  src={tech.icon} 
+                                  alt={tech.name} 
+                                  className="max-w-full max-h-full object-contain" 
+                                  onError={(e) => {
+                                    // Fallback for invalid icons
+                                    const target = e.target as HTMLImageElement;
+                                    target.onerror = null;
+                                    target.style.display = 'none';
+                                    const parent = target.parentElement;
+                                    if (parent) {
+                                      const fallbackIcon = document.createElement('div');
+                                      fallbackIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-darktech-neon-green"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>';
+                                      fallbackIcon.className = 'flex items-center justify-center text-darktech-neon-green';
+                                      parent.appendChild(fallbackIcon);
+                                    }
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="w-16 h-16 mb-2 flex items-center justify-center bg-darktech-card rounded-lg group-hover:bg-darktech-card/80">
+                                <Code2 size={32} className="text-darktech-neon-green" />
+                              </div>
+                            )}
+                            <span className="text-sm font-medium text-center group-hover:text-darktech-neon-green transition-colors">{tech.name}</span>
+                            {/* Use type assertion for tech.category */}
+                            {(tech as any).category && (
+                              <span className="text-xs text-darktech-muted mt-1 opacity-70">{(tech as any).category}</span>
+                            )}
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    </TabsContent>
+                  ))}
+                </Tabs>
               </div>
               
               {/* Fixed footer with close button */}
               <div className="absolute bottom-0 left-0 right-0 bg-darktech-background/90 backdrop-blur-sm p-4 border-t border-darktech-border flex justify-center">
                 <Button 
                   onClick={() => setShowTechModal(false)}
-                  className="bg-darktech-neon-green hover:bg-darktech-neon-green/80 text-darktech-background font-medium px-8"
+                  className="bg-darktech-card hover:bg-darktech-card/90 border border-darktech-neon-green/50 hover:border-darktech-neon-green text-darktech-neon-green font-medium px-8"
                 >
                   <X className="mr-2 h-4 w-4" />
                   Close
@@ -255,7 +529,25 @@ const TechStack = () => {
               </div>
             </DialogContent>
           </Dialog>
-        </div>
+        </motion.div>
+
+        {/* Decorative circuit element */}
+        <motion.div 
+          className="absolute bottom-0 left-0 w-32 h-32 opacity-20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.2 }}
+          transition={{ delay: 1 }}
+        >
+          <svg width="100%" height="100%" viewBox="0 0 100 100" fill="none">
+            <path d="M10,50 L40,50 L40,20 L70,20 L70,80 L90,80" stroke="currentColor" className="stroke-darktech-neon-green" strokeWidth="1" />
+            <circle cx="10" cy="50" r="3" className="fill-darktech-neon-green" />
+            <circle cx="40" cy="50" r="3" className="fill-darktech-neon-green" />
+            <circle cx="40" cy="20" r="3" className="fill-darktech-neon-green" />
+            <circle cx="70" cy="20" r="3" className="fill-darktech-neon-green" />
+            <circle cx="70" cy="80" r="3" className="fill-darktech-neon-green" />
+            <circle cx="90" cy="80" r="3" className="fill-darktech-neon-green" />
+          </svg>
+        </motion.div>
       </div>
     </motion.section>
   );
