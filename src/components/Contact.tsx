@@ -86,6 +86,15 @@ const Contact = () => {
       formUrlEncoded.append(FORM_SETTINGS.GOOGLE_FORM_EMAIL_FIELD, formData.email);
       formUrlEncoded.append(FORM_SETTINGS.GOOGLE_FORM_MESSAGE_FIELD, formData.message);
       
+      console.log('Form data:', formUrlEncoded.toString());
+      console.log('Submitting to Google Form URL:', FORM_SETTINGS.GOOGLE_FORM_URL);
+      console.log('Form fields:', {
+        name: FORM_SETTINGS.GOOGLE_FORM_NAME_FIELD,
+        email: FORM_SETTINGS.GOOGLE_FORM_EMAIL_FIELD,
+        message: FORM_SETTINGS.GOOGLE_FORM_MESSAGE_FIELD
+      });
+      console.log('Form data:', formData);
+
       const response = await fetch(FORM_SETTINGS.GOOGLE_FORM_URL, {
         method: 'POST',
         body: formUrlEncoded,
@@ -95,6 +104,8 @@ const Contact = () => {
         }
       });
       
+      console.log('Form submission response:', response);
+
       toast({
         title: "Message sent!",
         description: "Thank you for reaching out. I'll get back to you soon.",
