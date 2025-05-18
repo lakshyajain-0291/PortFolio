@@ -7,7 +7,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@src2/*": ["./src2/*"],
+      "src2/*": ["./src2/*"],
+      "@/store/*": ["./src2/store/*"],
+      "@/lib/*": ["./src2/lib/*"]
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,
