@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Loader2, Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, ChevronDown, ChevronUp, X, Terminal, CircuitBoard, Zap } from 'lucide-react';
+import { Loader2, Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, ChevronDown, ChevronUp, X, Terminal, CircuitBoard, Zap, Cpu, Cloud, Layout, Code, Layers } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -13,11 +13,15 @@ import { SECTION_NUMBERS } from '@/config/env';
 // Map category names to appropriate icons
 const getCategoryIcon = (category: string) => {
   const icons: Record<string, React.ReactNode> = {
-    'Frontend': <Code2 size={20} className="text-yellow-400" />,
+    'Frontend': <Layout size={20} className="text-yellow-400" />,
     'Backend': <Server size={20} className="text-green-400" />,
     'DevOps': <Globe size={20} className="text-blue-400" />,
     'Mobile': <Smartphone size={20} className="text-purple-400" />,
     'Data/AI': <Brain size={20} className="text-pink-400" />,
+    'AI': <Brain size={20} className="text-pink-400" />,
+    'Cloud': <Cloud size={20} className="text-blue-400" />,
+    'Systems': <Cpu size={20} className="text-orange-400" />,
+    'Architecture': <Layers size={20} className="text-cyan-400" />,
     'Soft Skills': <Users size={20} className="text-orange-400" />,
     'Tools': <Wrench size={20} className="text-cyan-400" />,
     'Game Development': <Gamepad2 size={20} className="text-red-400" />,
@@ -49,6 +53,11 @@ const getBackgroundPattern = (categoryName: string) => {
     'Backend': 'radial-gradient(circle, rgba(0,255,0,0.03) 1px, transparent 1px)', 
     'DevOps': 'radial-gradient(circle, rgba(0,128,255,0.03) 1px, transparent 1px)',
     'Data/AI': 'radial-gradient(circle, rgba(255,0,255,0.03) 1px, transparent 1px)',
+    'AI': 'radial-gradient(circle, rgba(255,0,255,0.03) 1px, transparent 1px)',
+    'Cloud': 'radial-gradient(circle, rgba(0,128,255,0.03) 1px, transparent 1px)',
+    'Systems': 'radial-gradient(circle, rgba(255,128,0,0.03) 1px, transparent 1px)',
+    'Mobile': 'radial-gradient(circle, rgba(159,0,255,0.03) 1px, transparent 1px)',
+    'Architecture': 'radial-gradient(circle, rgba(0,255,255,0.03) 1px, transparent 1px)',
     'default': 'radial-gradient(circle, rgba(0,255,255,0.03) 1px, transparent 1px)'
   };
   
@@ -63,39 +72,42 @@ const TechStack = () => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const animationControls = useAnimation();
   
-  // Get tech stack icons - moved up to ensure consistent hook ordering
+  // Get tech stack icons
   const techStackWithIcons = getTechStackWithIcons(portfolio);
 
   // Extract top skills from insights with safe fallbacks
   const topSkills = portfolio?.insights?.topSkills || [];
   
-  // Filter out programming languages from top skills
-  const filteredTopSkills = topSkills.filter(skill => 
-    !skill.name.toLowerCase().includes('javascript') && 
-    !skill.name.toLowerCase().includes('typescript') &&
-    !skill.name.toLowerCase().includes('python') &&
-    !skill.name.toLowerCase().includes('java') &&
-    !skill.name.toLowerCase().includes('c#') &&
-    !skill.name.toLowerCase().includes('c++') &&
-    !skill.name.toLowerCase().includes('ruby') &&
-    !skill.name.toLowerCase().includes('php') &&
-    !skill.name.toLowerCase().includes('go')
-  );
-
   // Group skills by category
-  const skillsByCategory: Record<string, typeof filteredTopSkills> = {};
+  const skillsByCategory: Record<string, typeof topSkills> = {};
   
-  filteredTopSkills.forEach(skill => {
+  // Organize all skills by their categories
+  topSkills.forEach(skill => {
     if (!skillsByCategory[skill.category]) {
       skillsByCategory[skill.category] = [];
     }
     skillsByCategory[skill.category].push(skill);
   });
 
-  // Check if we have any data to show - moved up before hooks
-  const hasNoData = filteredTopSkills.length === 0 && techStackWithIcons.length === 0;
+  // Sort categories by importance or alphabetically
+  const sortedCategories = Object.keys(skillsByCategory).sort((a, b) => {
+    const categoryPriority = {
+      'Backend': 1,
+      'Frontend': 2,
+      'Mobile': 3,
+      'Systems': 4,
+      'Cloud': 5,
+      'Architecture': 6,
+      'AI': 7
+    };
+    return (categoryPriority[a as keyof typeof categoryPriority] || 99) - 
+           (categoryPriority[b as keyof typeof categoryPriority] || 99);
+  });
+
+  // Check if we have any data to show
+  const hasNoData = topSkills.length === 0 && techStackWithIcons.length === 0;
   
-  // Group tech stack items by category for the modal - moved up before conditional hooks
+  // Group tech stack items by category for the modal
   const techStackByCategory = techStackWithIcons.reduce((acc: Record<string, typeof techStackWithIcons>, tech) => {
     // Using a type assertion since the category property may be added dynamically
     const category = (tech as any).category || 'Other';
@@ -106,20 +118,20 @@ const TechStack = () => {
     return acc;
   }, {});
 
-  // Animation effect - this hook should run on every render
+  // Animation effect
   useEffect(() => {
     if (inView) {
       animationControls.start('visible');
     }
   }, [inView, animationControls]);
 
-  // Category selection effect - always run this hook, but conditionally execute logic inside
+  // Category selection effect
   useEffect(() => {
     // Only set a category if we have categories and none is selected
-    if (Object.keys(skillsByCategory).length > 0 && !selectedCategory) {
-      setSelectedCategory(Object.keys(skillsByCategory)[0]);
+    if (sortedCategories.length > 0 && !selectedCategory) {
+      setSelectedCategory(sortedCategories[0]);
     }
-  }, [skillsByCategory, selectedCategory]); // Added selectedCategory as a dependency
+  }, [skillsByCategory, selectedCategory, sortedCategories]);
 
   // Animation variants
   const containerVariants = {
@@ -261,7 +273,7 @@ const TechStack = () => {
               variants={itemVariants}
             >
               <Zap size={20} className="text-darktech-neon-green" />
-              <span>Skills Analysis</span>
+              <span>Top Skills Analysis</span>
             </motion.h3>
             
             {/* Category Selection Tabs */}
@@ -375,10 +387,10 @@ const TechStack = () => {
               </Button>
             </DialogTrigger>
             
-            <DialogContent className="sm:max-w-4xl max-h-[85vh] bg-darktech-background border border-darktech-border rounded-xl flex flex-col">
+            <DialogContent className="sm:max-w-4xl max-h-[85vh] bg-darktech-background border border-darktech-border rounded-xl flex flex-col overflow-hidden">
               <div className="absolute inset-0 border-2 border-darktech-neon-green/10 rounded-xl -m-px blur-sm"></div>
               
-              <DialogHeader className="relative">
+              <DialogHeader className="relative border-b border-darktech-border sticky top-0 z-10 bg-darktech-background p-4">
                 <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
                   <div className="w-full h-full border-t-2 border-r-2 border-darktech-neon-green/50 rounded-tr-xl"></div>
                 </div>
@@ -396,9 +408,9 @@ const TechStack = () => {
               </DialogHeader>
               
               {/* Scrollable content area with tabs for categories */}
-              <div className="overflow-y-auto flex-grow pb-16 mt-4">
+              <div className="overflow-y-auto flex-grow mt-4 custom-scrollbar">
                 <Tabs defaultValue="all" className="w-full">
-                  <TabsList className="w-full flex flex-wrap justify-center mb-4 bg-darktech-card/20">
+                  <TabsList className="w-full flex flex-wrap justify-center mb-4 bg-darktech-card/20 sticky top-0 z-10 px-2">
                     <TabsTrigger value="all" className="data-[state=active]:bg-darktech-card data-[state=active]:text-darktech-neon-green">
                       All Technologies
                     </TabsTrigger>
