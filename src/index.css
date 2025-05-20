@@ -155,4 +155,43 @@
   .glow-border:hover::before {
     @apply opacity-70;
   }
+
+  /* Custom scrollbar for tech stack modal */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--darktech-neon-green-50) var(--darktech-card);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(20, 20, 30, 0.2);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(74, 222, 128, 0.3);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 222, 128, 0.5);
+  }
+
+  @keyframes scan {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 0%;
+    }
+  }
+
+  .animate-scan {
+    animation: scan 2s linear infinite;
+  }
 }
