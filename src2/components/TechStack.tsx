@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, X, Terminal } from 'lucide-react';
+import { Code2, Database, LineChart, Users, Brain, Server, Globe, Smartphone, Gamepad2, Wrench, X, Terminal, Cpu, Cloud, Layout, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Badge } from '../../src/components/ui/badge';
 import { Button } from '../../src/components/ui/button';
@@ -11,11 +11,15 @@ import { useTheme } from './theme-provider';
 // Map category names to appropriate icons
 const getCategoryIcon = (category: string) => {
   const icons: Record<string, React.ReactNode> = {
-    'Frontend': <Code2 size={20} className="text-yellow-400" />,
+    'Frontend': <Layout size={20} className="text-yellow-400" />,
     'Backend': <Server size={20} className="text-green-400" />,
     'DevOps': <Globe size={20} className="text-blue-400" />,
     'Mobile': <Smartphone size={20} className="text-purple-400" />,
     'Data/AI': <Brain size={20} className="text-pink-400" />,
+    'AI': <Brain size={20} className="text-pink-400" />,
+    'Cloud': <Cloud size={20} className="text-blue-400" />,
+    'Systems': <Cpu size={20} className="text-orange-400" />,
+    'Architecture': <Layers size={20} className="text-cyan-400" />,
     'Soft Skills': <Users size={20} className="text-orange-400" />,
     'Tools': <Wrench size={20} className="text-cyan-400" />,
     'Game Development': <Gamepad2 size={20} className="text-red-400" />,
@@ -29,6 +33,15 @@ const getProficiencyColor = (proficiency: number) => {
   if (proficiency >= 60) return 'from-blue-400 to-blue-600';
   if (proficiency >= 40) return 'from-yellow-400 to-yellow-600';
   return 'from-gray-400 to-gray-600';
+};
+
+// Function to get proficiency level label
+const getProficiencyLabel = (proficiency: number) => {
+  if (proficiency >= 85) return 'Expert';
+  if (proficiency >= 70) return 'Advanced';
+  if (proficiency >= 50) return 'Intermediate';
+  if (proficiency >= 30) return 'Beginner';
+  return 'Novice';
 };
 
 // Circuit background pattern for tech theme
@@ -111,31 +124,35 @@ const TechStack = () => {
   // Extract top skills from insights with safe fallbacks
   const topSkills = portfolio?.insights?.topSkills || [];
   
-  // Filter out programming languages from top skills
-  const filteredTopSkills = topSkills.filter(skill => 
-    !skill.name.toLowerCase().includes('javascript') && 
-    !skill.name.toLowerCase().includes('typescript') &&
-    !skill.name.toLowerCase().includes('python') &&
-    !skill.name.toLowerCase().includes('java') &&
-    !skill.name.toLowerCase().includes('c#') &&
-    !skill.name.toLowerCase().includes('c++') &&
-    !skill.name.toLowerCase().includes('ruby') &&
-    !skill.name.toLowerCase().includes('php') &&
-    !skill.name.toLowerCase().includes('go')
-  );
-
   // Group skills by category
   const skillsByCategory: Record<string, Skill[]> = {};
   
-  filteredTopSkills.forEach(skill => {
+  // Organize all skills by their categories (not filtering out programming languages)
+  topSkills.forEach(skill => {
     if (!skillsByCategory[skill.category]) {
       skillsByCategory[skill.category] = [];
     }
     skillsByCategory[skill.category].push(skill);
   });
+  
+  // Sort categories by importance or alphabetically
+  const sortedCategories = Object.keys(skillsByCategory).sort((a, b) => {
+    const categoryPriority = {
+      'Backend': 1,
+      'Frontend': 2,
+      'Mobile': 3,
+      'Systems': 4,
+      'Cloud': 5,
+      'Architecture': 6,
+      'AI': 7,
+      'Data/AI': 8
+    };
+    return (categoryPriority[a as keyof typeof categoryPriority] || 99) - 
+           (categoryPriority[b as keyof typeof categoryPriority] || 99);
+  });
 
   // Check if we have any data to show
-  const hasNoData = filteredTopSkills.length === 0 && techStackWithIcons.length === 0;
+  const hasNoData = topSkills.length === 0 && techStackWithIcons.length === 0;
 
   // Display loading state
   if (isLoading) {
@@ -322,16 +339,16 @@ const TechStack = () => {
               </Button>
             </DialogTrigger>
             
-            <DialogContent className="sm:max-w-3xl max-h-[85vh] bg-black/90 border-primary/30 flex flex-col backdrop-blur-xl">
-              <DialogHeader>
+            <DialogContent className="sm:max-w-3xl max-h-[85vh] bg-black/90 border-primary/30 flex flex-col backdrop-blur-xl overflow-hidden">
+              <DialogHeader className="sticky top-0 z-10 bg-black/90 border-b border-primary/30 py-4">
                 <DialogTitle className="text-2xl font-bold text-center font-mono text-primary">&lt;Complete Tech Stack /&gt;</DialogTitle>
                 <DialogDescription className="text-muted-foreground text-center">
                   Tools, frameworks, and technologies I work with
                 </DialogDescription>
               </DialogHeader>
               
-              {/* Scrollable content area with proper max-height and overflow settings */}
-              <div className="overflow-y-auto flex-grow my-4 pr-2 pl-2" style={{ maxHeight: "calc(70vh - 120px)" }}>
+              {/* Scrollable content area with custom scrollbar */}
+              <div className="overflow-y-auto flex-grow custom-scrollbar py-4 px-2">
                 {/* Tech Icons Grid */}
                 <div className="p-2">
                   <div className="flex items-center mb-6">
@@ -378,6 +395,10 @@ const TechStack = () => {
                             </div>
                           )}
                           <span className="text-xs font-medium text-center text-white mt-2">{tech.name}</span>
+                          {/* Display category if available */}
+                          {(tech as any).category && (
+                            <span className="text-xs text-primary/70 mt-1">{(tech as any).category}</span>
+                          )}
                         </motion.div>
                       ))}
                     </div>
