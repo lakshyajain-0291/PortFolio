@@ -4,7 +4,11 @@ import './index.css'
 
 // Dynamically import the App component based on template number
 const getApp = async () => {
-  if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 2) {
+  if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 3) {
+    // Load App from src3 directory for terminal template
+    const { default: App } = await import('../src3/App')
+    return App
+  } else if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 2) {
     // Load App from src2 directory for template 2
     const { default: App } = await import('../src2/App')
     return App
@@ -30,5 +34,5 @@ if ('serviceWorker' in navigator) {
 
 // Initialize the app with the correct template
 getApp().then(App => {
-  createRoot(document.getElementById("root")!).render(<App />)
+  createRoot(document.getElementById('root')!).render(<App />)
 })
