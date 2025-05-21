@@ -12,8 +12,12 @@ const getApp = async () => {
     // Load App from src2 directory for template 2
     const { default: App } = await import('../src2/App')
     return App
+  } else if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 1) {
+    // Load App from src directory for template 1
+    const { default: App } = await import('./App')
+    return App
   } else {
-    // Default: Load App from src directory for template 1
+    // Default (template 0): Load App from src directory with default configuration
     const { default: App } = await import('./App')
     return App
   }
