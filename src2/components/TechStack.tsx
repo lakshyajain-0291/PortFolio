@@ -6,6 +6,7 @@ import { Button } from '../../src/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../../src/components/ui/dialog";
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
 import { getTechStackWithIcons } from '../../src/lib/portfolioReader';
+import { useTheme } from './theme-provider';
 
 // Map category names to appropriate icons
 const getCategoryIcon = (category: string) => {
@@ -31,38 +32,50 @@ const getProficiencyColor = (proficiency: number) => {
 };
 
 // Circuit background pattern for tech theme
-const CircuitBackground = () => (
-  <div className="absolute inset-0 -z-10 opacity-10 pointer-events-none">
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-      <pattern id="circuit" width="100" height="100" patternUnits="userSpaceOnUse">
-        <path d="M0 50 H100 M50 0 V100 M25 25 H50 V50 M75 25 V50 H50 M25 75 H50 V50 M75 75 V50" 
-          fill="none" stroke="currentColor" strokeWidth="1" />
-        <circle cx="25" cy="25" r="3" fill="currentColor" />
-        <circle cx="75" cy="25" r="3" fill="currentColor" />
-        <circle cx="25" cy="75" r="3" fill="currentColor" />
-        <circle cx="75" cy="75" r="3" fill="currentColor" />
-      </pattern>
-      <rect width="100%" height="100%" fill="url(#circuit)" />
-    </svg>
-  </div>
-);
+const CircuitBackground = () => {
+  const { theme } = useTheme(); // Get current theme
+  const isDark = theme === 'dark';
+  const strokeColor = isDark ? 'currentColor' : '#3b82f6'; // Use blue for light mode
+  const fillColor = isDark ? 'currentColor' : '#3b82f6'; // Use blue for light mode
+  
+  return (
+    <div className="absolute inset-0 -z-10 pointer-events-none" style={{ opacity: isDark ? 0.1 : 0.2 }}>
+      <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <pattern id="circuit" width="100" height="100" patternUnits="userSpaceOnUse">
+          <path d="M0 50 H100 M50 0 V100 M25 25 H50 V50 M75 25 V50 H50 M25 75 H50 V50 M75 75 V50" 
+            fill="none" stroke={strokeColor} strokeWidth="1" />
+          <circle cx="25" cy="25" r="3" fill={fillColor} />
+          <circle cx="75" cy="25" r="3" fill={fillColor} />
+          <circle cx="25" cy="75" r="3" fill={fillColor} />
+          <circle cx="75" cy="75" r="3" fill={fillColor} />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#circuit)" />
+      </svg>
+    </div>
+  );
+};
 
 // Terminal-like component for tech theme
-const TechTerminal = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-lg overflow-hidden border border-primary/30 shadow-lg">
-    <div className="bg-black/80 text-green-400 p-1 flex items-center border-b border-primary/30">
-      <div className="flex space-x-1.5 ml-2">
-        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+const TechTerminal = ({ children }: { children: React.ReactNode }) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  
+  return (
+    <div className="rounded-lg overflow-hidden border border-primary/30 shadow-lg">
+      <div className="bg-black/80 text-green-400 p-1 flex items-center border-b border-primary/30">
+        <div className="flex space-x-1.5 ml-2">
+          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        </div>
+        <div className="flex-1 text-center text-xs font-mono font-bold">tech_stack.sh</div>
       </div>
-      <div className="flex-1 text-center text-xs font-mono font-bold">tech_stack.sh</div>
+      <div className="bg-black/70 p-4 font-mono text-sm">
+        {children}
+      </div>
     </div>
-    <div className="bg-black/70 p-4 font-mono text-sm">
-      {children}
-    </div>
-  </div>
-);
+  );
+};
 
 type Skill = {
   name: string;
@@ -215,7 +228,7 @@ const TechStack = () => {
           >
             <div className="flex items-center justify-center gap-2 mb-6">
               <Terminal className="text-primary" size={24} />
-              <h3 className="text-2xl font-bold text-center font-mono">Top Skills by Category</h3>
+              <h3 className="text-2xl font-bold text-center font-mono text-foreground">Top Skills by Category</h3>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -259,7 +272,7 @@ const TechStack = () => {
                         transition={{ duration: 0.3, delay: index * 0.1 }}
                       >
                         <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium text-white">{skill.name}</span>
+                          <span className="font-medium text-foreground">{skill.name}</span>
                           <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30">
                             {skill.proficiency}%
                           </Badge>
@@ -273,7 +286,7 @@ const TechStack = () => {
                           />
                         </div>
                         {skill.justification && (
-                          <p className="text-xs text-muted-foreground mt-3 line-clamp-2 text-left">
+                          <p className="text-xs text-foreground/70 mt-3 line-clamp-2 text-left">
                             {skill.justification}
                           </p>
                         )}
@@ -407,7 +420,7 @@ const TechStack = () => {
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                     whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                   >
-                    <div className="text-lg font-mono mb-2 text-white">{lang.name}</div>
+                    <div className="text-lg font-mono mb-2 text-foreground">{lang.name}</div>
                     <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30">
                       {lang.proficiency}
                     </Badge>
