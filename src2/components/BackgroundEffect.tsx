@@ -23,9 +23,11 @@ const BackgroundEffect: React.FC = () => {
 
     // Configure colors based on theme
     const isDark = theme === 'dark';
-    const primaryColor = isDark ? 'rgba(56, 189, 248, 0.2)' : 'rgba(29, 78, 216, 0.15)';
-    const secondaryColor = isDark ? 'rgba(96, 165, 250, 0.2)' : 'rgba(59, 130, 246, 0.15)';
-    const lineColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(30, 58, 138, 0.05)';
+    // Increase opacity for light mode to improve visibility
+    const primaryColor = isDark ? 'rgba(56, 189, 248, 0.2)' : 'rgba(29, 78, 216, 0.3)';
+    const secondaryColor = isDark ? 'rgba(96, 165, 250, 0.2)' : 'rgba(59, 130, 246, 0.3)';
+    // Increased line opacity for light mode
+    const lineColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(30, 58, 138, 0.15)';
 
     // Create nodes
     const particlesCount = Math.floor(window.innerWidth / 10);
@@ -90,7 +92,7 @@ const BackgroundEffect: React.FC = () => {
         ctx.fill();
       });
       
-      // Draw connections
+      // Draw connections - increase opacity in light mode
       const maxDistance = 150;
       
       for (let i = 0; i < nodes.length; i++) {
@@ -103,7 +105,9 @@ const BackgroundEffect: React.FC = () => {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(${isDark ? '255,255,255' : '0,0,0'}, ${0.05 * (1 - distance / maxDistance)})`;
+            // Boost opacity for light mode connections
+            const opacity = isDark ? 0.05 : 0.15;
+            ctx.strokeStyle = `rgba(${isDark ? '255,255,255' : '0,0,0'}, ${opacity * (1 - distance / maxDistance)})`;
             ctx.stroke();
           }
         }
