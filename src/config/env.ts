@@ -3,9 +3,26 @@
  * This provides defaults for all environment-dependent values
  */
 
+// Get template number from URL query parameters or environment variable
+const getTemplateNumber = (): number => {
+  // Check if we're in a browser environment
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const templateParam = urlParams.get('template');
+    
+    // If template param exists and is a number between 0-3, use it
+    if (templateParam && /^[0-3]$/.test(templateParam)) {
+      return parseInt(templateParam, 10);
+    }
+  }
+  
+  // Otherwise fall back to the configured template or 0 as default
+  return parseInt(import.meta.env.VITE_TEMPLATE_NUMBER || '0', 10);
+};
+
 // Template Configuration
 export const TEMPLATE_CONFIG = {
-    TEMPLATE_NUMBER: parseInt(import.meta.env.VITE_TEMPLATE_NUMBER || '1', 10)
+    TEMPLATE_NUMBER: getTemplateNumber()
 };
 
 // API URLs
