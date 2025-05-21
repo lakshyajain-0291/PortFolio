@@ -4,6 +4,7 @@ import { PortfolioProvider } from '../src/hooks/PortfolioContext';
 import { Toaster } from '../src/components/ui/toaster';
 import { SECTION_NUMBERS } from '../src/config/env';
 import './template2.css';
+import TemplateSwitcher from '../src/components/TemplateSwitcher';
 
 // Import all components from template 2
 import Header from './components/Header';
@@ -37,7 +38,7 @@ const App = () => {
       <PortfolioProvider>
         <div className="min-h-screen bg-background text-foreground">
           <BackgroundEffect />
-          <div className="min-h-screen bg-darktech-background text-darktech-text relative z-10 bg-transparent">
+          <div className="min-h-screen relative z-10 bg-transparent">
 
           <Header />
           
@@ -50,6 +51,7 @@ const App = () => {
           
           <Footer />
           <Toaster />
+          <TemplateSwitcher />
         </div>
         </div>
       </PortfolioProvider>
