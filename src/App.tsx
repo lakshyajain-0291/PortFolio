@@ -14,6 +14,7 @@ import BackgroundEffect from './components/BackgroundEffect';
 import { PortfolioProvider } from './hooks/PortfolioContext';
 import { Toaster } from '@/components/ui/toaster';
 import { SECTION_NUMBERS } from '@/config/env';
+import TemplateSwitcher from './components/TemplateSwitcher';
 
 const App = () => {
   // Create an array of section components with their order numbers
@@ -45,6 +46,7 @@ const App = () => {
         ))}
         <Footer />
         <Toaster />
+        <TemplateSwitcher />
       </div>
     </PortfolioProvider>
   );
