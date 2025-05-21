@@ -42,6 +42,9 @@ export interface PortfolioData {
     title?: string;
     summary?: string;
     image?: string;
+    phone?: string;
+    email?: string;
+    location?: string;
   };
   experience?: Array<{
     company?: string;
@@ -158,7 +161,11 @@ const defaultPortfolioData: PortfolioData = {
   personalInfo: {
     name: import.meta.env.VITE_DEFAULT_NAME || "Lakshya Jain",
     title: import.meta.env.VITE_DEFAULT_TITLE || "Software Developer",
-    summary: import.meta.env.VITE_DEFAULT_BIO || "A skilled developer passionate about creating impactful solutions."
+    summary: import.meta.env.VITE_DEFAULT_BIO || "A skilled developer passionate about creating impactful solutions.",
+    image: import.meta.env.VITE_DEFAULT_AVATAR || "/assets/default-avatar.png",
+    phone: import.meta.env.VITE_DEFAULT_PHONE || "+91-7976123107",
+    email: import.meta.env.VITE_DEFAULT_EMAIL || "lakshyajainrj19@gmail.com",
+    location: import.meta.env.VITE_DEFAULT_LOCATION || "India",
   },
   socialLinks: {
     github: import.meta.env.VITE_DEFAULT_GITHUB_URL || "https://github.com/lakshyajain-0291",
