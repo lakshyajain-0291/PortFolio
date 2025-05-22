@@ -5,6 +5,15 @@ import MatrixEffect from './MatrixEffect.tsx';
 import { useToast } from '../../src/components/ui/use-toast';
 import { truncateWithEllipsis, formatTerminalDate, getNestedValue, parseTextForLinks } from '../utils/terminalUtils';
 import { formatDate } from '@/lib/utils.ts';
+// Import Easter eggs utilities
+import { 
+  ASCII_ARTS, 
+  generateRandomResponse, 
+  hasTypo, 
+  generateBlinkingEffect,
+  checkKonamiCode,
+  TYPING_TEST
+} from '../utils/easterEggs';
 
 // ASCII art for the terminal logo
 const ASCII_LOGO = `
@@ -63,10 +72,14 @@ const COMMAND_ALIASES: Record<string, string> = {
   'r': 'reload',
   'refresh': 'reload',
   'art': 'ascii',
-  'logo': 'ascii'
+  'logo': 'ascii',
+  
+  // Easter Egg commands
+  'f': 'fortune',
+  'type': 'typingtest'
 };
 
-// Terminal help text
+// Add new commands to help text
 const HELP_TEXT = `
 Available commands:
   help    (h, ?)       Show this help text
@@ -86,6 +99,12 @@ Available commands:
   reload  (r, refresh) Reload portfolio data with AI
   ascii   (art, logo)  Display ASCII art
   exit    (q, quit)    Exit terminal (redirects to main site)
+  
+Fun Commands:
+  fortune (f)          Get a random fortune
+  typingtest (type)    Test your typing speed
+  
+Try typing 'coffee', 'rocket', 'cow', 'sudo', or '42' for surprises!
 `;
 
 // Function to format project data for terminal display
@@ -126,6 +145,14 @@ interface TerminalLine {
   isAnimating?: boolean;
   animatedText?: string;
   parsedContent?: (string | JSX.Element)[];
+}
+
+// Additional interface for animations
+interface AnimationState {
+  isActive: boolean;
+  frames: string[];
+  currentFrame: number;
+  interval: number | null;
 }
 
 // Pager config - how many lines to display at once
@@ -201,12 +228,38 @@ const Terminal: React.FC = () => {
     totalLines: 0
   });
   
+  // Easter egg states
+  const [blinkAnimation, setBlinkAnimation] = useState<AnimationState>({
+    isActive: false,
+    frames: [],
+    currentFrame: 0,
+    interval: null
+  });
+  const [typingTest, setTypingTest] = useState<{
+    isActive: boolean;
+    quote: string;
+    startTime: number;
+  }>({
+    isActive: false,
+    quote: '',
+    startTime: 0
+  });
+  const [retroMode, setRetroMode] = useState<boolean>(false);
+  
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
   
   const { toast } = useToast();
   const { portfolio, isLoading, refreshAllData } = usePortfolio();
+  
+  // List of valid commands for typo detection
+  const validCommands = [
+    'help', 'clear', 'about', 'projects', 'skills', 'experience',
+    'education', 'contact', 'social', 'github', 'matrix', 'download',
+    'reload', 'ascii', 'exit', 'fortune', 'typingtest'
+  ];
 
   // Apply theme changes
   useEffect(() => {
@@ -222,7 +275,98 @@ const Terminal: React.FC = () => {
     
     // Set matrix effect for matrix theme
     setShowMatrix(currentTheme === 'matrix');
-  }, [currentTheme]);
+    
+    // Apply retro mode if activated
+    if (retroMode) {
+      document.documentElement.style.setProperty('--terminal-text', '#33ff00');
+      document.documentElement.style.setProperty('--terminal-bg', '#000000');
+      document.documentElement.style.setProperty('--terminal-font', '"VT323", "Courier New", monospace');
+      document.documentElement.style.setProperty('--terminal-filter', 'contrast(1.2) brightness(1.1) sepia(0.2)');
+    } else {
+      document.documentElement.style.setProperty('--terminal-font', '"JetBrains Mono", "Courier New", monospace');
+      document.documentElement.style.setProperty('--terminal-filter', 'none');
+    }
+  }, [currentTheme, retroMode]);
+
+  // Handle blinking effect animation
+  useEffect(() => {
+    if (blinkAnimation.isActive) {
+      // Clear existing interval
+      if (blinkAnimation.interval) {
+        clearInterval(blinkAnimation.interval);
+      }
+
+      // Start animation
+      const interval = setInterval(() => {
+        setBlinkAnimation(prev => {
+          const nextFrame = prev.currentFrame + 1;
+          
+          // Check if animation is complete
+          if (nextFrame >= prev.frames.length) {
+            clearInterval(interval);
+            return {
+              ...prev,
+              isActive: false,
+              currentFrame: 0,
+              interval: null
+            };
+          }
+          
+          // Update animation frame
+          return {
+            ...prev,
+            currentFrame: nextFrame
+          };
+        });
+      }, 150) as unknown as number; // Update every 150ms
+      
+      // Store interval ID
+      setBlinkAnimation(prev => ({
+        ...prev,
+        interval
+      }));
+      
+      // Clean up on unmount
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [blinkAnimation.isActive]);
+
+  // Display current animation frame
+  useEffect(() => {
+    if (blinkAnimation.isActive && blinkAnimation.frames.length > 0) {
+      // Get current frame
+      const currentFrameContent = blinkAnimation.frames[blinkAnimation.currentFrame];
+      
+      // Update last line of output with current frame
+      setOutput(prev => {
+        // Create a copy of output
+        const newOutput = [...prev];
+        
+        // Check if we need to add a new line or update existing
+        if (newOutput.length > 0 && newOutput[newOutput.length - 1].type === 'error') {
+          // Update existing error message with glitch effect
+          newOutput[newOutput.length - 1] = {
+            type: 'error',
+            text: currentFrameContent,
+            isAnimating: false,
+            animatedText: currentFrameContent
+          };
+        } else {
+          // Add new error line
+          newOutput.push({
+            type: 'error',
+            text: currentFrameContent,
+            isAnimating: false,
+            animatedText: currentFrameContent
+          });
+        }
+        
+        return newOutput;
+      });
+    }
+  }, [blinkAnimation.currentFrame, blinkAnimation.isActive]);
 
   // Automatically focus the input field and scroll to bottom when output changes
   useEffect(() => {
@@ -307,8 +451,142 @@ const Terminal: React.FC = () => {
     }
   };
 
+  // Konami code detection
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Skip if typing test is active
+      if (typingTest.isActive) return;
+      
+      const result = checkKonamiCode(e.key);
+      
+      if (result.completed && result.message) {
+        // Konami code completed - toggle retro mode
+        setRetroMode(!retroMode);
+        
+        // Show message
+        setOutput(prev => [...prev, {
+          type: 'success',
+          text: result.message,
+          isAnimating: false,
+          animatedText: result.message
+        }]);
+        
+        // Show toast notification
+        toast({
+          title: "Easter Egg Found!",
+          description: "Konami code activated! Retro mode toggled.",
+          duration: 3000
+        });
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyPress);
+    
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [retroMode, toast, typingTest.isActive]);
+
+  // Start the blinking animation for typos
+  const startBlinkingEffect = (command: string) => {
+    // Generate animation frames
+    const frames = generateBlinkingEffect(command);
+    
+    // Set animation state
+    setBlinkAnimation({
+      isActive: true,
+      frames,
+      currentFrame: 0,
+      interval: null
+    });
+  };
+
+  // Start typing test
+  const startTypingTest = async () => {
+    try {
+      const { quote, startTime } = await TYPING_TEST.start();
+      
+      setTypingTest({
+        isActive: true,
+        quote,
+        startTime
+      });
+      
+      setOutput(prev => [...prev, {
+        type: 'info',
+        text: `Type the following text:\n\n"${quote}"\n\nPress Enter when finished.`,
+        isAnimating: false,
+        animatedText: `Type the following text:\n\n"${quote}"\n\nPress Enter when finished.`
+      }]);
+      
+      // Clear input and focus
+      setInput('');
+      inputRef.current?.focus();
+    } catch (error) {
+      console.error('Failed to start typing test:', error);
+      setOutput(prev => [...prev, {
+        type: 'error',
+        text: `Failed to start typing test: ${error}`,
+        isAnimating: false,
+        animatedText: `Failed to start typing test: ${error}`
+      }]);
+    }
+  };
+
+  // End typing test
+  const endTypingTest = () => {
+    // Calculate time elapsed
+    const endTime = Date.now();
+    const timeElapsed = endTime - typingTest.startTime;
+    
+    // Calculate WPM
+    const wpm = TYPING_TEST.calculateSpeed(typingTest.quote, timeElapsed);
+    
+    // Calculate accuracy
+    const userInput = input;
+    const expectedInput = typingTest.quote;
+    let correctChars = 0;
+    
+    for (let i = 0; i < Math.min(userInput.length, expectedInput.length); i++) {
+      if (userInput[i] === expectedInput[i]) {
+        correctChars++;
+      }
+    }
+    
+    const accuracy = Math.round((correctChars / expectedInput.length) * 100);
+    
+    // Show results
+    setOutput(prev => [...prev, {
+      type: 'command',
+      text: `> ${userInput}`,
+      isAnimating: false,
+      animatedText: `> ${userInput}`
+    }, {
+      type: 'success',
+      text: `Typing test results:\nWPM: ${wpm}\nAccuracy: ${accuracy}%\nTime: ${(timeElapsed / 1000).toFixed(2)} seconds`,
+      isAnimating: false,
+      animatedText: `Typing test results:\nWPM: ${wpm}\nAccuracy: ${accuracy}%\nTime: ${(timeElapsed / 1000).toFixed(2)} seconds`
+    }]);
+    
+    // Reset test
+    setTypingTest({
+      isActive: false,
+      quote: '',
+      startTime: 0
+    });
+    
+    // Clear input
+    setInput('');
+  };
+
   // Handle command execution
   const executeCommand = (cmd: string) => {
+    // Check if typing test is active
+    if (typingTest.isActive) {
+      endTypingTest();
+      return;
+    }
+    
     // Add command to history
     setCommandHistory(prev => [...prev, cmd]);
     setHistoryIndex(-1);
@@ -322,6 +600,16 @@ const Terminal: React.FC = () => {
     // Check if the command is a shorthand/alias
     const aliasedCommand = COMMAND_ALIASES[command] || command;
     
+    // Check for special Easter egg commands first
+    const easterEggResponse = generateRandomResponse(command);
+    if (easterEggResponse) {
+      setOutput(prev => [...prev, { 
+        type: 'response', 
+        text: easterEggResponse 
+      }]);
+      return;
+    }
+    
     // Add theme command
     if (aliasedCommand === 'theme' || aliasedCommand.startsWith('theme ')) {
       const args = aliasedCommand.split(' ');
@@ -334,7 +622,7 @@ const Terminal: React.FC = () => {
         
         setOutput(prev => [...prev, { 
           type: 'response', 
-          text: `Available themes:\n${themeList}\n\nUsage: theme <name>`
+          text: `Available themes:\n${themeList}\n\nUsage: theme <n>`
         }]);
         return;
       }
@@ -397,11 +685,30 @@ const Terminal: React.FC = () => {
     } else if (aliasedCommand === 'help') {
       const additionalHelp = `
   theme              View available themes
-  theme <name>       Change terminal theme
+  theme <n>       Change terminal theme
   history            View command history
   clear-history      Clear command history
 `;
       setOutput(prev => [...prev, { type: 'response', text: HELP_TEXT + additionalHelp }]);
+    } else if (aliasedCommand === 'fortune') {
+      // Display a random fortune
+      const fortunes = [
+        "Your code will compile on the first try today.",
+        "A bug fixed today prevents a critical issue tomorrow.",
+        "Someone will star your GitHub repository soon.",
+        "A great opportunity for contribution awaits you.",
+        "Your next pull request will be merged without comments.",
+        "The path to becoming a better developer is through documentation.",
+        "Your commit today will save someone hours of debugging tomorrow.",
+        "The best code is no code at all."
+      ];
+      
+      setOutput(prev => [...prev, { 
+        type: 'response', 
+        text: `🔮 Your fortune: ${fortunes[Math.floor(Math.random() * fortunes.length)]}` 
+      }]);
+    } else if (aliasedCommand === 'typingtest' || aliasedCommand === 'type') {
+      startTypingTest();
     } else if (aliasedCommand === 'about') {
       const bio = portfolio?.personalInfo?.summary || DEFAULT_USER.BIO;
       const title = portfolio?.personalInfo?.title || DEFAULT_USER.TITLE;
@@ -653,10 +960,16 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
         });
       }
     } else {
-      setOutput(prev => [...prev, { 
-        type: 'error', 
-        text: `Command not found: ${command}. Type 'help' to see available commands.` 
-      }]);
+      // Command not found - check for typos to trigger blinking effect
+      if (hasTypo(command, validCommands)) {
+        // Start blinking effect instead of showing train
+        startBlinkingEffect(command);
+      } else {
+        setOutput(prev => [...prev, { 
+          type: 'error', 
+          text: `Command not found: ${command}. Type 'help' to see available commands.` 
+        }]);
+      }
     }
   };
 
@@ -693,7 +1006,8 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
         ...Object.keys(COMMAND_ALIASES),
         'help', 'clear', 'about', 'projects', 'skills', 'experience',
         'education', 'contact', 'social', 'github', 'matrix', 'download', 
-        'reload', 'ascii', 'exit'
+        'reload', 'ascii', 'exit', 'fortune', 'typingtest',
+        'coffee', 'rocket', 'cow', 'sudo', '42'
       ];
       
       if (input) {
@@ -1066,7 +1380,10 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
   };
 
   return (
-    <div className={`terminal-container ${isHistoryView ? 'history-view' : ''} ${isFullScreen ? 'terminal-fullscreen' : ''}`}>
+    <div 
+      className={`terminal-container ${isHistoryView ? 'history-view' : ''} ${isFullScreen ? 'terminal-fullscreen' : ''} ${retroMode ? 'retro-mode' : ''}`}
+      ref={terminalContainerRef}
+    >
       {showMatrix && <MatrixEffect themeColor={TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].text} />}
       
       <div className="terminal-header">
@@ -1088,27 +1405,7 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
           />
         </div>
         <h1>LiveInsight - Terminal {isHistoryView ? ' - Command History' : ` - ${TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].name}`}</h1>
-        {/* <div className="terminal-menu-container">
-          <button 
-            onClick={() => setShowTerminalOptions(!showTerminalOptions)}
-            className="terminal-menu-button"
-            title="Terminal options"
-          >
-            <span className="terminal-menu-dots">...</span>
-          </button>
-          {showTerminalOptions && (
-            <div className="terminal-menu-dropdown">
-              <button onClick={() => executeCommand('download -p')}>Download Portfolio JSON</button>
-              <button onClick={() => executeCommand('download -r')}>Download Resume</button>
-              <button onClick={() => executeCommand('reload')}>Reload with AI</button>
-              <button onClick={() => executeCommand('theme')}>Change Theme</button>
-              <button onClick={handleHistoryToggle}>{isHistoryView ? "Return to Terminal" : "View Command History"}</button>
-              <button onClick={() => executeCommand('clear')}>Clear Screen</button>
-              <button onClick={() => executeCommand('help')}>Show Help</button>
-              <button onClick={() => executeCommand('exit')}>Exit Terminal</button>
-            </div>
-          )}
-        </div> */}
+        {/* Terminal menu container */}
       </div>
       
       <div className="terminal-output" ref={outputRef}>
