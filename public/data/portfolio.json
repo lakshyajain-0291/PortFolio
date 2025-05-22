@@ -629,6 +629,224 @@
         "totalCommits": 1814,
         "featuredRepos": 6
       },
+      "githubData": {
+        "user": {
+          "login": "lakshyajain-0291",
+          "name": "Lakshya Jain",
+          "avatar_url": "https://avatars.githubusercontent.com/u/123456789",
+          "html_url": "https://github.com/lakshyajain-0291",
+          "bio": "I build innovative applications that leverage AI to solve complex problems.",
+          "company": "IIT Jodhpur",
+          "location": "India",
+          "email": "lakshyajainrj19@gmail.com",
+          "public_repos": 18,
+          "followers": 12,
+          "following": 8,
+          "created_at": "2024-01-01T00:00:00Z",
+          "updated_at": "2025-04-30T00:00:00Z"
+        },
+        "repositories": [
+          {
+            "name": "GitCury",
+            "full_name": "lakshyajain-0291/GitCury",
+            "html_url": "https://github.com/lakshyajain-0291/GitCury",
+            "description": "🚀 GitCury: Your ultimate Git sidekick! 🎯 Built with Go, it automates your Git workflow with 🌟 AI-powered commit messages, 🗂️ root folder filtering, ⚡ alias-based commands, and 🛠️ CLI utilities. From single repos to multi-project management, GitCury's got your back! 🌈",
+            "homepage": "",
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "forks_count": 0,
+            "language": "Go",
+            "topics": ["automation", "cli", "generative-ai", "git", "go", "golang"],
+            "commits": 104,
+            "updated_at": "2025-05-09T14:08:57Z",
+            "created_at": "2025-03-27T17:48:55Z"
+          },
+          {
+            "name": "gencli",
+            "full_name": "lakshyajain-0291/gencli",
+            "html_url": "https://github.com/lakshyajain-0291/gencli",
+            "description": "💡 GenCLI: Revolutionize your command-line experience! ⚡ Powered by Gemini-1.5-flash, it combines 🧠 advanced AI for intelligent file indexing, 🔍 smart searching, and 🗨️ interactive chat features. Transform how you manage and interact with your files! 🚀",
+            "homepage": "",
+            "stargazers_count": 1,
+            "watchers_count": 1,
+            "forks_count": 0,
+            "language": "Go",
+            "topics": ["cli", "generative-ai", "golang", "indexing", "searching"],
+            "commits": 47,
+            "updated_at": "2025-05-07T10:48:28Z",
+            "created_at": "2024-07-04T13:35:20Z"
+          },
+          {
+            "name": "RealmWeaver",
+            "full_name": "lakshyajain-0291/RealmWeaver",
+            "html_url": "https://github.com/lakshyajain-0291/RealmWeaver",
+            "description": "🎮 RealmWeaver: Step into a world of endless possibilities! ✨ This 2D open-ended game redefines interactive storytelling with 🧙 dynamic NPCs, 🗺️ unique locations, 🏹 quests, and 🎁 items—all generated through the powerful GEMINI API. No two adventures are ever the same! 🌟",
+            "homepage": "",
+            "stargazers_count": 2,
+            "watchers_count": 2,
+            "forks_count": 5,
+            "language": "C++",
+            "topics": ["cpp", "dsa", "game", "generative-ai", "open-world-game"],
+            "commits": 80,
+            "updated_at": "2025-05-07T10:50:03Z",
+            "created_at": "2024-09-30T13:56:20Z"
+          },
+          {
+            "name": "Vindication",
+            "full_name": "lakshyajain-0291/Vindication",
+            "html_url": "https://github.com/lakshyajain-0291/Vindication",
+            "description": "⚔️ The Vindication: Dive into a text-based historical fiction adventure! 🏰 Built in C, this open-ended game world features 🎮 mini-games, 🤝 NPC interactions, 📜 quests, 🖼️ terminal ASCII graphics, and 🎵 immersive audio. Easily expand the experience with modifiable JSON game content! 🚀",
+            "homepage": "",
+            "stargazers_count": 2,
+            "watchers_count": 2,
+            "forks_count": 2,
+            "language": "C",
+            "topics": [],
+            "commits": 107,
+            "updated_at": "2025-05-07T10:32:09Z",
+            "created_at": "2024-02-29T15:26:24Z"
+          },
+          {
+            "name": "Image-filtration-in-C",
+            "full_name": "lakshyajain-0291/Image-filtration-in-C",
+            "html_url": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
+            "description": "Programmed 6 image filters (Grayscale, Blur, Sharpen, Sobel Edge Detection, Reflect, Negative) for BMP file manipulation with 100% format compatibility.",
+            "homepage": "",
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "forks_count": 0,
+            "language": "C",
+            "topics": [],
+            "commits": 6,
+            "updated_at": "2024-05-18T06:43:23Z",
+            "created_at": "2024-03-17T11:45:40Z"
+          },
+          {
+            "name": "ml_showcase_site",
+            "full_name": "lakshyajain-0291/ml_showcase_site",
+            "html_url": "https://github.com/lakshyajain-0291/ml_showcase_site",
+            "description": "A showcase website for machine learning projects and demonstrations.",
+            "homepage": "https://ml-showcase-site.vercel.app",
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "forks_count": 0,
+            "language": "TypeScript",
+            "topics": [],
+            "commits": 86,
+            "updated_at": "2025-04-15T08:08:08Z",
+            "created_at": "2025-04-11T05:44:11Z"
+          },
+          {
+            "name": "summer-project",
+            "full_name": "lakshyajain-0291/summer-project",
+            "html_url": "https://github.com/lakshyajain-0291/summer-project",
+            "description": "Making a version control for content creators",
+            "homepage": "",
+            "stargazers_count": 0,
+            "watchers_count": 0,
+            "forks_count": 4,
+            "language": "JavaScript",
+            "topics": [],
+            "commits": 27,
+            "updated_at": "2024-07-05T11:44:18Z",
+            "created_at": "2024-05-17T17:05:02Z"
+          },
+          {
+            "name": "libr",
+            "full_name": "DALDA-IITJ/libr",
+            "html_url": "https://github.com/DALDA-IITJ/libr",
+            "description": "A Moderated, Censorship-Resilient Digital Forum",
+            "homepage": "",
+            "stargazers_count": 3,
+            "watchers_count": 3,
+            "forks_count": 0,
+            "language": "Go",
+            "topics": ["distributed-systems", "forum", "golang", "moderation"],
+            "commits": 146,
+            "updated_at": "2025-04-30T00:00:00Z",
+            "created_at": "2025-02-01T00:00:00Z"
+          }
+        ],
+        "contributions": [
+          {"date": "2025-05-21", "count": 3, "level": 2},
+          {"date": "2025-05-20", "count": 5, "level": 3},
+          {"date": "2025-05-19", "count": 0, "level": 0},
+          {"date": "2025-05-18", "count": 0, "level": 0},
+          {"date": "2025-05-17", "count": 7, "level": 3},
+          {"date": "2025-05-16", "count": 2, "level": 1},
+          {"date": "2025-05-15", "count": 0, "level": 0},
+          {"date": "2025-05-14", "count": 4, "level": 2},
+          {"date": "2025-05-13", "count": 1, "level": 1},
+          {"date": "2025-05-12", "count": 0, "level": 0},
+          {"date": "2025-05-11", "count": 0, "level": 0},
+          {"date": "2025-05-10", "count": 3, "level": 2},
+          {"date": "2025-05-09", "count": 6, "level": 3},
+          {"date": "2025-05-08", "count": 0, "level": 0},
+          {"date": "2025-05-07", "count": 2, "level": 1}
+        ],
+        "languageStats": {
+          "Go": 35.6,
+          "C++": 14.2,
+          "C": 13.8,
+          "JavaScript": 11.5,
+          "TypeScript": 8.9,
+          "Dart": 8.2,
+          "Python": 4.6,
+          "HTML": 1.6,
+          "CSS": 1.2,
+          "Shell": 0.4
+        },
+        "recentActivity": [
+          {
+            "type": "PushEvent",
+            "repo": "lakshyajain-0291/GitCury",
+            "created_at": "2025-05-21T14:22:18Z",
+            "payload": {
+              "commits": 3,
+              "ref": "refs/heads/main"
+            }
+          },
+          {
+            "type": "PullRequestEvent",
+            "repo": "lakshyajain-0291/ml_showcase_site",
+            "created_at": "2025-05-20T09:15:42Z",
+            "payload": {
+              "action": "opened",
+              "number": 12
+            }
+          },
+          {
+            "type": "PushEvent",
+            "repo": "lakshyajain-0291/ml_showcase_site",
+            "created_at": "2025-05-20T09:10:11Z",
+            "payload": {
+              "commits": 5,
+              "ref": "refs/heads/feature/model-visualization"
+            }
+          },
+          {
+            "type": "IssueCommentEvent",
+            "repo": "lakshyajain-0291/RealmWeaver",
+            "created_at": "2025-05-17T16:34:22Z",
+            "payload": {
+              "action": "created",
+              "issue": {
+                "number": 8,
+                "title": "Add new quest generation system"
+              }
+            }
+          },
+          {
+            "type": "PushEvent",
+            "repo": "lakshyajain-0291/RealmWeaver",
+            "created_at": "2025-05-17T14:08:37Z",
+            "payload": {
+              "commits": 7,
+              "ref": "refs/heads/main"
+            }
+          }
+        ]
+      },
       "achievements": [
         "Guided team to Gold Medal in Bug Bounty '25 by addressing security vulnerabilities with methodical testing",
         "Secured 1st place in Pitch It at Initio '23 with a compelling business plan and strong coordination",
