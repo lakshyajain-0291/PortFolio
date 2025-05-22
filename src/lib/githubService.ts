@@ -1,5 +1,5 @@
 import { DEFAULT_ASSETS } from '@/config/env';
-import axios from 'axios';
+import { readPortfolioData } from './portfolioReader';
 
 interface GithubRepo {
   name: string;
@@ -13,11 +13,13 @@ interface GithubRepo {
   language: string;
   topics: string[];
   updated_at: string;
-  owner: {
+  owner?: {
     login: string;
     avatar_url: string;
   };
-  default_branch: string;
+  default_branch?: string;
+  created_at?: string;
+  commits?: number;
 }
 
 export interface EnhancedProject {
@@ -52,15 +54,16 @@ export interface ContributionDay {
 // Store processed repo data to prevent duplicate API calls
 const repoCache = new Map<string, GithubRepo>();
 
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN || '';
+// Local portfolio data cache
+let portfolioDataCache: any = null;
 
-const githubApi = axios.create({
-  baseURL: 'https://api.github.com',
-  headers: {
-    Authorization: GITHUB_TOKEN ? `token ${GITHUB_TOKEN}` : '',
-    Accept: 'application/vnd.github.v3+json',
-  },
-});
+// Get portfolio data with caching
+const getPortfolioData = async () => {
+  if (!portfolioDataCache) {
+    portfolioDataCache = await readPortfolioData();
+  }
+  return portfolioDataCache;
+};
 
 export const extractRepoInfoFromUrl = (url?: string): { owner: string; repo: string } | null => {
   if (!url) return null;
@@ -83,6 +86,7 @@ export const extractRepoInfoFromUrl = (url?: string): { owner: string; repo: str
   return null;
 };
 
+// Updated to use local data
 export const fetchRepoData = async (githubUrl?: string): Promise<GithubRepo | null> => {
   if (!githubUrl) return null;
   
@@ -95,10 +99,32 @@ export const fetchRepoData = async (githubUrl?: string): Promise<GithubRepo | nu
   if (!repoInfo) return null;
   
   try {
-    const response = await githubApi.get<GithubRepo>(`/repos/${repoInfo.owner}/${repoInfo.repo}`);
-    // Cache the result
-    repoCache.set(githubUrl, response.data);
-    return response.data;
+    // Get portfolio data
+    const portfolioData = await getPortfolioData();
+    const githubData = portfolioData.githubData;
+    
+    // Find the repo in our hardcoded data
+    const repo = githubData?.repositories?.find(
+      (r: any) => r.name.toLowerCase() === repoInfo.repo.toLowerCase() ||
+                 (r.full_name && r.full_name.toLowerCase() === `${repoInfo.owner.toLowerCase()}/${repoInfo.repo.toLowerCase()}`)
+    );
+    
+    if (repo) {
+      // Add owner property if not present
+      if (!repo.owner) {
+        repo.owner = {
+          login: repoInfo.owner,
+          avatar_url: `https://avatars.githubusercontent.com/${repoInfo.owner}`
+        };
+      }
+      
+      // Cache the result
+      repoCache.set(githubUrl, repo);
+      return repo;
+    }
+    
+    console.warn(`Repository data for ${githubUrl} not found in portfolio.json`);
+    return null;
   } catch (error) {
     console.error(`Error fetching GitHub repository data for ${githubUrl}:`, error);
     return null;
@@ -115,7 +141,6 @@ export const getRepoImageUrl = (githubUrl?: string): string => {
   return `https://opengraph.githubassets.com/1/${repoInfo.owner}/${repoInfo.repo}`;
 };
 
-// New function to get the basic project info without making API calls
 export const getBasicProjectInfo = (githubUrl?: string): { name: string, owner: string } | null => {
   if (!githubUrl) return null;
   
@@ -128,7 +153,7 @@ export const getBasicProjectInfo = (githubUrl?: string): { name: string, owner: 
   };
 };
 
-// Function to fetch GitHub contribution data
+// Updated to use local data
 export const fetchGitHubContributions = async (username: string): Promise<ContributionDay[]> => {
   if (!username) {
     console.error('No username provided for GitHub contributions');
@@ -136,77 +161,18 @@ export const fetchGitHubContributions = async (username: string): Promise<Contri
   }
   
   try {
-    // Try multiple CORS proxies in case one fails
-    const corsProxies = [
-      'https://corsproxy.io/?',
-      'https://api.allorigins.win/get?url=',
-      'https://cors-anywhere.herokuapp.com/'
-    ];
+    // Get portfolio data
+    const portfolioData = await getPortfolioData();
+    const contributions = portfolioData.githubData?.contributions;
     
-    const targetUrl = `https://github-contributions.vercel.app/api/v1/${username}`;
-    
-    // Try without a proxy first (in case CORS headers were added)
-    try {
-      const directResponse = await fetch(targetUrl, { 
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (directResponse.ok) {
-        const data = await directResponse.json();
-        return data.contributions.map((contribution: any) => ({
-          date: contribution.date,
-          count: contribution.count,
-          level: contribution.intensity || Math.min(Math.floor(contribution.count / 2), 4)
-        }));
-      }
-    } catch (directError) {
-      console.warn('Direct API call failed, trying proxies:', directError);
+    // If we have hardcoded contributions data, use it
+    if (contributions && Array.isArray(contributions) && contributions.length > 0) {
+      console.log('Using hardcoded GitHub contributions data');
+      return contributions;
     }
     
-    // Try each proxy in sequence
-    for (const proxy of corsProxies) {
-      try {
-        const encodedUrl = proxy.includes('?') ? encodeURIComponent(targetUrl) : targetUrl;
-        const proxyUrl = `${proxy}${encodedUrl}`;
-        
-        console.log(`Trying proxy: ${proxy} for GitHub contributions`);
-        const response = await fetch(proxyUrl);
-        
-        if (!response.ok) {
-          console.warn(`Proxy ${proxy} failed with status: ${response.status}`);
-          continue;
-        }
-        
-        const data = await response.json();
-        
-        // Handle different proxy response formats
-        let contributions;
-        if (proxy.includes('allorigins')) {
-          // allorigins wraps the response in a contents property as a string
-          contributions = JSON.parse(data.contents).contributions;
-        } else {
-          // Other proxies might return the data directly
-          contributions = data.contributions || data;
-        }
-        
-        if (Array.isArray(contributions)) {
-          return contributions.map((contribution: any) => ({
-            date: contribution.date,
-            count: contribution.count,
-            level: contribution.intensity || Math.min(Math.floor(contribution.count / 2), 4)
-          }));
-        }
-      } catch (proxyError) {
-        console.warn(`Proxy ${proxy} failed:`, proxyError);
-        // Continue to the next proxy
-      }
-    }
-    
-    // If all proxies fail, generate sample data for display purposes
-    console.warn('All GitHub contribution fetching methods failed, generating sample data');
+    // Fallback to sample data
+    console.warn('No hardcoded GitHub contributions found, generating sample data');
     return generateSampleContributionData();
     
   } catch (error) {
@@ -215,7 +181,7 @@ export const fetchGitHubContributions = async (username: string): Promise<Contri
   }
 };
 
-// Generate sample contribution data when API fails
+// Generate sample contribution data when needed
 const generateSampleContributionData = (): ContributionDay[] => {
   const days = 365;
   const result: ContributionDay[] = [];
@@ -228,25 +194,17 @@ const generateSampleContributionData = (): ContributionDay[] => {
     const currentDate = new Date(startDate);
     currentDate.setDate(currentDate.getDate() + i);
     
-    // Generate random contribution counts, with weekends having higher probability of contributions
-    const dayOfWeek = currentDate.getDay(); // 0 is Sunday, 6 is Saturday
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-    
-    // Simulate some patterns in the data
+    // Generate random contribution counts
     let count = 0;
     const rand = Math.random();
     
-    if (isWeekend && rand > 0.3) {
-      // Higher activity on weekends
+    if (rand > 0.7) {
+      // High activity (30% chance)
       count = Math.floor(Math.random() * 7) + 1;
-    } else if (rand > 0.6) {
-      // Medium activity on weekdays
+    } else if (rand > 0.5) {
+      // Medium activity (20% chance)
       count = Math.floor(Math.random() * 5);
     }
-    
-    // Create realistic-looking data with some streaks
-    const streak = Math.floor(i / 10) % 5 === 0;
-    if (streak) count = Math.max(count, 1);
     
     result.push({
       date: currentDate.toISOString().split('T')[0], // YYYY-MM-DD format
@@ -258,62 +216,69 @@ const generateSampleContributionData = (): ContributionDay[] => {
   return result;
 };
 
+// Updated to use local data
 export const enhanceProjectWithGithubData = async (project: any): Promise<EnhancedProject> => {
   // Start with a basic enhanced project with just the GitHub URL
   const enhancedProject: EnhancedProject = { 
     id: project.id || `project-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    title: null,
-    description: null,
+    title: project.title || null,
+    description: project.description || null,
     github: project.github || null,
     featured: project.featured || false
   };
   
+  // If no GitHub URL, return as is
+  if (!project.github) {
+    return enhancedProject;
+  }
+  
   // Always get the GitHub image URL for a consistent look
-  if (project.github) {
-    const repoImage = getRepoImageUrl(project.github);
-    enhancedProject.image = repoImage;
+  const repoImage = getRepoImageUrl(project.github);
+  enhancedProject.image = project.image || repoImage;
+  
+  try {
+    // Get the repository data from our local cache
+    const repoData = await fetchRepoData(project.github);
     
-    // Get basic info without API calls
-    const basicInfo = getBasicProjectInfo(project.github);
-    if (basicInfo) {
-      enhancedProject.title = enhancedProject.title || basicInfo.name;
-    }
-    
-    try {
-      const repoData = await fetchRepoData(project.github);
+    if (repoData) {
+      // Use repository name as the project title if not set
+      enhancedProject.title = enhancedProject.title || repoData.name;
       
-      if (repoData) {
-        // Use repository name as the project title if not set
-        enhancedProject.title = enhancedProject.title || repoData.name;
-        
-        // Use GitHub description if not set
-        enhancedProject.description = enhancedProject.description || repoData.description;
-        
-        // Use homepage as demo URL if available
-        enhancedProject.demo = project.demo || repoData.homepage;
-        
-        // Set technologies from topics and language
+      // Use GitHub description if not set
+      enhancedProject.description = enhancedProject.description || repoData.description;
+      
+      // Use homepage as demo URL if available
+      enhancedProject.demo = project.demo || repoData.homepage || '';
+      
+      // Use technologies from project or derive from topics and language
+      if (!enhancedProject.technologies || enhancedProject.technologies.length === 0) {
         const techs = new Set<string>();
         if (repoData.language) techs.add(repoData.language);
         repoData.topics?.forEach(topic => techs.add(topic));
         enhancedProject.technologies = Array.from(techs);
-        
-        // Store all repo data
-        enhancedProject.repoData = {
-          stars: repoData.stargazers_count,
-          forks: repoData.forks_count,
-          watchers: repoData.watchers_count,
-          language: repoData.language,
-          topics: repoData.topics,
-          lastUpdated: repoData.updated_at,
-          ownerAvatar: repoData.owner.avatar_url,
-          repoImage: repoImage,
-          name: repoData.name
-        };
       }
-    } catch (error) {
-      console.error('Error enhancing project with GitHub data:', error);
+      
+      // Store all repo data
+      enhancedProject.repoData = {
+        stars: repoData.stargazers_count || 0,
+        forks: repoData.forks_count || 0,
+        watchers: repoData.watchers_count || 0,
+        language: repoData.language || '',
+        topics: repoData.topics || [],
+        lastUpdated: repoData.updated_at || '',
+        ownerAvatar: repoData.owner?.avatar_url || `https://avatars.githubusercontent.com/u/0`,
+        repoImage: repoImage,
+        name: repoData.name
+      };
+    } else {
+      // Fallback: Get basic info without API calls
+      const basicInfo = getBasicProjectInfo(project.github);
+      if (basicInfo) {
+        enhancedProject.title = enhancedProject.title || basicInfo.name;
+      }
     }
+  } catch (error) {
+    console.error('Error enhancing project with GitHub data:', error);
   }
   
   return enhancedProject;
