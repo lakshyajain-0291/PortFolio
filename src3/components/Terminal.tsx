@@ -3,7 +3,7 @@ import { usePortfolio } from '../../src/hooks/PortfolioContext';
 import { DEFAULT_USER, APP_SETTINGS, DEFAULT_ASSETS } from '../../src/config/env';
 import MatrixEffect from './MatrixEffect.tsx';
 import { useToast } from '../../src/components/ui/use-toast';
-import { truncateWithEllipsis, formatTerminalDate, getNestedValue } from '../utils/terminalUtils';
+import { truncateWithEllipsis, formatTerminalDate, getNestedValue, parseTextForLinks } from '../utils/terminalUtils';
 import { formatDate } from '@/lib/utils.ts';
 
 // ASCII art for the terminal logo
@@ -125,6 +125,7 @@ interface TerminalLine {
   text: string;
   isAnimating?: boolean;
   animatedText?: string;
+  parsedContent?: (string | JSX.Element)[];
 }
 
 // Pager config - how many lines to display at once
@@ -244,6 +245,35 @@ const Terminal: React.FC = () => {
     
     setOutput(welcomeMessages);
   }, [portfolio]);
+
+  // Listen for navigation events from terminal links
+  useEffect(() => {
+    const handleTerminalNavigate = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      const url = customEvent.detail?.url;
+      
+      if (url) {
+        toast({
+          title: "Opening Link",
+          description: `Navigating to: ${url}`,
+          duration: 3000
+        });
+        
+        // For local file paths, we could implement a "cat" like command in the future
+        // For now, we'll just output the URL to the terminal
+        setOutput(prev => [...prev, { 
+          type: 'info', 
+          text: `Link clicked: ${url}`
+        }]);
+      }
+    };
+    
+    window.addEventListener('terminalNavigate', handleTerminalNavigate);
+    
+    return () => {
+      window.removeEventListener('terminalNavigate', handleTerminalNavigate);
+    };
+  }, [toast]);
 
   // Function to download portfolio JSON data
   const downloadPortfolioJSONFile = (data: any): boolean => {
@@ -969,6 +999,33 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
     }
   };
 
+  // Function to process terminal line text for links
+  const processLineContent = (line: TerminalLine) => {
+    // For command type, don't process for links
+    if (line.type === 'command') {
+      return line.isAnimating ? line.animatedText : line.text;
+    }
+    
+    // Use cached parsed content if available
+    if (!line.isAnimating && line.parsedContent) {
+      return line.parsedContent;
+    }
+    
+    // Process text for links - either the animating version or full version
+    const textToProcess = line.isAnimating ? line.animatedText : line.text;
+    if (!textToProcess) return '';
+    
+    // Parse links in the text
+    const parsedContent = parseTextForLinks(textToProcess);
+    
+    // Cache the parsed content if not animating
+    if (!line.isAnimating) {
+      line.parsedContent = parsedContent;
+    }
+    
+    return parsedContent;
+  };
+
   // Modify addToOutput to check for large responses and activate pager mode
   const addToOutput = (lines: TerminalLine[]) => {
     // If pager mode is active, don't add output
@@ -1030,7 +1087,7 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
             title="Toggle fullscreen"
           />
         </div>
-        <h1>{APP_SETTINGS.SITE_TITLE} - Terminal {isHistoryView ? ' - Command History' : ` - ${TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].name}`}</h1>
+        <h1>LiveInsight - Terminal {isHistoryView ? ' - Command History' : ` - ${TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].name}`}</h1>
         {/* <div className="terminal-menu-container">
           <button 
             onClick={() => setShowTerminalOptions(!showTerminalOptions)}
@@ -1058,7 +1115,7 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
         {output.map((line, index) => (
           <React.Fragment key={index}>
             <pre className={`terminal-line ${line.type}`}>
-              {line.isAnimating ? line.animatedText : line.text}
+              {processLineContent(line)}
               {line.isAnimating && <span className="cursor-blink">█</span>}
             </pre>
             {index === output.length - 1 && line.isAnimating && (
