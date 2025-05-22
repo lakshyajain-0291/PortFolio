@@ -646,3 +646,356 @@ html, body {
   text-align: center;
   padding: 2px 0;
 }
+
+/* Terminal Portfolio CSS */
+
+:root {
+  --terminal-bg: #0c0c0c;
+  --terminal-text: #00ff00;
+  --terminal-prompt: #00ff00;
+  --terminal-cursor: #00ff00;
+  --terminal-success: #00ff00;
+  --terminal-error: #ff0000;
+  --terminal-font: "JetBrains Mono", "Courier New", monospace;
+  --terminal-filter: none;
+}
+
+.terminal-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  font-family: var(--terminal-font);
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  filter: var(--terminal-filter);
+}
+
+.terminal-header {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid #333;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  z-index: 10;
+}
+
+.terminal-header h1 {
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.terminal-header-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-header-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+.terminal-button-exit {
+  background-color: #ff5f56;
+}
+
+.terminal-button-theme {
+  background-color: #ffbd2e;
+}
+
+.terminal-button-maximize {
+  background-color: #27c93f;
+}
+
+.terminal-output {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px;
+  white-space: pre-wrap;
+  scrollbar-width: thin;
+  scrollbar-color: var(--terminal-text) var(--terminal-bg);
+}
+
+.terminal-output::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-output::-webkit-scrollbar-track {
+  background: var(--terminal-bg);
+}
+
+.terminal-output::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  color: var(--terminal-prompt);
+}
+
+.terminal-prompt {
+  margin-right: 8px;
+  font-weight: bold;
+  color: var(--terminal-prompt);
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: var(--terminal-text);
+  font-family: var(--terminal-font);
+  font-size: 1em;
+  flex-grow: 1;
+  outline: none;
+}
+
+.terminal-line {
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.terminal-line.command {
+  color: var(--terminal-prompt);
+  font-weight: bold;
+}
+
+.terminal-line.response {
+  color: var(--terminal-text);
+}
+
+.terminal-line.success {
+  color: var(--terminal-success);
+}
+
+.terminal-line.error {
+  color: var(--terminal-error);
+}
+
+.terminal-line.info {
+  color: #6699ff;
+}
+
+.terminal-line.hint {
+  color: #888;
+  font-size: 0.8em;
+  text-align: center;
+  margin-top: -4px;
+}
+
+.terminal-line.animation {
+  color: #ffcc00;
+  font-family: monospace;
+  line-height: 1.2;
+}
+
+.terminal-line.code {
+  color: #00cc66;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 2px solid #00cc66;
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.terminal-link {
+  color: #0088ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.terminal-link:hover {
+  color: #66bbff;
+}
+
+.terminal-menu-container {
+  position: relative;
+}
+
+.terminal-menu-button {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.terminal-menu-dots {
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.terminal-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  min-width: 200px;
+  z-index: 100;
+}
+
+.terminal-menu-dropdown button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  color: #ddd;
+  cursor: pointer;
+}
+
+.terminal-menu-dropdown button:hover {
+  background-color: #333;
+}
+
+.terminal-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+.history-view .terminal-output {
+  max-height: calc(100vh - 90px);
+}
+
+.history-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.history-back-button, .history-clear-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-family: var(--terminal-font);
+}
+
+.history-back-button:hover, .history-clear-button:hover {
+  background-color: #444;
+}
+
+.history-clear-button {
+  background-color: #771515;
+}
+
+.history-clear-button:hover {
+  background-color: #992222;
+}
+
+/* Easter egg styles */
+.retro-mode .terminal-output {
+  position: relative;
+  overflow: hidden;
+}
+
+.retro-mode .terminal-output::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.3;
+}
+
+.retro-mode .terminal-output::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.retro-mode .terminal-line {
+  text-shadow: 0 0 5px var(--terminal-text);
+  transform-origin: center left;
+  animation: scanlines 0.2s linear infinite;
+  position: relative;
+}
+
+@keyframes scanlines {
+  0% { transform: scaleY(1.0); }
+  50% { transform: scaleY(1.01); }
+  100% { transform: scaleY(1.0); }
+}
+
+/* Animation styles */
+@keyframes trainMove {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes matrixDrop {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes rocketLaunch {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
+}
+
+/* Hacker typer cursor effect */
+.hacker-mode-active .terminal-input {
+  opacity: 0;
+}
+
+.terminal-line.code {
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-line.code::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: cursorFade 1s infinite;
+}
+
+@keyframes cursorFade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
