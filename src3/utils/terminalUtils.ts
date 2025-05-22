@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Terminal utility functions for formatting and manipulating terminal output
  */
@@ -76,4 +78,98 @@ export function formatDate(dateString: string): string {
   } catch (error) {
     return dateString;
   }
+}
+
+/**
+ * Parse text to detect URLs and convert them to clickable links
+ * This improved version preserves line breaks and spacing
+ * @param text The text to parse for URLs
+ * @returns An array of text and JSX link elements
+ */
+export function parseTextForLinks(text: string): (string | JSX.Element)[] {
+  if (!text) return [];
+  
+  // Split text by newlines to handle line breaks properly
+  const lines = text.split('\n');
+  
+  // Process each line for URLs
+  const result: (string | JSX.Element)[] = [];
+  
+  lines.forEach((line, lineIndex) => {
+    // Add line break before each line (except the first)
+    if (lineIndex > 0) {
+      result.push(React.createElement('br', { key: `br-${lineIndex}` }));
+    }
+    
+    // Skip empty lines but preserve the line break
+    if (!line.trim()) {
+      return;
+    }
+    
+    // Regex to detect URLs - supports http, https, ftp protocols
+    const urlRegex = /(https?:\/\/|ftp:\/\/)[^\s]+/g;
+    const urlMatches = line.match(urlRegex);
+    
+    // If no URLs in this line, just add the text
+    if (!urlMatches) {
+      result.push(line);
+      return;
+    }
+    
+    // Process line with URLs
+    let lastIndex = 0;
+    let lineResult: (string | JSX.Element)[] = [];
+    
+    // Iterate through matches
+    urlMatches.forEach((url, urlIndex) => {
+      const urlIndex1 = line.indexOf(url, lastIndex);
+      
+      // Add text before URL
+      if (urlIndex1 > lastIndex) {
+        lineResult.push(line.substring(lastIndex, urlIndex1));
+      }
+      
+      // Convert src/ and public/ URLs to src3/ if needed
+      let targetUrl = url;
+      if (url.includes('/src/') || url.startsWith('src/')) {
+        targetUrl = url.replace(/\/src\/|^src\//, '/src3/');
+      } else if (url.includes('/public/') || url.startsWith('public/')) {
+        targetUrl = url.replace(/\/public\/|^public\//, '/src3/');
+      }
+      
+      // Add URL as clickable link
+      lineResult.push(
+        React.createElement('a', {
+          key: `link-${lineIndex}-${urlIndex}`,
+          href: targetUrl,
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          className: 'terminal-link',
+          onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+            // For local file links, prevent default behavior and handle specially
+            if (targetUrl.includes('/src3/') || targetUrl.includes('file://')) {
+              e.preventDefault();
+              // Create custom event to notify terminal of navigation to file
+              const event = new CustomEvent('terminalNavigate', {
+                detail: { url: targetUrl }
+              });
+              window.dispatchEvent(event);
+            }
+          }
+        }, url)
+      );
+      
+      lastIndex = urlIndex1 + url.length;
+    });
+    
+    // Add any remaining text after the last URL
+    if (lastIndex < line.length) {
+      lineResult.push(line.substring(lastIndex));
+    }
+    
+    // Add the processed line elements to the result
+    result.push(...lineResult);
+  });
+  
+  return result;
 }
