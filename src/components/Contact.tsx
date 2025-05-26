@@ -225,36 +225,36 @@ const Contact = () => {
                 <h3 className="text-2xl font-bold mb-6 text-left">Contact Info</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-neon-green">
+                    <div className="p-3 rounded-full bg-darktech-card text-darktech-neon-green shrink-0">
                       <Mail size={24} />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h4 className="text-lg font-medium text-left">Email</h4>
-                      <a href={`mailto:${email}`} className="text-darktech-muted hover:text-darktech-neon-green transition-colors">
+                      <a href={`mailto:${email}`} className="text-darktech-muted hover:text-darktech-neon-green transition-colors break-all">
                         {email}
                       </a>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-holo-cyan">
+                    <div className="p-3 rounded-full bg-darktech-card text-darktech-holo-cyan shrink-0">
                       <Linkedin size={24} />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h4 className="text-lg font-medium text-left">LinkedIn</h4>
-                      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-holo-cyan transition-colors">
+                      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-holo-cyan transition-colors break-words">
                         linkedin.com/in/{linkedinUsername}
                       </a>
                     </div>
                   </div>
                   
                   <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-cyber-pink">
+                    <div className="p-3 rounded-full bg-darktech-card text-darktech-cyber-pink shrink-0">
                       <Github size={24} />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <h4 className="text-lg font-medium text-left">GitHub</h4>
-                      <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-cyber-pink transition-colors">
+                      <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-cyber-pink transition-colors break-words">
                         github.com/{githubUsername}
                       </a>
                     </div>
