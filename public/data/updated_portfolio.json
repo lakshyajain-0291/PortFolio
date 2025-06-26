@@ -1,0 +1,720 @@
+{
+  "statusCode": 200,
+  "success": true,
+  "message": "Portfolio data processed successfully",
+  "data": {
+    "personalInfo": {
+      "name": "Lakshya Jain",
+      "title": "Fullstack Developer | Passionate Innovator",
+      "summary": "A highly driven coder with a knack for solving complex problems using innovative technologies, from backend systems to AI-powered solutions."
+    },
+    "experience": [
+      {
+        "company": "2nd Swap",
+        "title": "Founding Engineer",
+        "dates": "Jan 2025 - Apr 2025",
+        "achievements": [
+          "Built backend infrastructure with 12+ RESTful endpoints and secure authentication, enabling real-time updates with <200ms latency for 50+ items and 25+ active users.",
+          "Created an OCR and OAuth verification system that reduced manual review by 20% while maintaining 99.8% platform uptime.",
+          "Architected complete backend using Node.js, Express, MongoDB, REST APIs, OAuth 2.0, and Socket.io."
+        ]
+      },
+      {
+        "company": "PMStack",
+        "title": "SDE Intern - Android Development",
+        "dates": "Dec 2024 - Apr 2025",
+        "achievements": [
+          "Developed mobile UI components with Flutter and integrated analytics for user insights; resolved critical bugs across Android versions through Crashlytics monitoring achieving 120+ beta users within the first month of beta release.",
+          "Boosted app performance through code restructuring and implementing architecture refinements like modularity; resolved 163 technical issues in frontend and backend systems.",
+          "Built applications using Flutter, Firebase, Dart, Google Analytics, Crashlytics, and Figma."
+        ]
+      }
+    ],
+    "education": [
+      {
+        "institution": "Indian Institute of Technology, Jodhpur",
+        "degree": "B.Tech Computer Science and Engineering",
+        "dates": "2023-2027",
+        "cgpa": "8.96/10"
+      },
+      {
+        "institution": "R.S. Memorial International School",
+        "degree": "Senior Secondary (PCM)",
+        "dates": "2021-2022",
+        "cgpa": "93.8%"
+      },
+      {
+        "institution": "St. Anne's Sr. Sec. School",
+        "degree": "Secondary",
+        "dates": "2019-2020",
+        "cgpa": "94.6%"
+      }
+    ],
+    "projects": [
+      {
+        "id": "956103985",
+        "title": "GitCury",
+        "description": "An AI-powered Git companion that automates workflows with features like semantic commit messages, alias-based commands, and root folder filtering.",
+        "technologies": [
+          "Go",
+          "Generative AI",
+          "CLI"
+        ],
+        "github": "https://github.com/lakshyajain-0291/GitCury",
+        "stars": 0,
+        "forks": 0,
+        "commits": 104
+      },
+      {
+        "id": "resume-project-0",
+        "title": "LIBR",
+        "description": "A decentralized forum ensuring censorship resistance, featuring quorum moderation and fault-tolerant architecture.",
+        "technologies": [
+          "Go",
+          "Docker",
+          "PostgreSQL",
+          "Distributed Systems"
+        ],
+        "github": "https://github.com/DALDA-IITJ/libr",
+        "stars": 3,
+        "forks": 0,
+        "commits": 146
+      }
+    ],
+    "skills": [
+      "Go",
+      "Dart",
+      "Flutter",
+      "Node.js",
+      "Express.js",
+      "React.js",
+      "JavaScript",
+      "C++",
+      "C",
+      "TypeScript",
+      "Firebase",
+      "Docker",
+      "PostgreSQL",
+      "MongoDB",
+      "Distributed Systems",
+      "Microservices Architecture",
+      "RESTful APIs",
+      "AI Integration",
+      "System Design",
+      "Semantic Search"
+    ],
+    "socialLinks": {
+      "github": "https://github.com/lakshyajain-0291",
+      "linkedin": "https://www.linkedin.com/in/lakshya-jain-5b565a284/",
+      "codeforces": "https://codeforces.com/profile/lakshyajain-0291",
+      "email": "b23cs1032@iitj.ac.in",
+      "phone": "+91-7976123107"
+    },
+    "insights": {
+      "topSkills": [
+        {
+          "name": "Go",
+          "category": "Backend",
+          "proficiency": 90,
+          "justification": "Primary language used in multiple major projects (GitCury, LIBR, GenCLI) with significant commit history and complex implementations."
+        },
+        {
+          "name": "Flutter",
+          "category": "Mobile",
+          "proficiency": 85,
+          "justification": "Professional experience at PMStack with 120+ beta users achieved, plus Travel Companion App with 360+ users."
+        },
+        {
+          "name": "Node.js",
+          "category": "Backend",
+          "proficiency": 80,
+          "justification": "Founding Engineer role at 2nd Swap with 12+ RESTful endpoints and real-time systems implementation."
+        },
+        {
+          "name": "C++",
+          "category": "Backend",
+          "proficiency": 75,
+          "justification": "Used in RealmWeaver with 80 commits and complex game development with AI integration."
+        },
+        {
+          "name": "Distributed Systems",
+          "category": "Backend",
+          "proficiency": 75,
+          "justification": "LIBR project demonstrates deep understanding of Byzantine fault tolerance, DHT, and distributed architecture."
+        },
+        {
+          "name": "JavaScript",
+          "category": "Frontend",
+          "proficiency": 70,
+          "justification": "Used across multiple projects including web development and full-stack applications."
+        },
+        {
+          "name": "C",
+          "category": "Systems",
+          "proficiency": 70,
+          "justification": "Strong foundation with projects like The Vindication (107 commits) and Image Filtration Program."
+        },
+        {
+          "name": "Firebase",
+          "category": "Cloud",
+          "proficiency": 70,
+          "justification": "Professional experience with PMStack and Travel Companion App integration."
+        },
+        {
+          "name": "AI/ML Integration",
+          "category": "AI",
+          "proficiency": 75,
+          "justification": "Multiple projects using Gemini API, vector embeddings, and semantic search (GenCLI, GitCury, RealmWeaver)."
+        },
+        {
+          "name": "System Design",
+          "category": "Architecture",
+          "proficiency": 80,
+          "justification": "Demonstrated through LIBR's distributed architecture and 2nd Swap's scalable backend design."
+        }
+      ],
+      "technicalProfile": {
+        "primaryStack": [
+          "Go",
+          "Flutter",
+          "Node.js",
+          "Firebase",
+          "Docker",
+          "PostgreSQL",
+          "MongoDB"
+        ],
+        "secondaryStack": [
+          "C++",
+          "C",
+          "JavaScript",
+          "TypeScript",
+          "Python",
+          "Dart",
+          "Express.js",
+          "React.js"
+        ],
+        "languages": [
+          {
+            "name": "Go",
+            "proficiency": "expert"
+          },
+          {
+            "name": "Dart",
+            "proficiency": "high"
+          },
+          {
+            "name": "JavaScript",
+            "proficiency": "high"
+          },
+          {
+            "name": "C++",
+            "proficiency": "high"
+          },
+          {
+            "name": "C",
+            "proficiency": "high"
+          },
+          {
+            "name": "Python",
+            "proficiency": "medium"
+          },
+          {
+            "name": "TypeScript",
+            "proficiency": "medium"
+          }
+        ],
+        "methodologies": [
+          "Agile Development",
+          "Distributed Systems Design",
+          "RESTful API Design",
+          "Microservices Architecture",
+          "CI/CD",
+          "Test-Driven Development"
+        ],
+        "strengths": [
+          "Backend Development (Go, Node.js)",
+          "Mobile App Development (Flutter)",
+          "Distributed Systems Architecture",
+          "AI-Driven Application Development",
+          "Full-Stack Development",
+          "System Design & Scalability",
+          "CLI Tool Development"
+        ],
+        "growthAreas": [
+          "Cloud Platform Expertise (AWS/GCP)",
+          "Advanced Machine Learning",
+          "DevOps & Infrastructure Management",
+          "Frontend Framework Mastery"
+        ]
+      },
+      "careerTrajectory": "Rapidly advancing software engineer with strong foundation in backend development, mobile applications, and distributed systems. Demonstrated ability to lead projects and deliver scalable solutions in startup environments.",
+      "careerRecommendations": {
+        "nextSteps": [
+          "Pursue cloud certifications (AWS/GCP) to complement distributed systems expertise",
+          "Deepen machine learning knowledge to enhance AI integration capabilities",
+          "Seek technical leadership roles to leverage project management experience",
+          "Contribute to open-source distributed systems projects"
+        ],
+        "potentialRoles": [
+          "Senior Backend Engineer",
+          "Distributed Systems Engineer",
+          "Full-Stack Developer",
+          "Mobile Application Developer",
+          "Technical Lead",
+          "DevOps Engineer",
+          "Solutions Architect"
+        ],
+        "skillsToAcquire": [
+          "Advanced cloud computing (AWS/GCP/Azure)",
+          "Kubernetes and container orchestration",
+          "Advanced machine learning and AI",
+          "Technical leadership and mentoring",
+          "Advanced system design patterns"
+        ]
+      },
+      "summary": {
+        "strengths_analysis": "Strong technical foundation with expertise in Go, distributed systems, and mobile development. Proven ability to build scalable backend systems and deliver user-focused applications. Excellent track record of contributing to both startup environments and open-source projects.",
+        "career_trajectory": "Ascending rapidly from foundational programming to complex distributed systems and leadership roles. Strong entrepreneurial mindset with founding engineer experience and significant campus involvement.",
+        "technical_focus": "Backend-heavy with strong distributed systems knowledge, complemented by mobile development skills and AI integration capabilities. Well-positioned for senior engineering roles.",
+        "learning_recommendations": "Focus on cloud platforms, advanced ML/AI, and technical leadership skills to advance to senior/lead positions in the next 2-3 years."
+      }
+    },
+    "techStack": [
+      {
+        "name": "Go",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
+      },
+      {
+        "name": "Flutter",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg"
+      },
+      {
+        "name": "Node.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "C++",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"
+      },
+      {
+        "name": "JavaScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+      },
+      {
+        "name": "TypeScript",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+      },
+      {
+        "name": "Python",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+      },
+      {
+        "name": "Dart",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg"
+      },
+      {
+        "name": "C",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg"
+      },
+      {
+        "name": "Firebase",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg"
+      },
+      {
+        "name": "MongoDB",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+      },
+      {
+        "name": "PostgreSQL",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+      },
+      {
+        "name": "Docker",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+      },
+      {
+        "name": "Express.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+      },
+      {
+        "name": "React.js",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+      },
+      {
+        "name": "Figma",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+      },
+      {
+        "name": "Git",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+      }
+    ],
+    "resumeUrl": "/home/lakshya-jain/projects/Portfolio_Automation_API/server/uploads/resume-1746844966227-232699752.pdf",
+    "githubStats": {
+      "totalPublicRepos": 18,
+      "totalStars": 8,
+      "totalForks": 11,
+      "totalCommits": 1814,
+      "featuredRepos": 6
+    },
+    "githubData": {
+      "user": {
+        "login": "lakshyajain-0291",
+        "name": "Lakshya Jain",
+        "avatar_url": "https://avatars.githubusercontent.com/u/123456789",
+        "html_url": "https://github.com/lakshyajain-0291",
+        "bio": "I build innovative applications that leverage AI to solve complex problems.",
+        "company": "IIT Jodhpur",
+        "location": "India",
+        "email": "lakshyajainrj19@gmail.com",
+        "public_repos": 18,
+        "followers": 12,
+        "following": 8,
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2025-04-30T00:00:00Z"
+      },
+      "repositories": [
+        {
+          "name": "GitCury",
+          "full_name": "lakshyajain-0291/GitCury",
+          "html_url": "https://github.com/lakshyajain-0291/GitCury",
+          "description": "\ud83d\ude80 GitCury: Your ultimate Git sidekick! \ud83c\udfaf Built with Go, it automates your Git workflow with \ud83c\udf1f AI-powered commit messages, \ud83d\uddc2\ufe0f root folder filtering, \u26a1 alias-based commands, and \ud83d\udee0\ufe0f CLI utilities. From single repos to multi-project management, GitCury's got your back! \ud83c\udf08",
+          "homepage": "",
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "forks_count": 0,
+          "language": "Go",
+          "topics": [
+            "automation",
+            "cli",
+            "generative-ai",
+            "git",
+            "go",
+            "golang"
+          ],
+          "commits": 104,
+          "updated_at": "2025-05-09T14:08:57Z",
+          "created_at": "2025-03-27T17:48:55Z"
+        },
+        {
+          "name": "gencli",
+          "full_name": "lakshyajain-0291/gencli",
+          "html_url": "https://github.com/lakshyajain-0291/gencli",
+          "description": "\ud83d\udca1 GenCLI: Revolutionize your command-line experience! \u26a1 Powered by Gemini-1.5-flash, it combines \ud83e\udde0 advanced AI for intelligent file indexing, \ud83d\udd0d smart searching, and \ud83d\udde8\ufe0f interactive chat features. Transform how you manage and interact with your files! \ud83d\ude80",
+          "homepage": "",
+          "stargazers_count": 1,
+          "watchers_count": 1,
+          "forks_count": 0,
+          "language": "Go",
+          "topics": [
+            "cli",
+            "generative-ai",
+            "golang",
+            "indexing",
+            "searching"
+          ],
+          "commits": 47,
+          "updated_at": "2025-05-07T10:48:28Z",
+          "created_at": "2024-07-04T13:35:20Z"
+        },
+        {
+          "name": "RealmWeaver",
+          "full_name": "lakshyajain-0291/RealmWeaver",
+          "html_url": "https://github.com/lakshyajain-0291/RealmWeaver",
+          "description": "\ud83c\udfae RealmWeaver: Step into a world of endless possibilities! \u2728 This 2D open-ended game redefines interactive storytelling with \ud83e\uddd9 dynamic NPCs, \ud83d\uddfa\ufe0f unique locations, \ud83c\udff9 quests, and \ud83c\udf81 items\u2014all generated through the powerful GEMINI API. No two adventures are ever the same! \ud83c\udf1f",
+          "homepage": "",
+          "stargazers_count": 2,
+          "watchers_count": 2,
+          "forks_count": 5,
+          "language": "C++",
+          "topics": [
+            "cpp",
+            "dsa",
+            "game",
+            "generative-ai",
+            "open-world-game"
+          ],
+          "commits": 80,
+          "updated_at": "2025-05-07T10:50:03Z",
+          "created_at": "2024-09-30T13:56:20Z"
+        },
+        {
+          "name": "Vindication",
+          "full_name": "lakshyajain-0291/Vindication",
+          "html_url": "https://github.com/lakshyajain-0291/Vindication",
+          "description": "\u2694\ufe0f The Vindication: Dive into a text-based historical fiction adventure! \ud83c\udff0 Built in C, this open-ended game world features \ud83c\udfae mini-games, \ud83e\udd1d NPC interactions, \ud83d\udcdc quests, \ud83d\uddbc\ufe0f terminal ASCII graphics, and \ud83c\udfb5 immersive audio. Easily expand the experience with modifiable JSON game content! \ud83d\ude80",
+          "homepage": "",
+          "stargazers_count": 2,
+          "watchers_count": 2,
+          "forks_count": 2,
+          "language": "C",
+          "topics": [],
+          "commits": 107,
+          "updated_at": "2025-05-07T10:32:09Z",
+          "created_at": "2024-02-29T15:26:24Z"
+        },
+        {
+          "name": "Image-filtration-in-C",
+          "full_name": "lakshyajain-0291/Image-filtration-in-C",
+          "html_url": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
+          "description": "Programmed 6 image filters (Grayscale, Blur, Sharpen, Sobel Edge Detection, Reflect, Negative) for BMP file manipulation with 100% format compatibility.",
+          "homepage": "",
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "forks_count": 0,
+          "language": "C",
+          "topics": [],
+          "commits": 6,
+          "updated_at": "2024-05-18T06:43:23Z",
+          "created_at": "2024-03-17T11:45:40Z"
+        },
+        {
+          "name": "ml_showcase_site",
+          "full_name": "lakshyajain-0291/ml_showcase_site",
+          "html_url": "https://github.com/lakshyajain-0291/ml_showcase_site",
+          "description": "A showcase website for machine learning projects and demonstrations.",
+          "homepage": "https://ml-showcase-site.vercel.app",
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "forks_count": 0,
+          "language": "TypeScript",
+          "topics": [],
+          "commits": 86,
+          "updated_at": "2025-04-15T08:08:08Z",
+          "created_at": "2025-04-11T05:44:11Z"
+        },
+        {
+          "name": "summer-project",
+          "full_name": "lakshyajain-0291/summer-project",
+          "html_url": "https://github.com/lakshyajain-0291/summer-project",
+          "description": "Making a version control for content creators",
+          "homepage": "",
+          "stargazers_count": 0,
+          "watchers_count": 0,
+          "forks_count": 4,
+          "language": "JavaScript",
+          "topics": [],
+          "commits": 27,
+          "updated_at": "2024-07-05T11:44:18Z",
+          "created_at": "2024-05-17T17:05:02Z"
+        },
+        {
+          "name": "libr",
+          "full_name": "DALDA-IITJ/libr",
+          "html_url": "https://github.com/DALDA-IITJ/libr",
+          "description": "A Moderated, Censorship-Resilient Digital Forum",
+          "homepage": "",
+          "stargazers_count": 3,
+          "watchers_count": 3,
+          "forks_count": 0,
+          "language": "Go",
+          "topics": [
+            "distributed-systems",
+            "forum",
+            "golang",
+            "moderation"
+          ],
+          "commits": 146,
+          "updated_at": "2025-04-30T00:00:00Z",
+          "created_at": "2025-02-01T00:00:00Z"
+        }
+      ],
+      "contributions": [
+        {
+          "date": "2025-05-21",
+          "count": 3,
+          "level": 2
+        },
+        {
+          "date": "2025-05-20",
+          "count": 5,
+          "level": 3
+        },
+        {
+          "date": "2025-05-19",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-18",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-17",
+          "count": 7,
+          "level": 3
+        },
+        {
+          "date": "2025-05-16",
+          "count": 2,
+          "level": 1
+        },
+        {
+          "date": "2025-05-15",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-14",
+          "count": 4,
+          "level": 2
+        },
+        {
+          "date": "2025-05-13",
+          "count": 1,
+          "level": 1
+        },
+        {
+          "date": "2025-05-12",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-11",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-10",
+          "count": 3,
+          "level": 2
+        },
+        {
+          "date": "2025-05-09",
+          "count": 6,
+          "level": 3
+        },
+        {
+          "date": "2025-05-08",
+          "count": 0,
+          "level": 0
+        },
+        {
+          "date": "2025-05-07",
+          "count": 2,
+          "level": 1
+        }
+      ],
+      "languageStats": {
+        "Go": 35.6,
+        "C++": 14.2,
+        "C": 13.8,
+        "JavaScript": 11.5,
+        "TypeScript": 8.9,
+        "Dart": 8.2,
+        "Python": 4.6,
+        "HTML": 1.6,
+        "CSS": 1.2,
+        "Shell": 0.4
+      },
+      "recentActivity": [
+        {
+          "type": "PushEvent",
+          "repo": "lakshyajain-0291/GitCury",
+          "created_at": "2025-05-21T14:22:18Z",
+          "payload": {
+            "commits": 3,
+            "ref": "refs/heads/main"
+          }
+        },
+        {
+          "type": "PullRequestEvent",
+          "repo": "lakshyajain-0291/ml_showcase_site",
+          "created_at": "2025-05-20T09:15:42Z",
+          "payload": {
+            "action": "opened",
+            "number": 12
+          }
+        },
+        {
+          "type": "PushEvent",
+          "repo": "lakshyajain-0291/ml_showcase_site",
+          "created_at": "2025-05-20T09:10:11Z",
+          "payload": {
+            "commits": 5,
+            "ref": "refs/heads/feature/model-visualization"
+          }
+        },
+        {
+          "type": "IssueCommentEvent",
+          "repo": "lakshyajain-0291/RealmWeaver",
+          "created_at": "2025-05-17T16:34:22Z",
+          "payload": {
+            "action": "created",
+            "issue": {
+              "number": 8,
+              "title": "Add new quest generation system"
+            }
+          }
+        },
+        {
+          "type": "PushEvent",
+          "repo": "lakshyajain-0291/RealmWeaver",
+          "created_at": "2025-05-17T14:08:37Z",
+          "payload": {
+            "commits": 7,
+            "ref": "refs/heads/main"
+          }
+        }
+      ]
+    },
+    "achievements": [
+      "Gold Medal in Bug Bounty '25 for addressing critical vulnerabilities.",
+      "1st place in 'Pitch It' competition at Initio '23.",
+      "Contributions to 18+ repositories with over 1700 commits."
+    ],
+    "leadership": [
+      {
+        "role": "Core Member",
+        "organization": "DevlUp Labs, IIT Jodhpur",
+        "duration": "Mar 2025 - Present",
+        "description": "Shipped mobile apps with 200+ users that directly addressed campus needs, while contributing to 10+ open-source repositories with peer code reviews."
+      },
+      {
+        "role": "Assistant Head",
+        "organization": "Prometeo X Econclave (Tech Fest), IIT Jodhpur",
+        "duration": "Jan 2025 - Feb 2025",
+        "description": "Led cross-functional partnerships with industry leaders, coordinating technical workshops and organizing case competitions that secured Rs. 80,000+ in prize funding."
+      },
+      {
+        "role": "Senior Executive",
+        "organization": "Entrepreneurship cell, IIT Jodhpur",
+        "duration": "Jun 2024 - Apr 2025",
+        "description": "Orchestrated the Vandre event through data-backed strategic planning, optimizing resource allocation to achieve 500% revenue growth and deliver Rs. 2,28,153 in profit from Rs. 4,19,338 total earnings."
+      },
+      {
+        "role": "Student Guide",
+        "organization": "Student Wellbeing Committee, IIT Jodhpur",
+        "duration": "Jun 2024 - Mar 2025",
+        "description": "Spearheaded mentorship program for 11 first-year students, implementing data-driven guidance strategies that increased retention rates and enhanced academic performance metrics."
+      }
+    ],
+    "coursework": [
+      {
+        "course": "Mathematics for Computing",
+        "grade": "A"
+      },
+      {
+        "course": "Calculus and Linear Algebra",
+        "grade": "A"
+      },
+      {
+        "course": "Probability, Statistics & Stochastic Processes",
+        "grade": "A-"
+      },
+      {
+        "course": "Introduction to Computer Science",
+        "grade": "A*"
+      },
+      {
+        "course": "Data Structures and Algorithms",
+        "grade": "A"
+      },
+      {
+        "course": "Software Engineering",
+        "grade": "B"
+      }
+    ]
+  }
+}
