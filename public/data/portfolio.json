@@ -41,13 +41,13 @@
           "institution": "R.S. Memorial International School",
           "degree": "Senior Secondary (PCM)",
           "dates": "2021-2022",
-          "cgpa": "94.6%"
+          "cgpa": "93.8%"
         },
         {
           "institution": "St. Anne's Sr. Sec. School",
           "degree": "Secondary",
           "dates": "2019-2020",
-          "cgpa": "95.4%"
+          "cgpa": "94.6%"
         }
       ],
       "projects": [
@@ -623,10 +623,10 @@
       ],
       "resumeUrl": "/home/lakshya-jain/projects/Portfolio_Automation_API/server/uploads/resume-1746844966227-232699752.pdf",
       "githubStats": {
-        "totalPublicRepos": 18,
-        "totalStars": 8,
+        "totalPublicRepos": 24,
+        "totalStars": 19,
         "totalForks": 11,
-        "totalCommits": 1814,
+        "totalCommits": "2500+",
         "featuredRepos": 6
       },
       "githubData": {
@@ -639,9 +639,9 @@
           "company": "IIT Jodhpur",
           "location": "India",
           "email": "lakshyajainrj19@gmail.com",
-          "public_repos": 18,
-          "followers": 12,
-          "following": 8,
+          "public_repos": 24,
+          "followers": 11,
+          "following": 15,
           "created_at": "2024-01-01T00:00:00Z",
           "updated_at": "2025-04-30T00:00:00Z"
         },
