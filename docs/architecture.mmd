@@ -1,0 +1,48 @@
+flowchart TB
+  subgraph SRC["Sources"]
+    direction LR
+    R["Resume PDF"]
+    GH["GitHub profile"]
+    LI["LinkedIn URL"]
+  end
+
+  API["AI backend · POST VITE_API_URL/portfolio<br/>resume parsing · GitHub stats · insights"]
+
+  subgraph DATA["Data layer · src/lib + src/hooks"]
+    direction LR
+    JSON[("public/data/portfolio.json")]
+    PS["portfolioStorage.getPortfolio()<br/>file → localStorage → API"]
+    LS[("localStorage")]
+  end
+
+  CTX["PortfolioContext"]
+  SH["shared/github · buildGitHubDataset()<br/>one dataset, three renderings"]
+  SEL{"src/main.tsx<br/>?template=0–3"}
+
+  T1["Template 0/1 · src/<br/>dark tech · GSAP + Lenis<br/>lazy three.js repo scene"]
+  T2["Template 2 · src2/<br/>editorial · Framer Motion<br/>hand-built SVG charts"]
+  T3["Template 3 · src3/<br/>terminal · Matrix rain<br/>ASCII charts"]
+
+  SRC --> API
+  API -- "Reload by AI" --> PS
+  JSON --> PS
+  PS <--> LS
+  PS --> CTX
+  CTX --> SH
+  SEL -- "dynamic import()" --> T1 & T2 & T3
+  SH --> T1 & T2 & T3
+
+  classDef src fill:#1b1f22,stroke:#6f7a78,color:#e2e6e4
+  classDef data fill:#13201b,stroke:#2ca470,color:#e2e6e4
+  classDef shared fill:#2ca470,stroke:#45e39c,color:#090b0c
+  classDef boot fill:#1b1f22,stroke:#6ed3e4,color:#e2e6e4
+  classDef t1 fill:#0c1113,stroke:#45e39c,color:#e2e6e4
+  classDef t2 fill:#f3eee4,stroke:#b0481a,color:#1c1915
+  classDef t3 fill:#000000,stroke:#00ff00,color:#00ff00
+  class R,GH,LI,API src
+  class JSON,LS,PS,CTX data
+  class SH shared
+  class SEL boot
+  class T1 t1
+  class T2 t2
+  class T3 t3
