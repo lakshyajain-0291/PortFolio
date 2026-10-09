@@ -82,7 +82,7 @@ const PortfolioDataCard = () => {
             </ol>
             
             <div className="mt-4 p-3 rounded bg-darktech-card/50 text-xs">
-              <p className="text-darktech-cyber-pink">💡 Tip: Keep a backup of your portfolio.json file for future use.</p>
+              <p className="text-darktech-holo-cyan">💡 Tip: Keep a backup of your portfolio.json file for future use.</p>
             </div>
           </div>
         </div>

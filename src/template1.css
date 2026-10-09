@@ -1,0 +1,279 @@
+/*
+ * Template 1 — refined dark tech.
+ * Loaded only by the template 0/1 chunk (src/App.tsx).
+ * One accent (signal green) + one sparing secondary (link cyan). The pink is
+ * reserved for the hidden "overdrive" state (Konami code).
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap');
+
+html[data-overdrive='on'] {
+  --t1-signal: 255 46 136;
+  --primary: 335 100% 59%;
+  --ring: 335 100% 59%;
+}
+
+html.t1 {
+  color-scheme: dark;
+  scroll-padding-top: 72px;
+  background: rgb(var(--t1-bg));
+}
+
+html.t1 body {
+  background: rgb(var(--t1-bg));
+  color: rgb(var(--t1-ink));
+  overflow-x: hidden;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11';
+}
+
+html.t1 h1,
+html.t1 h2,
+html.t1 h3,
+html.t1 h4 {
+  font-family: Rajdhani, ui-sans-serif, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+html.t1 ::selection {
+  background: rgb(var(--t1-signal) / 0.85);
+  color: rgb(var(--t1-bg));
+}
+
+html.t1 :focus-visible {
+  outline: 1px solid rgb(var(--t1-signal));
+  outline-offset: 3px;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
+html.t1 ::-webkit-scrollbar { width: 8px; height: 8px; }
+html.t1 ::-webkit-scrollbar-track { background: rgb(var(--t1-bg)); }
+html.t1 ::-webkit-scrollbar-thumb { background: rgb(var(--t1-line)); border-radius: 0; }
+html.t1 ::-webkit-scrollbar-thumb:hover { background: rgb(var(--t1-signal) / 0.5); }
+
+.custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgb(var(--t1-line)) transparent; }
+
+/* ── Lenis ──────────────────────────────────────────────────────────────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ── Numbered section watermark ─────────────────────────────────────────── */
+html.t1 section[data-section-number] {
+  position: relative;
+  counter-increment: section-counter;
+  /* Driven by GSAP (see useSectionChoreography) for a slow parallax drift. */
+  --wm-shift: 0px;
+}
+
+html.t1 section[data-section-number]:not([data-section-number='0']):not(.last-section)::before {
+  content: '0' counter(section-counter);
+  position: absolute;
+  top: 4%;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: clamp(6rem, 16vw, 13rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: rgb(var(--t1-signal) / 0.025);
+  -webkit-text-stroke: 1px rgb(var(--t1-signal) / 0.11);
+  transform: translate3d(0, var(--wm-shift), 0);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+html.t1 section[data-section-number='1']::before,
+html.t1 section[data-section-number='3']::before,
+html.t1 section[data-section-number='5']::before,
+html.t1 section[data-section-number='7']::before,
+html.t1 section[data-section-number='9']::before { left: 4%; }
+
+html.t1 section[data-section-number='2']::before,
+html.t1 section[data-section-number='4']::before,
+html.t1 section[data-section-number='6']::before,
+html.t1 section[data-section-number='8']::before,
+html.t1 section[data-section-number='10']::before { right: 4%; }
+
+/* ── Surfaces ───────────────────────────────────────────────────────────── */
+/* Panel with HUD corner ticks drawn as background gradients (no extra DOM). */
+.glass-panel,
+.t1-panel {
+  position: relative;
+  background-color: rgb(var(--t1-card) / 0.78);
+  border: 1px solid rgb(var(--t1-line) / 0.9);
+  border-radius: 3px;
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+  --tick: rgb(var(--t1-signal) / 0.55);
+  background-image:
+    linear-gradient(var(--tick), var(--tick)), linear-gradient(var(--tick), var(--tick)),
+    linear-gradient(var(--tick), var(--tick)), linear-gradient(var(--tick), var(--tick));
+  background-size: 10px 1px, 1px 10px, 10px 1px, 1px 10px;
+  background-position: -1px -1px, -1px -1px, calc(100% + 1px) calc(100% + 1px), calc(100% + 1px) calc(100% + 1px);
+  background-repeat: no-repeat;
+  transition: border-color 240ms ease;
+}
+
+.t1-panel[data-interactive]:hover,
+.t1-panel[data-interactive]:focus-within { border-color: rgb(var(--t1-signal) / 0.45); }
+
+.t1-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--t1-ink-muted));
+}
+
+.t1-num {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-feature-settings: 'zero';
+}
+
+.t1-link {
+  color: rgb(var(--t1-link));
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--t1-link) / 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease, color 200ms ease;
+}
+.t1-link:hover { text-decoration-color: rgb(var(--t1-link)); }
+
+/* Project thumbnails: signal-tinted monochrome until hovered. */
+.t1-duotone { position: relative; overflow: hidden; background: rgb(var(--t1-bg)); }
+.t1-duotone img {
+  filter: grayscale(1) contrast(1.2) brightness(0.36);
+  transition: filter 500ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+.t1-duotone::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--t1-signal));
+  mix-blend-mode: multiply;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+.group:hover .t1-duotone img,
+.group:focus-within .t1-duotone img { filter: none; transform: scale(1.03); }
+.group:hover .t1-duotone::after,
+.group:focus-within .t1-duotone::after { opacity: 0; }
+
+/* ── Film grain ─────────────────────────────────────────────────────────── */
+.t1-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.09;
+  mix-blend-mode: overlay;
+}
+.t1-grain::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.2 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  animation: t1-grain-shift 0.9s steps(5) infinite;
+  will-change: transform;
+}
+@keyframes t1-grain-shift {
+  0% { transform: translate3d(0, 0, 0); }
+  20% { transform: translate3d(-7%, 4%, 0); }
+  40% { transform: translate3d(5%, -9%, 0); }
+  60% { transform: translate3d(-11%, -3%, 0); }
+  80% { transform: translate3d(8%, 10%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Vignette sits under the grain and over the 3D scene. */
+.t1-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, transparent 40%, rgb(var(--t1-bg) / 0.6) 100%),
+    linear-gradient(to bottom, transparent 70%, rgb(var(--t1-bg) / 0.65));
+}
+
+/* ── Scene backdrop / poster ───────────────────────────────────────────── */
+.t1-poster {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 72% 38%, rgb(var(--t1-signal) / 0.12), transparent 70%),
+    radial-gradient(40% 35% at 22% 70%, rgb(var(--t1-link) / 0.07), transparent 70%),
+    linear-gradient(rgb(var(--t1-line) / 0.18) 1px, transparent 1px) 0 0 / 64px 64px,
+    linear-gradient(90deg, rgb(var(--t1-line) / 0.18) 1px, transparent 1px) 0 0 / 64px 64px,
+    rgb(var(--t1-bg));
+  mask-image: radial-gradient(90% 80% at 50% 45%, #000 55%, transparent 100%);
+}
+
+/* ── Custom cursor ──────────────────────────────────────────────────────── */
+html.t1-cursor,
+html.t1-cursor * { cursor: none !important; }
+
+.t1-cursor-dot,
+.t1-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  will-change: transform;
+}
+.t1-cursor-dot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 999px;
+  background: rgb(var(--t1-signal));
+  transition: opacity 200ms ease, width 200ms ease, height 200ms ease, margin 200ms ease;
+}
+.t1-cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid rgb(var(--t1-signal) / 0.55);
+  border-radius: 999px;
+  transition: width 260ms cubic-bezier(0.2, 0.7, 0.1, 1), height 260ms cubic-bezier(0.2, 0.7, 0.1, 1),
+    margin 260ms cubic-bezier(0.2, 0.7, 0.1, 1), border-radius 260ms ease, border-color 200ms ease,
+    background-color 200ms ease, opacity 200ms ease;
+}
+.t1-cursor-ring[data-state='link'] {
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  border-color: rgb(var(--t1-signal));
+  background: rgb(var(--t1-signal) / 0.08);
+}
+.t1-cursor-ring[data-state='text'] {
+  width: 2px;
+  height: 22px;
+  margin: -11px 0 0 -1px;
+  border-radius: 1px;
+  border-color: rgb(var(--t1-signal));
+  background: rgb(var(--t1-signal));
+}
+.t1-cursor-dot[data-state='link'],
+.t1-cursor-dot[data-state='text'] { opacity: 0; }
+.t1-cursor-ring[data-pressed='true'] { transform-origin: center; border-color: rgb(var(--t1-link)); }
+.t1-cursor-hidden { opacity: 0 !important; }
+
+@keyframes t1-scroll-cue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t1-grain::before { animation: none; }
+}
+
+@media (forced-colors: active) {
+  .t1-grain, .t1-vignette { display: none; }
+}

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap');
+
 /* Terminal Theme CSS */
 :root {
   --terminal-bg: #0c0c0c;
@@ -998,4 +1000,26 @@ html, body {
 @keyframes cursorFade {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+/* Tailwind's preflight gives <pre> its own mono stack — use the terminal's. */
+.terminal-line,
+.terminal-input,
+.terminal-prompt {
+  font-family: var(--terminal-font);
+}
+
+/* Rain sits behind the transcript; text always paints above it. */
+.matrix-effect {
+  opacity: 0.32;
+}
+
+.terminal-header,
+.terminal-output {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .matrix-effect { opacity: 0.18; }
+  .cursor-blink { animation: none; }
 }

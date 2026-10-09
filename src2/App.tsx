@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
+import { MotionConfig } from 'framer-motion';
 import { ThemeProvider } from './components/theme-provider';
 import { PortfolioProvider } from '../src/hooks/PortfolioContext';
 import { Toaster } from '../src/components/ui/toaster';
-import { SECTION_NUMBERS } from '../src/config/env';
 import './template2.css';
 import TemplateSwitcher from '../src/components/TemplateSwitcher';
+import { T2_SECTIONS } from './sections';
 
 // Import all components from template 2
 import Header from './components/Header';
 import Hero from './components/Hero';
+import About from './components/About';
 import Footer from './components/Footer';
-import BackgroundEffect from './components/BackgroundEffect';
 import Projects from './components/Projects';
 import TechStack from './components/TechStack';
 import Experience from './components/Experience';
@@ -18,42 +19,51 @@ import Education from './components/Education';
 import Contact from './components/Contact';
 import GitHubStats from './components/GitHubStats';
 
-const App = () => {
-  // Create an array of section components with their order numbers
-  const sections = [
-    { component: <Hero />, order: SECTION_NUMBERS.HERO },
-    { component: <Experience />, order: SECTION_NUMBERS.EXPERIENCE },
-    { component: <Projects />, order: SECTION_NUMBERS.PROJECTS },
-    { component: <GitHubStats />, order: SECTION_NUMBERS.GITHUB_STATS },
-    { component: <TechStack />, order: SECTION_NUMBERS.TECH_STACK },
-    { component: <Education />, order: SECTION_NUMBERS.EDUCATION },
-    { component: <Contact />, order: SECTION_NUMBERS.CONTACT }
-  ];
+const SECTION_COMPONENTS: Record<string, React.ComponentType> = {
+  experience: Experience,
+  projects: Projects,
+  'github-stats': GitHubStats,
+  'tech-stack': TechStack,
+  education: Education,
+  contact: Contact,
+};
 
-  // Sort sections by their order number
-  const sortedSections = [...sections].sort((a, b) => a.order - b.order);
+const App = () => {
+  useLayoutEffect(() => {
+    document.documentElement.classList.add('t2');
+    return () => document.documentElement.classList.remove('t2');
+  }, []);
 
   return (
     <ThemeProvider defaultTheme="system">
       <PortfolioProvider>
-        <div className="min-h-screen bg-background text-foreground">
-          <BackgroundEffect />
-          <div className="min-h-screen relative z-10 bg-transparent">
-
+        <MotionConfig reducedMotion="user">
+          <a
+            href="#content"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+          >
+            Skip to content
+          </a>
           <Header />
-          
-          {/* Render sections in the order specified in env.ts */}
-          {sortedSections.map((section, index) => (
-            <div key={index}>
-              {section.component}
+          <div className="relative z-[1] mx-auto min-h-screen max-w-screen-xl px-6 pb-12 pt-20 font-inter md:px-12 md:py-20 lg:px-24 lg:py-0">
+            <div className="lg:flex lg:justify-between lg:gap-12">
+              {/* Sticky identity column */}
+              <Hero />
+
+              {/* Reading column — sections in the order set by SECTION_NUMBERS */}
+              <main id="content" className="pt-20 lg:w-[54%] lg:py-24">
+                <About />
+                {T2_SECTIONS.map(({ id }) => {
+                  const Component = SECTION_COMPONENTS[id];
+                  return <Component key={id} />;
+                })}
+                <Footer />
+              </main>
             </div>
-          ))}
-          
-          <Footer />
+          </div>
           <Toaster />
           <TemplateSwitcher />
-        </div>
-        </div>
+        </MotionConfig>
       </PortfolioProvider>
     </ThemeProvider>
   );

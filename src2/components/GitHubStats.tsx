@@ -1,225 +1,109 @@
-import React, { useState, useEffect } from "react";
-import {
-  Github,
-  Star,
-  GitFork,
-  Calendar,
-  Code,
-  Activity,
-} from "lucide-react";
-import { useInView } from "react-intersection-observer";
-import { motion } from "framer-motion";
-import { usePortfolio } from "@/hooks/PortfolioContext";
+import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
+import { useGitHubDataset } from '../../shared/github/useGitHubDataset';
+import Section from './Section';
+import { ActivityStrip, CommitsByRepo, LanguageRanks } from './GitHubChart';
+import { ink, leading, onScroll, rule } from '../motion';
 
 const GitHubStats = () => {
-  const { portfolio, isLoading } = usePortfolio();
-  const [username, setUsername] = useState<string | null>(null);
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
+  const { dataset, isLoading } = useGitHubDataset();
+  const { totals } = dataset;
 
-  // Extract GitHub username from the GitHub URL
-  useEffect(() => {
-    if (portfolio?.socialLinks?.github) {
-      const match = portfolio.socialLinks.github.match(/github\.com\/([^\/]+)/);
-      const extractedUsername = match ? match[1] : null;
-      setUsername(extractedUsername);
-    }
-  }, [portfolio]);
-
-  if (isLoading) {
-    return (
-      <section id="github-stats" className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8">GitHub Stats</h2>
-          <div className="flex justify-center items-center h-40">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
-            <span className="ml-3">Loading GitHub stats...</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (!portfolio?.githubStats || !username) {
-    return (
-      <section id="github-stats" className="py-20">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-8">GitHub Public Stats</h2>
-          <div className="bg-card p-6 rounded-lg border border-border">
-            <p className="text-destructive mb-4">
-              No GitHub statistics available. Connect your GitHub account to
-              view your coding activity.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const figures = [
+    { label: 'Repositories', value: String(totals.repos) },
+    { label: 'Commits', value: totals.commitsLabel },
+    { label: 'Stars', value: String(totals.stars) },
+    { label: 'Forks', value: String(totals.forks) },
+  ];
 
   return (
-    <section id="github-stats" className="py-20">
-      <div className="container mx-auto px-4">
-      <div className="mx-auto px-4 relative w-4/5">
+    <Section id="github-stats" label="GitHub">
+      {isLoading ? (
+        <p className="t2-meta">Loading…</p>
+      ) : !dataset.hasData ? (
+        <p className="text-muted-foreground">No GitHub statistics available yet.</p>
+      ) : (
+        <motion.div variants={leading(0.12)} {...onScroll}>
+          <motion.p variants={ink} className="text-muted-foreground">
+            The public record: what I build in the open, measured rather than described.
+          </motion.p>
 
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-4xl font-bold mb-4">GitHub Public Stats</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              A visualization of my coding activities and contributions on GitHub.
-            </p>
-          </motion.div>
-        </div>
-
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          {/* Primary Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-12"
-          >
-            <div className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-all shadow-sm">
-              <div className="flex items-center justify-center mb-2">
-                <Github size={28} className="text-primary" />
+          <motion.dl variants={ink} className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-4">
+            {figures.map((f) => (
+              <div key={f.label} className="sm:border-l sm:border-border sm:pl-5 sm:first:border-l-0 sm:first:pl-0">
+                <dt className="t2-meta">{f.label}</dt>
+                <dd className="mt-1 text-3xl font-semibold tracking-tight text-foreground">{f.value}</dd>
               </div>
-              <p className="text-3xl font-bold">
-                {portfolio.githubStats.totalPublicRepos}
-              </p>
-              <p className="text-sm text-muted-foreground">Repositories</p>
-            </div>
+            ))}
+          </motion.dl>
 
-            <div className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-all shadow-sm">
-              <div className="flex items-center justify-center mb-2">
-                <Star size={28} className="text-yellow-400" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolio.githubStats.totalStars}
-              </p>
-              <p className="text-sm text-muted-foreground">Stars</p>
-            </div>
+          <motion.span variants={rule} aria-hidden="true" className="my-10 block h-px origin-left bg-border" />
 
-            <div className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-all shadow-sm">
-              <div className="flex items-center justify-center mb-2">
-                <GitFork size={28} className="text-green-400" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolio.githubStats.totalForks}
-              </p>
-              <p className="text-sm text-muted-foreground">Forks</p>
-            </div>
+          {dataset.repos.length > 0 && (
+            <motion.div variants={ink}>
+              <CommitsByRepo repos={dataset.repos.slice(0, 8)} />
+            </motion.div>
+          )}
 
-            <div className="bg-card p-4 rounded-lg border border-border hover:border-primary/50 transition-all shadow-sm">
-              <div className="flex items-center justify-center mb-2">
-                <Calendar size={28} className="text-primary" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolio.githubStats.totalCommits}
-              </p>
-              <p className="text-sm text-muted-foreground">Commits</p>
-            </div>
-          </motion.div>
+          <div className="mt-12 grid gap-12 md:grid-cols-2 md:gap-10">
+            {dataset.languages.length > 0 && (
+              <motion.div variants={ink}>
+                <LanguageRanks languages={dataset.languages.slice(0, 6)} />
+              </motion.div>
+            )}
+            {dataset.contributions.length > 0 && (
+              <motion.div variants={ink}>
+                <ActivityStrip points={dataset.contributions} />
+              </motion.div>
+            )}
+          </div>
 
-          {/* Contribution Graph - Full Width */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-card p-6 rounded-xl border border-border hover:border-primary/30 transition-all mb-12 shadow-sm"
-          >
-            <div className="flex items-center mb-4">
-              <Activity className="text-primary mr-2" size={20} />
-              <h3 className="text-xl font-semibold">Contribution Activity</h3>
+          {/* Table twin of the charts above */}
+          <details className="group mt-10 border-t border-border pt-5">
+            <summary className="t2-meta flex cursor-pointer list-none items-center gap-2 uppercase tracking-[0.12em] hover:text-foreground">
+              <span className="inline-block transition-transform group-open:rotate-90">›</span>
+              View as table
+            </summary>
+            <div className="mt-4 overflow-x-auto">
+              <table className="w-full text-left text-sm">
+                <thead className="t2-meta uppercase">
+                  <tr className="border-b border-border">
+                    <th scope="col" className="py-2 pr-4 font-medium">Repository</th>
+                    <th scope="col" className="py-2 pr-4 font-medium">Language</th>
+                    <th scope="col" className="py-2 pr-4 text-right font-medium">Commits</th>
+                    <th scope="col" className="py-2 pr-4 text-right font-medium">Stars</th>
+                    <th scope="col" className="py-2 text-right font-medium">Forks</th>
+                  </tr>
+                </thead>
+                <tbody className="tabular-nums">
+                  {dataset.repos.map((r) => (
+                    <tr key={r.name} className="border-b border-border/60">
+                      <td className="py-2 pr-4">{r.name}</td>
+                      <td className="py-2 pr-4 text-muted-foreground">{r.language}</td>
+                      <td className="py-2 pr-4 text-right">{r.commits}</td>
+                      <td className="py-2 pr-4 text-right">{r.stars}</td>
+                      <td className="py-2 text-right">{r.forks}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          </details>
 
-            <div className="flex items-center justify-center">
-              {username && (
-                <img
-                  src={`https://ghchart.rshah.org/2563eb/${username}`}
-                  alt="GitHub Contribution Graph"
-                  className="w-full"
-                  style={{ filter: "brightness(1.1)" }}
-                />
-              )}
-            </div>
-
-            <div className="flex justify-between px-2 mt-3">
-                <div className="flex items-center">
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(37, 99, 235, 1)" }}
-                ></span>
-                <span className="text-xs text-muted-foreground pl-2">Less</span>
-                </div>
-                <div className="text-xs text-center text-muted-foreground">
-                <span>12 months of activity</span>
-                </div>
-                <div className="flex items-center">
-                <span className="text-xs text-muted-foreground pr-2">More</span>
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(37, 99, 235, 0.2)" }}
-                ></span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Additional GitHub Stats with GitHub README Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="mb-12"
-          >
-            <div className="bg-card p-6 rounded-xl border border-border hover:border-primary/30 transition-all shadow-sm">
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-6">
-                {/* GitHub Stats Card */}
-                <img
-                  src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&title_color=3b82f6&icon_color=3b82f6&text_color=ffffff&bg_color=00000000`}
-                  alt="GitHub Stats"
-                  className="w-full lg:w-1/2"
-                />
-                {/* Top Languages Card */}
-                <img
-                  src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&title_color=3b82f6&icon_color=3b82f6&text_color=ffffff&bg_color=00000000`}
-                  alt="Top Languages"
-                  className="w-full lg:w-1/2"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* GitHub Profile Link */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-center mt-10"
-          >
+          {dataset.profileUrl && (
             <a
-              href={portfolio.socialLinks?.github}
+              href={dataset.profileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary/10 hover:bg-primary/20 border border-primary/50 text-primary transition-all"
+              className="group mt-8 inline-flex items-center gap-1 font-medium text-foreground transition-colors hover:text-primary"
             >
-              <Github size={20} />
-              <span>View Full GitHub Profile</span>
+              github.com/{dataset.username}
+              <ArrowUpRight size={15} className="t2-arrow" aria-hidden="true" />
             </a>
-          </motion.div>
+          )}
         </motion.div>
-      </div>
-      </div>
-    </section>
+      )}
+    </Section>
   );
 };
 

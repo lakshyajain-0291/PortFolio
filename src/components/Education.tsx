@@ -1,112 +1,56 @@
-import { useEffect, FC } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { motion, useAnimation } from 'framer-motion';
-import EducationCard from './EducationCard';
+import { useRef, type FC } from 'react';
 import { usePortfolio } from '@/hooks/PortfolioContext';
 import { SECTION_NUMBERS } from '@/config/env';
+import { formatDateRange } from '../../shared/format';
+import SectionHeading from './t1/SectionHeading';
+import { align } from './t1/layout';
+import { useSectionChoreography } from './t1/useSectionChoreography';
 
 const Education: FC = () => {
-  const { portfolio } = usePortfolio();
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-  const controls = useAnimation();
+  const { portfolio, isLoading } = usePortfolio();
+  const sectionRef = useRef<HTMLElement>(null);
+  const items = portfolio?.education ?? [];
+  const a = align(SECTION_NUMBERS.EDUCATION);
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  // Helper function to parse education dates
-  const parseDates = (dateString: string) => {
-    if (!dateString) return { startDate: "", endDate: "Present" };
-    
-    // Handle different date formats
-    const parts = dateString.split('-');
-    const startDate = parts[0].trim();
-    
-    // If there's no second part or the second part is "Present", use "Present"
-    let endDate = parts.length > 1 ? parts[1].trim() : "Present";
-    
-    // If endDate is empty, use "Present"
-    if (!endDate) endDate = "Present";
-    
-    return { startDate, endDate };
-  };
-
-  // For debugging
-  console.log("Portfolio data:", portfolio);
-  console.log("Education data:", portfolio?.education);
+  useSectionChoreography(sectionRef, !isLoading, [items.length]);
 
   return (
-    <section id="education" className="py-16 bg-darktech-bg" data-section-number={SECTION_NUMBERS.EDUCATION !== 0 ? SECTION_NUMBERS.EDUCATION : 0}>
-      <div className="container mx-auto px-4 md:px-8 text-left">
-        <div className={`w-4/5 ${SECTION_NUMBERS.EDUCATION === 0 ? 'mx-auto' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'ml-auto mr-0' : 'mr-auto ml-0'}`}>
-          <motion.div
-            className={`mb-12 ${SECTION_NUMBERS.EDUCATION === 0 ? 'text-center' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'text-right' : 'text-left'}`}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h2 className="text-4xl font-bold mb-4">
-              Education
-            </h2>
-            <p className={`text-darktech-muted max-w-2xl mb-6 ${SECTION_NUMBERS.EDUCATION === 0 ? 'mx-auto' : SECTION_NUMBERS.EDUCATION % 2 === 0 ? 'ml-auto' : 'mr-auto'}`}>
-              My academic background and qualifications.
-            </p>
-          </motion.div>
+    <section
+      id="education"
+      ref={sectionRef}
+      className="relative py-28"
+      data-section-number={SECTION_NUMBERS.EDUCATION !== 0 ? SECTION_NUMBERS.EDUCATION : 0}
+    >
+      <div className="container relative z-[1] mx-auto px-4">
+        <div className={`w-full md:w-4/5 ${a.block}`}>
+          <SectionHeading n={SECTION_NUMBERS.EDUCATION} slug="education" title="Education" />
 
-          <motion.div
-            ref={ref}
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            className="grid grid-cols-1 gap-6"
-          >
-            {portfolio?.education && portfolio.education.length > 0 ? (
-              portfolio.education.map((edu, index) => {
-                const { startDate, endDate } = parseDates(edu.dates);
-                return (
-                  <motion.div key={index} variants={itemVariants}>
-                    <EducationCard
-                      school={edu.institution}
-                      degree={edu.degree}
-                      fieldOfStudy=""
-                      startDate={startDate}
-                      endDate={endDate}
-                      location=""
-                      grade={edu.cgpa}
-                    />
-                  </motion.div>
-                );
-              })
-            ) : (
-              <p className="text-center text-darktech-text/70">Education information not available</p>
-            )}
-          </motion.div>
+          {items.length === 0 ? (
+            <p className="text-darktech-muted">{isLoading ? 'Loading…' : 'Education information not available.'}</p>
+          ) : (
+            <ul className="border-t border-darktech-border" data-reveal-group>
+              {items.map((edu, index) => (
+                <li
+                  key={`${edu.institution}-${index}`}
+                  data-reveal={a.from === 'up' ? 'up' : a.from}
+                  className="group grid gap-x-8 gap-y-2 border-b border-darktech-border py-7 transition-colors hover:bg-darktech-card/40 md:grid-cols-[10rem_1fr_auto] md:px-4"
+                >
+                  <p className="t1-label pt-1.5">{formatDateRange(edu.dates || edu.duration)}</p>
+                  <div>
+                    <h3 className="text-2xl leading-tight transition-colors group-hover:text-darktech-neon-green">{edu.degree}</h3>
+                    <p className="mt-1 text-darktech-muted">{edu.institution}</p>
+                    {edu.description && <p className="mt-3 text-sm text-darktech-muted">{edu.description}</p>}
+                  </div>
+                  {edu.cgpa && (
+                    <p className="t1-num self-start text-sm text-darktech-text md:pt-1.5">
+                      <span className="t1-label mr-2">grade</span>
+                      {edu.cgpa}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>

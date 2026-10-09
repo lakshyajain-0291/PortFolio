@@ -1,197 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
+/*
+ * Global stylesheet — loaded for every template by src/main.tsx.
+ * Keep this neutral: Tailwind layers plus design tokens only. Each template ships
+ * its own look in its own stylesheet, imported from its App chunk:
+ *   template 0/1 → src/template1.css
+ *   template 2   → src2/template2.css
+ *   template 3   → src3/styles/terminal.css
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 142 100% 50%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* Template 1 channels (consumed by the `darktech-*` Tailwind colors). */
+    --t1-bg: 9 11 12;
+    --t1-raised: 18 22 24;
+    --t1-card: 14 17 19;
+    --t1-line: 38 44 47;
+    --t1-signal: 69 227 156;
+    --t1-link: 110 211 228;
+    --t1-ink: 226 230 228;
+    --t1-ink-muted: 138 148 145;
+
+    /* shadcn/ui tokens — default (dark) set; template 2 overrides these. */
+    --background: 200 14% 4%;
+    --foreground: 150 6% 89%;
+    --card: 200 15% 6%;
+    --card-foreground: 150 6% 89%;
+    --popover: 200 15% 6%;
+    --popover-foreground: 150 6% 89%;
+    --primary: 153 74% 58%;
+    --primary-foreground: 200 14% 4%;
+    --secondary: 200 14% 12%;
+    --secondary-foreground: 150 6% 89%;
+    --muted: 200 14% 12%;
+    --muted-foreground: 162 4% 56%;
+    --accent: 200 14% 12%;
+    --accent-foreground: 150 6% 89%;
+    --destructive: 0 62.8% 40%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --radius: 0.75rem;
+    --border: 200 10% 17%;
+    --input: 200 10% 17%;
+    --ring: 153 74% 58%;
+    --radius: 0.5rem;
   }
 
   body {
-    @apply bg-darktech-background font-inter text-darktech-text antialiased overflow-x-hidden;
-    background-size: 40px 40px;
-    background-image: linear-gradient(to right, rgba(40, 40, 70, 0.1) 1px, transparent 1px), 
-                     linear-gradient(to bottom, rgba(40, 40, 70, 0.1) 1px, transparent 1px);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-rajdhani font-bold;
-  }
-
-  /* Width */
-  ::-webkit-scrollbar {
-    @apply w-2;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    @apply bg-darktech-lighter;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    @apply bg-darktech-border rounded-full;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-darktech-neon-green/50;
-  }
-
-  /* Section positioning based on section number */
-  section[data-section-number] {
-    position: relative;
-    counter-increment: section-counter;
-  }
-
-  section[data-section-number]:not([data-section-number="0"]):not(.last-section)::before {
-    content: "0" counter(section-counter);
-    position: absolute;
-    top: 5%;
-    font-size: 10rem;
-    font-weight: 800;
-    line-height: 1;
-    color: rgba(74, 222, 128, 0.07);
-    z-index: 0;
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  section[data-section-number="1"]::before,
-  section[data-section-number="3"]::before,
-  section[data-section-number="5"]::before,
-  section[data-section-number="7"]::before,
-  section[data-section-number="9"]::before {
-    left: 5%;
-  }
-
-  section[data-section-number="2"]::before,
-  section[data-section-number="4"]::before,
-  section[data-section-number="6"]::before,
-  section[data-section-number="8"]::before,
-  section[data-section-number="10"]::before {
-    right: 5%;
-  }
-
-  /* Animation keyframes for the Hero section */
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* Hero section animations */
-  .animate-blink {
-    animation: blink 1s step-end infinite;
-  }
-
-  .animate-spin-slow {
-    animation: spin-slow 15s linear infinite;
-  }
-}
-
-@layer components {
-  .tech-card {
-    @apply relative flex items-center justify-center p-4 bg-darktech-card border border-darktech-border rounded-lg overflow-hidden backdrop-blur-md;
-  }
-  
-  .tech-card::before {
-    content: "";
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300 ease-in-out;
-    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 140, 0.15), transparent 70%);
-  }
-  
-  .tech-card:hover::before {
-    @apply opacity-100;
-  }
-
-  .glass-panel {
-    @apply bg-darktech-lighter/40 backdrop-blur-md border border-darktech-border rounded-xl;
-  }
-
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-text-gradient animate-text-shimmer bg-[length:200%_auto];
-  }
-
-  .glow-border {
-    @apply relative;
-  }
-
-  .glow-border::before {
-    content: "";
-    @apply absolute -inset-0.5 rounded-lg opacity-0 transition duration-300 bg-gradient-to-r from-darktech-neon-green via-darktech-holo-cyan to-darktech-cyber-pink blur;
-  }
-
-  .glow-border:hover::before {
-    @apply opacity-70;
-  }
-
-  /* Custom scrollbar for tech stack modal */
-  .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: var(--darktech-neon-green-50) var(--darktech-card);
-  }
-
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: rgba(20, 20, 30, 0.2);
-    border-radius: 10px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: rgba(74, 222, 128, 0.3);
-    border-radius: 10px;
-    transition: all 0.3s ease;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(74, 222, 128, 0.5);
-  }
-
-  @keyframes scan {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 100% 0%;
-    }
-  }
-
-  .animate-scan {
-    animation: scan 2s linear infinite;
+    @apply bg-background text-foreground antialiased;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   }
 }

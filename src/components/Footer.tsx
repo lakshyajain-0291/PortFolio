@@ -1,30 +1,25 @@
 import { APP_SETTINGS, DEFAULT_USER } from '@/config/env';
-import React from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
-    <footer className="py-10 border-t border-darktech-border relative z-10">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <a href="#home" className="text-xl font-rajdhani font-bold text-gradient">{APP_SETTINGS.APP_NAME}</a>
-          </div>
-          
-          <div className="text-darktech-muted text-sm">
-            © {currentYear} {DEFAULT_USER.NAME}. All rights reserved
-          </div>
-          
-          <div className="mt-4 md:mt-0">
-            <nav className="flex space-x-6">
-              <a href="#home" className="text-darktech-muted hover:text-darktech-neon-green transition-colors text-sm">Home</a>
-              <a href="#projects" className="text-darktech-muted hover:text-darktech-neon-green transition-colors text-sm">Projects</a>
-              <a href="#experience" className="text-darktech-muted hover:text-darktech-neon-green transition-colors text-sm">Experience</a>
-              <a href="#contact" className="text-darktech-muted hover:text-darktech-neon-green transition-colors text-sm">Contact</a>
-            </nav>
-          </div>
-        </div>
+    <footer className="relative z-10 border-t border-darktech-border bg-darktech-background/70 py-10 backdrop-blur">
+      <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
+        <a href="#home" className="font-rajdhani text-lg font-bold">
+          <span className="text-darktech-neon-green">[</span>
+          {APP_SETTINGS.APP_NAME}
+          <span className="text-darktech-neon-green">]</span>
+        </a>
+        <p className="t1-label normal-case tracking-normal">
+          © {currentYear} {DEFAULT_USER.NAME} · rendered in three.js from live repository data
+        </p>
+        <nav className="flex gap-6 text-sm text-darktech-muted">
+          <a href="#home" className="transition-colors hover:text-darktech-neon-green">Home</a>
+          <a href="#projects" className="transition-colors hover:text-darktech-neon-green">Projects</a>
+          <a href="#experience" className="transition-colors hover:text-darktech-neon-green">Experience</a>
+          <a href="#contact" className="transition-colors hover:text-darktech-neon-green">Contact</a>
+        </nav>
       </div>
     </footer>
   );

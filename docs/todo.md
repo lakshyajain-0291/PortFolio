@@ -1,2 +1,5 @@
 - refactor the codebase to make it more modular and have shared features in shared dir of all the templates
-
+  - [x] `shared/github/` — one normalised GitHub dataset (`buildGitHubDataset`, `useGitHubDataset`) rendered by all three templates
+  - [x] `shared/format.ts` — resume date-range parsing/formatting
+  - [x] `shared/hooks/usePrefersReducedMotion.ts`
+  - [ ] move the remaining cross-template data helpers (src/lib, src/hooks) under `shared/` once the data layer is open for changes

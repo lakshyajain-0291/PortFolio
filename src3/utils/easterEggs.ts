@@ -1,13 +1,17 @@
 // Easter Egg Utilities for Terminal Portfolio
 // Collection of fun terminal Easter eggs
+import type { PortfolioData } from '../../src/lib/portfolioStorage';
+import type { GitHubDataset } from '../../shared/github/githubDataset';
+import { formatMonthYear, relativeTime } from '../../shared/github/githubDataset';
+import { bar, bucket, heading, padEnd, padStart, sparkline } from './asciiCharts';
 
 // ASCII Arts Collection
 export const ASCII_ARTS = {
   // ASCII glitch effect for typos or invalid commands
   GLITCH: `
-▒█▀▀▄ █▀▀ █▄░▄█ █▀▀█ █▀▀█ █▀▀█ █░░ 　 █▀▀ █▀▀█ █▀▀█ █▀▀█ █▀▀█ 
-▒█░▒█ █▀▀ █▒█▒█ █▄▄█ █░░█ █▄▄▀ █░░ 　 █▀▀ █▄▄▀ █▄▄▀ █░░█ █▄▄▀ 
-▒█▄▄▀ ▀▀▀ ▀░░▒▀ ▀░░▀ █▀▀▀ ▀░▀▀ ▀▀▀ 　 ▀▀▀ ▀░▀▀ ▀░▀▀ ▀▀▀▀ ▀░▀▀
+▒█▀▀▄ █▀▀ █▄░▄█ █▀▀█ █▀▀█ █▀▀█ █░░    █▀▀ █▀▀█ █▀▀█ █▀▀█ █▀▀█ 
+▒█░▒█ █▀▀ █▒█▒█ █▄▄█ █░░█ █▄▄▀ █░░    █▀▀ █▄▄▀ █▄▄▀ █░░█ █▄▄▀ 
+▒█▄▄▀ ▀▀▀ ▀░░▒▀ ▀░░▀ █▀▀▀ ▀░▀▀ ▀▀▀    ▀▀▀ ▀░▀▀ ▀░▀▀ ▀▀▀▀ ▀░▀▀
   `,
   
   // ASCII coffee when typing "coffee" or "break"
@@ -103,8 +107,8 @@ export const TYPING_TEST = {
       
       // Extract and filter quotes (keep only medium-length ones)
       const filteredQuotes = quotes
-        .filter((q: any) => q.text && q.text.length > 30 && q.text.length < 150)
-        .map((q: any) => q.text);
+        .filter((q: { text?: string }) => q.text && q.text.length > 30 && q.text.length < 150)
+        .map((q: { text: string }) => q.text);
       
       // Return fetched quotes or fallback if empty
       return filteredQuotes.length > 5 ? filteredQuotes : TYPING_TEST.quotes;
@@ -157,7 +161,7 @@ export const generateRandomResponse = (command: string): string | null => {
     return `Initiating launch sequence...\n${ASCII_ARTS.ROCKET}\nHouston, we have liftoff!`;
   }
   
-  if (command === 'rain' || command === 'matrix') {
+  if (command === 'rain') {
     return `${ASCII_ARTS.MATRIX_RAIN}\nFollow the white rabbit...`;
   }
   
@@ -315,4 +319,133 @@ export const checkKonamiCode = (key: string): { completed: boolean, message: str
     konami.currentIndex = 0; // Reset on mistake
     return { completed: false, message: null };
   }
+};
+
+// ── Data-driven commands ────────────────────────────────────────────────────
+// Unlike the jokes above, these surface real portfolio data. Each returns the
+// lines to print (the terminal streams them like a log) or null if the input
+// isn't one of them.
+
+export interface DataCommandContext {
+  portfolio: PortfolioData | null;
+  dataset: GitHubDataset;
+  /** Usable character width of the terminal */
+  cols: number;
+}
+
+export const DATA_COMMAND_HELP = `
+Data commands:
+  whoami               Who's behind this terminal
+  stats --github       GitHub stats as ASCII charts (alias: github, gh, stats)
+    --langs | --repos | --activity   show a single panel
+  git log              Recent pushes and repository activity
+`;
+
+const whoami = ({ portfolio, dataset }: DataCommandContext): string[] => {
+  const info = portfolio?.personalInfo ?? {};
+  const current = portfolio?.experience?.[0];
+  const login = dataset.username ?? (info.name ?? 'guest').toLowerCase().replace(/\s+/g, '-');
+  const groups = dataset.languages.map((l) => l.name.toLowerCase()).join(',');
+  const rows: Array<[string, string | undefined]> = [
+    ['name', info.name],
+    ['role', info.title],
+    ['now', current ? `${current.title || current.role} @ ${current.company}` : undefined],
+    ['location', info.location],
+    ['github', dataset.memberSince ? `member since ${formatMonthYear(dataset.memberSince)} · ${dataset.totals.followers} followers` : undefined],
+    ['stack', (portfolio?.insights?.technicalProfile?.primaryStack ?? []).slice(0, 6).join(', ') || undefined],
+  ];
+  return [
+    login,
+    `uid=${dataset.totals.repos}(repos) gid=${dataset.totals.stars}(stars)${groups ? ` groups=${groups}` : ''}`,
+    '',
+    ...rows.filter(([, v]) => v).map(([k, v]) => `  ${padEnd(k, 10)}${v}`),
+  ];
+};
+
+const githubStats = ({ dataset, cols }: DataCommandContext, args: string[]): string[] => {
+  if (!dataset.hasData) return ['[warn] no GitHub data in portfolio.json — run `reload` to fetch it.'];
+
+  const only = ['--langs', '--repos', '--activity'].find((f) => args.includes(f));
+  const show = (flag: string) => !only || only === flag;
+  const { totals, languages, repos, contributions } = dataset;
+  const width = Math.min(cols, 72);
+  const out: string[] = [
+    `$ gh api users/${dataset.username ?? 'me'} --cache public/data/portfolio.json`,
+    `[ ok ] ${repos.length} repositories indexed · ${languages.length} languages · ${contributions.length} days of activity`,
+    '',
+    `  REPOS ${totals.repos}   STARS ${totals.stars}   FORKS ${totals.forks}   COMMITS ${totals.commitsLabel}${
+      totals.followers ? `   FOLLOWERS ${totals.followers}` : ''
+    }`,
+  ];
+
+  if (show('--langs') && languages.length) {
+    const barW = Math.max(8, width - 24);
+    const max = Math.max(...languages.map((l) => l.percent));
+    out.push('', heading('languages', width));
+    languages.forEach((l) => out.push(`  ${padEnd(l.name, 11)} ${bar(l.percent, max, barW)} ${padStart(`${l.percent}%`, 6)}`));
+  }
+
+  if (show('--repos') && repos.length) {
+    const top = repos.slice(0, 8);
+    const barW = Math.max(8, width - 32);
+    const max = Math.max(...top.map((r) => r.commits));
+    out.push('', heading('commits by repository', width));
+    top.forEach((r) =>
+      out.push(`  ${padEnd(r.name, 14)} ${bar(r.commits, max, barW)} ${padStart(String(r.commits), 5)}  ★${r.stars}`),
+    );
+  }
+
+  if (show('--activity') && contributions.length) {
+    const room = Math.max(20, cols - 4);
+    const counts = contributions.map((c) => c.count);
+    const series = counts.length > room ? bucket(counts, room) : counts;
+    const perChar = Math.ceil(counts.length / series.length);
+    const first = new Date(`${contributions[0].date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const last = new Date(`${contributions[contributions.length - 1].date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    out.push('', heading(`activity · last ${contributions.length} days`, width));
+    out.push(`  ${sparkline(series)}`);
+    out.push(`  ${first.padEnd(Math.max(first.length + 1, series.length - last.length))}${last}`);
+    out.push(
+      `  ${dataset.contributionTotal} contributions · ${dataset.activeDays} active days · longest streak ${dataset.longestStreak}d${
+        perChar > 1 ? ` · ${perChar} days per char` : ''
+      }`,
+    );
+  }
+
+  out.push('', `  → ${dataset.profileUrl ?? ''}`);
+  return out;
+};
+
+const gitLog = ({ dataset }: DataCommandContext, args: string[]): string[] => {
+  const limit = Number(args.find((a) => /^-n?\d+$/.test(a))?.replace(/\D/g, '')) || 12;
+  const stamp = (d: Date | null) =>
+    d ? d.toISOString().slice(0, 16).replace('T', ' ') : '????-??-?? ??:??';
+
+  const events = dataset.activity.map((e) => ({
+    at: e.at,
+    line: `${e.type.replace(/Event$/, '').toLowerCase().padEnd(7)} ${e.repo.split('/').pop()}${e.ref ? ` (${e.ref})` : ''}`,
+  }));
+  const heads = dataset.repos
+    .filter((r) => r.updatedAt)
+    .map((r) => ({ at: r.updatedAt, line: `update  ${r.name} · ${r.commits} commits · ${r.language}` }));
+
+  const entries = [...events, ...heads]
+    .sort((a, b) => (b.at?.getTime() ?? 0) - (a.at?.getTime() ?? 0))
+    .slice(0, limit);
+
+  if (!entries.length) return ['fatal: your current branch has no activity yet'];
+  return [
+    `$ git log --all --oneline -n ${limit}`,
+    ...entries.map((e, i) => `${i === 0 ? '*' : '|'} ${stamp(e.at)}  ${e.line}  ${i === 0 ? '(HEAD) ' : ''}${relativeTime(e.at)}`),
+  ];
+};
+
+/** Returns output lines for a data command, or null if `command` isn't one. */
+export const runDataCommand = (command: string, ctx: DataCommandContext): string[] | null => {
+  const [head, ...args] = command.trim().split(/\s+/);
+  if (head === 'whoami') return whoami(ctx);
+  if (head === 'git' && args[0] === 'log') return gitLog(ctx, args.slice(1));
+  if (head === 'github' || head === 'gh') return githubStats(ctx, args);
+  if (head === 'stats' && (args.length === 0 || args.some((a) => a.startsWith('--')))) return githubStats(ctx, args);
+  return null;
 };

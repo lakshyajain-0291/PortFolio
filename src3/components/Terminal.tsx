@@ -4,7 +4,10 @@ import { DEFAULT_USER, APP_SETTINGS, DEFAULT_ASSETS } from '../../src/config/env
 import MatrixEffect from './MatrixEffect.tsx';
 import { useToast } from '../../src/components/ui/use-toast';
 import { truncateWithEllipsis, formatTerminalDate, getNestedValue, parseTextForLinks } from '../utils/terminalUtils';
-import { formatDate } from '@/lib/utils.ts';
+import { formatDateRange } from '../../shared/format';
+import { useGitHubDataset } from '../../shared/github/useGitHubDataset';
+import { usePrefersReducedMotion } from '../../shared/hooks/usePrefersReducedMotion';
+import { bar, terminalColumns } from '../utils/asciiCharts';
 // Import Easter eggs utilities
 import { 
   ASCII_ARTS, 
@@ -12,7 +15,9 @@ import {
   hasTypo, 
   generateBlinkingEffect,
   checkKonamiCode,
-  TYPING_TEST
+  TYPING_TEST,
+  runDataCommand,
+  DATA_COMMAND_HELP
 } from '../utils/easterEggs';
 
 // ASCII art for the terminal logo
@@ -61,6 +66,8 @@ const COMMAND_ALIASES: Record<string, string> = {
   'g': 'github',
   'git': 'github',
   'stats': 'github',
+  'gl': 'git log',
+  'who': 'whoami',
   
   // Actions
   'm': 'matrix',
@@ -91,7 +98,7 @@ Available commands:
   education(edu)       Show my education details
   contact (con)        Display contact information
   social  (soc, links) Show social media links
-  github  (g, git)     Display GitHub stats
+  github  (g, stats)   GitHub stats as ASCII charts
   matrix  (m, mtx)     Toggle matrix effect background
   download(d, dl)      Download files
     -p    (dlp)        Download portfolio.json data file
@@ -120,26 +127,28 @@ ${project.demo ? `Demo: ${project.demo}` : ''}
 
 // Function to format experience data for terminal display
 const formatExperience = (exp: any) => {
+  const achievements: string[] = exp.achievements || exp.accomplishments || [];
   return `
-Role: ${exp.title} at ${exp.company}
-Duration: ${formatDate(exp.startDate)} - ${exp.endDate ? formatDate(exp.endDate) : 'Present'}
+Role: ${exp.title || exp.role} at ${exp.company}
+Duration: ${formatDateRange(exp.dates || exp.duration) || 'N/A'}${exp.location ? `\nLocation: ${exp.location}` : ''}
 ${exp.description ? `Details: ${exp.description}` : ''}
-${exp.accomplishments?.length ? `Achievements: \n${exp.accomplishments.map((a: string) => `  - ${a}`).join('\n')}` : ''}
+${achievements.length ? `Achievements: \n${achievements.map((a: string) => `  - ${a}`).join('\n')}` : ''}
 `;
 };
 
 // Function to format education data for terminal display
 const formatEducation = (edu: any) => {
   return `
-Degree: ${edu.degree} in ${edu.field}
+Degree: ${edu.degree}${edu.field ? ` in ${edu.field}` : ''}
 Institution: ${edu.institution}
-Duration: ${formatDate(edu.startDate)} - ${edu.endDate ? formatDate(edu.endDate) : 'Present'}
+Duration: ${formatDateRange(edu.dates || edu.duration) || 'N/A'}${edu.cgpa ? `\nGrade: ${edu.cgpa}` : ''}
 ${edu.description ? `Details: ${edu.description}` : ''}
 `;
 };
 
 // Interface for terminal output
 interface TerminalLine {
+  id?: string;
   type: string;
   text: string;
   isAnimating?: boolean;
@@ -253,12 +262,60 @@ const Terminal: React.FC = () => {
   
   const { toast } = useToast();
   const { portfolio, isLoading, refreshAllData } = usePortfolio();
+  const { dataset } = useGitHubDataset();
+  const reducedMotion = usePrefersReducedMotion();
+  const streamRef = useRef<{ id: string; lines: string[]; shown: number; timer: number } | null>(null);
+
+  // Tokens the matrix rain occasionally spells out: real repo and language names.
+  const matrixWords = React.useMemo(
+    () => [...dataset.repos.slice(0, 12).map((r) => r.name), ...dataset.languages.map((l) => l.name)],
+    [dataset],
+  );
+
+  /** Ends the current streamed response — either printing the rest (flush) or dropping it. */
+  const stopStream = (flush: boolean) => {
+    const stream = streamRef.current;
+    if (!stream) return;
+    window.clearInterval(stream.timer);
+    streamRef.current = null;
+    if (flush) {
+      const text = stream.lines.join('\n');
+      setOutput(prev => prev.map(l => (l.id === stream.id ? { ...l, text, animatedText: text, isAnimating: false } : l)));
+    }
+  };
+
+  /** Prints lines one at a time like a scrolling log; instant under reduced motion. */
+  const streamOutput = (lines: string[], type = 'response') => {
+    stopStream(true);
+    if (reducedMotion || lines.length <= 2) {
+      setOutput(prev => [...prev, { type, text: lines.join('\n') }]);
+      return;
+    }
+    const id = `stream-${Date.now()}`;
+    setOutput(prev => [...prev, { id, type, text: '', animatedText: '', isAnimating: true }]);
+    const timer = window.setInterval(() => {
+      const stream = streamRef.current;
+      if (!stream) return;
+      stream.shown += 1;
+      if (stream.shown >= stream.lines.length) {
+        stopStream(true);
+        return;
+      }
+      const text = stream.lines.slice(0, stream.shown).join('\n');
+      setOutput(prev => prev.map(l => (l.id === id ? { ...l, text, animatedText: text } : l)));
+    }, 32);
+    streamRef.current = { id, lines, shown: 0, timer };
+  };
+
+  useEffect(() => () => {
+    if (streamRef.current) window.clearInterval(streamRef.current.timer);
+  }, []);
   
   // List of valid commands for typo detection
   const validCommands = [
     'help', 'clear', 'about', 'projects', 'skills', 'experience',
     'education', 'contact', 'social', 'github', 'matrix', 'download',
-    'reload', 'ascii', 'exit', 'fortune', 'typingtest'
+    'reload', 'ascii', 'exit', 'fortune', 'typingtest', 'whoami', 'stats'
   ];
 
   // Apply theme changes
@@ -609,6 +666,13 @@ const Terminal: React.FC = () => {
       }]);
       return;
     }
+
+    // Data-driven commands (whoami, stats --github, git log) stream like a log
+    const dataResponse = runDataCommand(aliasedCommand, { portfolio, dataset, cols: terminalColumns() });
+    if (dataResponse) {
+      streamOutput(dataResponse);
+      return;
+    }
     
     // Add theme command
     if (aliasedCommand === 'theme' || aliasedCommand.startsWith('theme ')) {
@@ -629,7 +693,7 @@ const Terminal: React.FC = () => {
       
       // Set theme if valid
       const requestedTheme = args[1];
-      if (TERMINAL_THEMES.hasOwnProperty(requestedTheme)) {
+      if (Object.prototype.hasOwnProperty.call(TERMINAL_THEMES, requestedTheme)) {
         setCurrentTheme(requestedTheme);
         setOutput(prev => [...prev, { 
           type: 'success', 
@@ -680,6 +744,7 @@ const Terminal: React.FC = () => {
       // Empty command, just add a new line
       return;
     } else if (aliasedCommand === 'clear') {
+      stopStream(false);
       setOutput([]);
       return;
     } else if (aliasedCommand === 'help') {
@@ -689,7 +754,7 @@ const Terminal: React.FC = () => {
   history            View command history
   clear-history      Clear command history
 `;
-      setOutput(prev => [...prev, { type: 'response', text: HELP_TEXT + additionalHelp }]);
+      setOutput(prev => [...prev, { type: 'response', text: HELP_TEXT + DATA_COMMAND_HELP + additionalHelp }]);
     } else if (aliasedCommand === 'fortune') {
       // Display a random fortune
       const fortunes = [
@@ -729,32 +794,22 @@ const Terminal: React.FC = () => {
         setOutput(prev => [...prev, { type: 'response', text: 'No projects found.' }]);
       }
     } else if (aliasedCommand === 'skills') {
-      if (portfolio?.skills?.length) {
-        const skillsByCategory: any = {};
-        
-        // Group skills by category
-        if (Array.isArray(portfolio.skills)) {
-          portfolio.skills.forEach((skill: any) => {
-            const category = skill.category || 'Other';
-            if (!skillsByCategory[category]) {
-              skillsByCategory[category] = [];
-            }
-            skillsByCategory[category].push(skill);
-          });
-        }
-        
-        let skillsOutput = '';
-        
-        // Format output by category
-        Object.keys(skillsByCategory).forEach(category => {
-          skillsOutput += `\n== ${category} ==\n`;
-          skillsByCategory[category].forEach((skill: any) => {
-            const proficiency = skill.proficiency ? `[${'█'.repeat(Math.floor(skill.proficiency / 10))}${' '.repeat(10 - Math.floor(skill.proficiency / 10))}] ${skill.proficiency}%` : '';
-            skillsOutput += `${skill.name}: ${proficiency}\n`;
+      const topSkills = portfolio?.insights?.topSkills ?? [];
+      if (topSkills.length) {
+        const byCategory = new Map<string, typeof topSkills>();
+        topSkills.forEach(skill => byCategory.set(skill.category, [...(byCategory.get(skill.category) ?? []), skill]));
+        const barWidth = Math.max(10, Math.min(30, terminalColumns() - 40));
+        const lines: string[] = [];
+        byCategory.forEach((skills, category) => {
+          lines.push('', `== ${category} ==`);
+          skills.forEach(skill => {
+            lines.push(`  ${skill.name.padEnd(24).slice(0, 24)} ${bar(skill.proficiency, 100, barWidth)} ${String(Math.round(skill.proficiency)).padStart(3)}%`);
           });
         });
-        
-        setOutput(prev => [...prev, { type: 'response', text: skillsOutput }]);
+        streamOutput(lines);
+      } else if (Array.isArray(portfolio?.skills) && portfolio.skills.length) {
+        // Older data shape: plain strings such as "Languages: Go, C, ..."
+        setOutput(prev => [...prev, { type: 'response', text: (portfolio.skills as unknown[]).map(s => (typeof s === 'string' ? s : (s as { name?: string }).name)).join('\n') }]);
       } else {
         setOutput(prev => [...prev, { type: 'response', text: 'No skills data found.' }]);
       }
@@ -809,27 +864,6 @@ ${personalUrl ? `Website: ${personalUrl}` : ''}
 `
         }
       ]);
-    } else if (aliasedCommand === 'github') {
-      const stats = portfolio?.githubStats;
-      if (stats) {
-        setOutput(prev => [
-          ...prev, 
-          { 
-            type: 'response', 
-            text: `
-GitHub Stats for ${portfolio?.personalInfo?.name || DEFAULT_USER.NAME}:
-
-Total Repos: ${stats.totalPublicRepos || 'N/A'}
-Total Stars: ${stats.totalStars || 'N/A'}
-Total Forks: ${stats.totalForks || 'N/A'}
-Total Contributions: ${stats.totalCommits || 'N/A'}
-
-`
-          }
-        ]);
-      } else {
-        setOutput(prev => [...prev, { type: 'response', text: 'No GitHub stats available.' }]);
-      }
     } else if (aliasedCommand === 'matrix') {
       setShowMatrix(!showMatrix);
       setOutput(prev => [...prev, { 
@@ -1007,6 +1041,7 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
         'help', 'clear', 'about', 'projects', 'skills', 'experience',
         'education', 'contact', 'social', 'github', 'matrix', 'download', 
         'reload', 'ascii', 'exit', 'fortune', 'typingtest',
+        'whoami', 'stats --github', 'git log',
         'coffee', 'rocket', 'cow', 'sudo', '42'
       ];
       
@@ -1293,6 +1328,13 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
       return;
     }
     
+    if (e.key === 'Enter' && streamRef.current) {
+      // Fast-forward a streaming response instead of running a command
+      e.preventDefault();
+      stopStream(true);
+      return;
+    }
+
     if (e.key === 'Enter') {
       // Process the command immediately
       e.preventDefault();
@@ -1384,7 +1426,7 @@ Total Contributions: ${stats.totalCommits || 'N/A'}
       className={`terminal-container ${isHistoryView ? 'history-view' : ''} ${isFullScreen ? 'terminal-fullscreen' : ''} ${retroMode ? 'retro-mode' : ''}`}
       ref={terminalContainerRef}
     >
-      {showMatrix && <MatrixEffect themeColor={TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].text} />}
+      {showMatrix && <MatrixEffect themeColor={TERMINAL_THEMES[currentTheme as keyof typeof TERMINAL_THEMES].text} words={matrixWords} />}
       
       <div className="terminal-header">
         <div className="terminal-header-buttons">

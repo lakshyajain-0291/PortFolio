@@ -1,55 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Github, Linkedin, Send } from 'lucide-react';
-import { useInView } from 'react-intersection-observer';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { ArrowUpRight, Github, Linkedin, Mail, Send } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { usePortfolio } from '@/hooks/PortfolioContext';
 import { DEFAULT_USER, DEFAULT_SOCIAL, SECTION_NUMBERS, FORM_SETTINGS } from '@/config/env';
+import SectionHeading from './t1/SectionHeading';
+import { align } from './t1/layout';
+import { useSectionChoreography } from './t1/useSectionChoreography';
+
+const fieldClass =
+  'w-full rounded-[3px] border border-darktech-border bg-darktech-background/60 px-4 py-3 text-darktech-text placeholder:text-darktech-muted/60 transition-colors focus:border-darktech-neon-green focus:outline-none';
 
 const Contact = () => {
   const { toast } = useToast();
   const { portfolio, isLoading } = usePortfolio();
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-  const controls = useAnimation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const a = align(SECTION_NUMBERS.CONTACT);
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
+  useSectionChoreography(sectionRef, !isLoading);
 
   const email = portfolio?.socialLinks?.email || portfolio?.personalInfo?.email || DEFAULT_USER.EMAIL;
   const collegeEmail = portfolio?.socialLinks?.collegeEmail || portfolio?.personalInfo?.collegeEmail;
   const linkedinUrl = portfolio?.socialLinks?.linkedin || DEFAULT_SOCIAL.LINKEDIN_URL;
   const githubUrl = portfolio?.socialLinks?.github || DEFAULT_SOCIAL.GITHUB_URL;
-  
-  const githubUsername = githubUrl.split('/').pop() || DEFAULT_SOCIAL.GITHUB_USERNAME;
-  const linkedinUsername = linkedinUrl.split('/').pop() || DEFAULT_SOCIAL.LINKEDIN_USERNAME;
-  
+
+  const githubUsername = githubUrl.replace(/\/$/, '').split('/').pop() || DEFAULT_SOCIAL.GITHUB_USERNAME;
+  const linkedinUsername = linkedinUrl.replace(/\/$/, '').split('/').pop() || DEFAULT_SOCIAL.LINKEDIN_USERNAME;
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -125,184 +101,83 @@ const Contact = () => {
     }
   };
 
+  const channels = [
+    { icon: Mail, label: 'email', value: email, href: `mailto:${email}` },
+    ...(collegeEmail ? [{ icon: Mail, label: 'academic', value: collegeEmail, href: `mailto:${collegeEmail}` }] : []),
+    { icon: Linkedin, label: 'linkedin', value: `in/${linkedinUsername}`, href: linkedinUrl },
+    { icon: Github, label: 'github', value: githubUsername, href: githubUrl },
+  ];
+
   return (
-    <motion.section
+    <section
       id="contact"
-      className="py-20 relative"
+      ref={sectionRef}
+      className="relative py-28"
       data-section-number={SECTION_NUMBERS.CONTACT !== 0 ? SECTION_NUMBERS.CONTACT : 0}
-      ref={ref}
-      initial="hidden"
-      animate={controls}
-      variants={containerVariants}
     >
-      <div className="container mx-auto px-4">
-        <div className={`w-4/5 ${SECTION_NUMBERS.CONTACT === 0 ? 'mx-auto' : SECTION_NUMBERS.CONTACT % 2 === 0 ? 'ml-auto mr-0' : 'mr-auto ml-0'}`}>
-          <motion.div
-            className={`${SECTION_NUMBERS.CONTACT === 0 ? 'text-center' : (SECTION_NUMBERS.CONTACT % 2 === 0 ? 'text-right' : 'text-left')} mb-16`}
-            variants={itemVariants}
-          >
-            <h2 className="text-4xl font-bold mb-4">Get In Touch</h2>
-            <p className={`text-darktech-muted max-w-2xl ${SECTION_NUMBERS.CONTACT === 0 ? 'mx-auto' : (SECTION_NUMBERS.CONTACT % 2 === 0 ? 'ml-auto' : 'mr-auto')}`}>
-              Have a question or want to work together? Feel free to reach out!
-            </p>
-          </motion.div>
-        
-          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10  ''}`}>
-            <motion.div
-              className="glass-panel p-8 rounded-xl order-2 lg:order-1"
-              variants={itemVariants}
-            >
-              <h3 className="text-2xl font-bold mb-6 text-left">Send a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2 text-left pl-2">
-                  Your Name
+      <div className="container relative z-[1] mx-auto px-4">
+        <div className={`w-full md:w-4/5 ${a.block}`}>
+          <SectionHeading
+            n={SECTION_NUMBERS.CONTACT}
+            slug="contact"
+            title="Open a Channel"
+            description="Have a system that needs building, or a problem worth arguing about? I read everything."
+          />
+
+          <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]" data-reveal-group>
+            <form onSubmit={handleSubmit} className="t1-panel space-y-5 p-6 sm:p-8" data-reveal="left">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="block">
+                  <span className="t1-label mb-2 block">name</span>
+                  <input name="name" type="text" value={formData.name} onChange={handleChange} required className={fieldClass} placeholder="Ada Lovelace" />
                 </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                    className="w-full px-4 py-3 bg-darktech-card border border-darktech-border rounded-lg focus:outline-none focus:ring-2 focus:ring-darktech-neon-green/50 focus:border-transparent"
-                    placeholder="John Doe"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-left pl-2">
-                    Your Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 bg-darktech-card border border-darktech-border rounded-lg focus:outline-none focus:ring-2 focus:ring-darktech-neon-green/50 focus:border-transparent"
-                    placeholder="john@example.com"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 text-left pl-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={5}
-                    className="w-full px-4 py-3 bg-darktech-card border border-darktech-border rounded-lg focus:outline-none focus:ring-2 focus:ring-darktech-neon-green/50 focus:border-transparent resize-none"
-                    placeholder="Your message here..."
-                  ></textarea>
-                </div>
-                
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3 px-6 flex items-center justify-center gap-2 bg-gradient-to-r from-darktech-neon-green to-darktech-holo-cyan text-darktech-background font-medium rounded-lg transition-transform duration-300 hover:scale-[1.02] disabled:opacity-70"
-                >
-                  {isSubmitting ? (
-                    <div className="h-5 w-5 border-2 border-darktech-background border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    <>
-                      <Send size={18} /> Send Message
-                    </>
-                  )}
-                </button>
-              </form>
-            </motion.div>
-            
-            <motion.div
-              className="flex flex-col gap-6 order-1 lg:order-2"
-              variants={itemVariants}
-            >
-              <div className="glass-panel p-8 rounded-xl">
-                <h3 className="text-2xl font-bold mb-6 text-left">Contact Info</h3>
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-neon-green shrink-0">
-                      <Mail size={24} />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="text-lg font-medium text-left">Email</h4>
-                      <a href={`mailto:${email}`} className="text-darktech-muted hover:text-darktech-neon-green transition-colors break-all">
-                        {email}
-                      </a>
-                      {collegeEmail && (
-                        <a href={`mailto:${collegeEmail}`} className="block text-darktech-muted hover:text-darktech-neon-green transition-colors break-all">
-                          {collegeEmail}
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-holo-cyan shrink-0">
-                      <Linkedin size={24} />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="text-lg font-medium text-left">LinkedIn</h4>
-                      <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-holo-cyan transition-colors break-words">
-                        linkedin.com/in/{linkedinUsername}
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-full bg-darktech-card text-darktech-cyber-pink shrink-0">
-                      <Github size={24} />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="text-lg font-medium text-left">GitHub</h4>
-                      <a href={githubUrl} target="_blank" rel="noopener noreferrer" className="text-darktech-muted hover:text-darktech-cyber-pink transition-colors break-words">
-                        github.com/{githubUsername}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                <label className="block">
+                  <span className="t1-label mb-2 block">email</span>
+                  <input name="email" type="email" value={formData.email} onChange={handleChange} required className={fieldClass} placeholder="ada@example.com" />
+                </label>
               </div>
-              
-              <div className="glass-panel p-8 rounded-xl">
-                <h3 className="text-2xl font-bold mb-4 text-left">Let's Connect</h3>
-                <p className="text-darktech-muted mb-6 text-left">
-                  Interested in collaborating or have a project in mind? I'm always open to discussing new opportunities and ideas.
-                </p>
-                <div className="flex gap-4">
-                  <a 
-                    href={linkedinUrl} 
-                    target="_blank" 
+              <label className="block">
+                <span className="t1-label mb-2 block">message</span>
+                <textarea name="message" value={formData.message} onChange={handleChange} required rows={6} className={`${fieldClass} resize-none`} placeholder="What are we building?" />
+              </label>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="group inline-flex w-full items-center justify-center gap-3 rounded-[3px] bg-darktech-neon-green px-6 py-3.5 font-semibold text-darktech-background transition-colors hover:bg-darktech-neon-green/90 disabled:opacity-60 sm:w-auto"
+              >
+                {isSubmitting ? (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-darktech-background border-t-transparent" />
+                ) : (
+                  <>
+                    Transmit <Send size={16} className="transition-transform group-hover:translate-x-0.5" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            <ul className="t1-panel divide-y divide-darktech-border self-start" data-reveal="right">
+              {channels.map(({ icon: Icon, label, value, href }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target={href.startsWith('mailto:') ? undefined : '_blank'}
                     rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-darktech-card text-darktech-muted hover:text-darktech-holo-cyan hover:bg-darktech-card/70 transition-colors"
+                    className="group flex items-center gap-4 px-6 py-5 transition-colors hover:bg-darktech-lighter/50"
                   >
-                    <Linkedin size={24} />
+                    <Icon size={18} className="shrink-0 text-darktech-muted transition-colors group-hover:text-darktech-neon-green" />
+                    <span className="min-w-0 flex-1">
+                      <span className="t1-label block">{label}</span>
+                      <span className="block truncate text-darktech-text">{value}</span>
+                    </span>
+                    <ArrowUpRight size={16} className="shrink-0 text-darktech-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-darktech-holo-cyan" />
                   </a>
-                  <a 
-                    href={githubUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-full bg-darktech-card text-darktech-muted hover:text-darktech-cyber-pink hover:bg-darktech-card/70 transition-colors"
-                  >
-                    <Github size={24} />
-                  </a>
-                  <a 
-                    href={`mailto:${email}`}
-                    className="p-3 rounded-full bg-darktech-card text-darktech-muted hover:text-darktech-neon-green hover:bg-darktech-card/70 transition-colors"
-                  >
-                    <Mail size={24} />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

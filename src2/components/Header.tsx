@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Download, RefreshCw, Menu, X, FileText, ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { MoreHorizontal } from 'lucide-react';
 import { ThemeToggle } from './theme-toggle';
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
-import { APP_SETTINGS, DEFAULT_ASSETS } from '../../src/config/env';
-
-// Import UI components from the main template
+import { DEFAULT_ASSETS } from '../../src/config/env';
 import {
   Dialog,
   DialogContent,
@@ -12,8 +10,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../../src/components/ui/dialog";
-
+} from '../../src/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,48 +18,24 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../src/components/ui/dropdown-menu";
+} from '../../src/components/ui/dropdown-menu';
+import { Button } from '../../src/components/ui/button';
 
-import { Button } from "../../src/components/ui/button";
-
+/**
+ * Utility cluster pinned to the top-right corner: theme, résumé and the
+ * portfolio data actions. Deliberately small — the page is the typography.
+ */
 const Header: React.FC = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const { portfolio, isLoading: isRefreshing, refreshAllData, downloadPortfolioJSON } = usePortfolio();
-  
-  // Dialog states
+  const { isLoading: isRefreshing, refreshAllData, downloadPortfolioJSON } = usePortfolio();
   const [showDownloadDialog, setShowDownloadDialog] = useState(false);
   const [showReloadDialog, setShowReloadDialog] = useState(false);
-  
-  // Resume URL - Use absolute path to the PDF in public folder
   const resumeUrl = DEFAULT_ASSETS.RESUME_URL;
 
-  // Handle scroll events
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Navigation items
-  const navigationItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Tech Stack', href: '#tech-stack' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
-  // Handle portfolio download
   const handleConfirmDownload = () => {
     downloadPortfolioJSON();
     setShowDownloadDialog(false);
   };
 
-  // Handle portfolio reload
   const handleConfirmReload = async () => {
     await refreshAllData();
     setShowReloadDialog(false);
@@ -70,164 +43,70 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 ${
-          isScrolled 
-            ? 'bg-background/80 backdrop-blur-lg shadow-md' 
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <a href="#home" className="flex items-center gap-2">
-              <span className="text-xl font-semibold bg-clip-textbg-gradient-to-r from-blue-500 to-purple-500">
-                {APP_SETTINGS.APP_NAME}
-              </span>
-            </a>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              {navigationItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
-
-            {/* Theme toggle and action buttons */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-              
-              <a
-                href={resumeUrl}
-                download
-                className="rounded-md p-2 hover:bg-accent transition-colors"
-                title="Download Resume"
-              >
-                <FileText size={20} />
-              </a>
-              
-              {/* Portfolio Actions Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button 
-                    className="rounded-md p-2 flex items-center hover:bg-accent transition-colors"
-                    title="Portfolio Options"
-                  >
-                    <span className="hidden sm:inline mr-1">Actions</span>
-                    <ChevronDown size={16} />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Portfolio Actions</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem 
-                    onClick={() => setShowDownloadDialog(true)}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <Download size={16} className="text-blue-500" />
-                    <span>Download JSON</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem 
-                    onClick={() => setShowReloadDialog(true)}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <RefreshCw size={16} className={`text-purple-500 ${isRefreshing ? 'animate-spin' : ''}`} />
-                    <span>Reload by AI</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              
-              {/* Mobile menu button */}
-              <button
-                className="md:hidden rounded-md p-2 hover:bg-accent transition-colors"
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Toggle menu"
-              >
-                {isOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div>
-          </div>
-          
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <nav className="md:hidden mt-4 py-4 border-t border-border">
-              <ul className="flex flex-col gap-4">
-                {navigationItems.map((item) => (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-foreground/80 hover:text-primary transition-colors block py-2"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          )}
-        </div>
-      </header>
-
-      {/* Download Portfolio Dialog */}
-      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Download Portfolio Data</DialogTitle>
-            <DialogDescription>
-              Download your portfolio data as a JSON file for backup or reuse.
-            </DialogDescription>
-          </DialogHeader>
-          <p className="flex items-start gap-2 text-sm">
-            <span>After downloading, place the file in the <code className="bg-accent px-1 rounded">data/</code> folder to use your custom portfolio data.</span>
-          </p>
-          <DialogFooter className="sm:justify-between flex flex-col sm:flex-row gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowDownloadDialog(false)}
-              className="sm:w-auto w-full"
+      <div className="absolute right-4 top-4 z-40 flex items-center gap-1 rounded-[2px] bg-background/80 p-1 backdrop-blur sm:right-6 lg:fixed lg:right-8 lg:top-6">
+        <a
+          href={resumeUrl}
+          download
+          className="px-3 py-2 font-plex-mono text-xs text-muted-foreground transition-colors hover:text-primary"
+        >
+          résumé
+        </a>
+        <ThemeToggle />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="flex h-9 w-9 items-center justify-center rounded-[2px] text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Portfolio actions"
+              title="Portfolio actions"
             >
+              <MoreHorizontal size={18} strokeWidth={1.6} className={isRefreshing ? 'animate-pulse' : ''} />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="rounded-[2px]">
+            <DropdownMenuLabel className="t2-meta font-normal uppercase">Portfolio data</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => setShowDownloadDialog(true)} className="cursor-pointer">
+              Download JSON
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setShowReloadDialog(true)} className="cursor-pointer">
+              Reload by AI
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      <Dialog open={showDownloadDialog} onOpenChange={setShowDownloadDialog}>
+        <DialogContent className="rounded-[2px]">
+          <DialogHeader>
+            <DialogTitle className="t2-display text-2xl">Download portfolio data</DialogTitle>
+            <DialogDescription>Download your portfolio data as a JSON file for backup or reuse.</DialogDescription>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            After downloading, place the file in the <code className="t2-tag">data/</code> folder to use your custom portfolio data.
+          </p>
+          <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+            <Button variant="outline" onClick={() => setShowDownloadDialog(false)} className="w-full rounded-[2px] sm:w-auto">
               Cancel
             </Button>
-            <Button 
-              onClick={handleConfirmDownload}
-              className="sm:w-auto w-full" 
-            >
+            <Button onClick={handleConfirmDownload} className="w-full rounded-[2px] sm:w-auto">
               Download portfolio.json
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Reload Portfolio Dialog */}
       <Dialog open={showReloadDialog} onOpenChange={setShowReloadDialog}>
-        <DialogContent>
+        <DialogContent className="rounded-[2px]">
           <DialogHeader>
-            <DialogTitle>Reload Portfolio Data</DialogTitle>
-            <DialogDescription>
-              This will reload your portfolio data from GitHub and other integrated sources.
-            </DialogDescription>
+            <DialogTitle className="t2-display text-2xl">Reload portfolio data</DialogTitle>
+            <DialogDescription>This will reload your portfolio data from GitHub and other integrated sources.</DialogDescription>
           </DialogHeader>
-          <DialogFooter className="sm:justify-between flex flex-col sm:flex-row gap-2">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowReloadDialog(false)}
-              className="sm:w-auto w-full"
-            >
+          <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-between">
+            <Button variant="outline" onClick={() => setShowReloadDialog(false)} className="w-full rounded-[2px] sm:w-auto">
               Cancel
             </Button>
-            <Button 
-              onClick={handleConfirmReload}
-              className="sm:w-auto w-full"
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? "Reloading..." : "Reload Data"}
+            <Button onClick={handleConfirmReload} className="w-full rounded-[2px] sm:w-auto" disabled={isRefreshing}>
+              {isRefreshing ? 'Reloading...' : 'Reload Data'}
             </Button>
           </DialogFooter>
         </DialogContent>

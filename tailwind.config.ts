@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import animate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -8,6 +9,9 @@ export default {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./src2/**/*.{ts,tsx}",
+    "./src3/**/*.{ts,tsx}",
+    "./shared/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -57,17 +61,27 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        // Dark Tech theme colors
+        // Template 1 (dark tech). Channels live in CSS variables (src/index.css) so the
+        // signal accent can be swapped at runtime for the hidden "overdrive" state.
         darktech: {
-          background: '#0f0f12',
-          lighter: '#1A1F2C',
-          card: '#151520', 
-          border: '#2a2a40',
-          'neon-green': '#00ff8c',
-          'holo-cyan': '#00e8ff',
-          'cyber-pink': '#ff00aa',
-          text: '#e0e0e0',
-          muted: '#8a8a9a'
+          background: 'rgb(var(--t1-bg) / <alpha-value>)',
+          lighter: 'rgb(var(--t1-raised) / <alpha-value>)',
+          card: 'rgb(var(--t1-card) / <alpha-value>)',
+          border: 'rgb(var(--t1-line) / <alpha-value>)',
+          'neon-green': 'rgb(var(--t1-signal) / <alpha-value>)',
+          'holo-cyan': 'rgb(var(--t1-link) / <alpha-value>)',
+          // Easter-egg only — never part of the default palette.
+          'cyber-pink': '#ff2e88',
+          text: 'rgb(var(--t1-ink) / <alpha-value>)',
+          muted: 'rgb(var(--t1-ink-muted) / <alpha-value>)'
+        },
+        // Template 2 (editorial) — semantic tokens from src2/template2.css
+        paper: {
+          DEFAULT: 'hsl(var(--background))',
+          ink: 'hsl(var(--foreground))',
+          muted: 'hsl(var(--muted-foreground))',
+          rule: 'hsl(var(--border))',
+          accent: 'hsl(var(--primary))',
         }
       },
       borderRadius: {
@@ -96,10 +110,6 @@ export default {
           "0%": { backgroundPosition: "0% 50%" },
           "50%": { backgroundPosition: "100% 50%" },
           "100%": { backgroundPosition: "0% 50%" },
-        },
-        "text-shimmer": {
-          "0%": { backgroundPosition: "100%" },
-          "100%": { backgroundPosition: "0%" }
         }
       },
       animation: {
@@ -108,17 +118,18 @@ export default {
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         "float": "float 6s ease-in-out infinite",
         "gradient-shift": "gradient-shift 8s ease infinite",
-        "text-shimmer": "text-shimmer 3s linear infinite",
       },
       backgroundImage: {
-        'grid-pattern': 'linear-gradient(to right, rgba(40, 40, 70, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(40, 40, 70, 0.1) 1px, transparent 1px)',
-        'text-gradient': 'linear-gradient(90deg, #00ff8c 0%, #00e8ff 50%, #ff00aa 100%)'
+        'grid-pattern': 'linear-gradient(to right, rgba(40, 40, 70, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(40, 40, 70, 0.1) 1px, transparent 1px)'
       },
       fontFamily: {
         'rajdhani': ['Rajdhani', 'sans-serif'],
         'inter': ['Inter', 'sans-serif'],
+        'jetbrains': ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        'fraunces': ['Fraunces', 'Georgia', 'serif'],
+        'plex-mono': ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       }
     }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [animate],
 } satisfies Config;

@@ -118,7 +118,7 @@ export function parseTextForLinks(text: string): (string | JSX.Element)[] {
     
     // Process line with URLs
     let lastIndex = 0;
-    let lineResult: (string | JSX.Element)[] = [];
+    const lineResult: (string | JSX.Element)[] = [];
     
     // Iterate through matches
     urlMatches.forEach((url, urlIndex) => {

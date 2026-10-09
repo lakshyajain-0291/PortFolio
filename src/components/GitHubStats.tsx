@@ -1,360 +1,195 @@
-import React, { useState, useEffect } from "react";
-import {
-  Github,
-  Star,
-  GitFork,
-  Calendar,
-  Code,
-  Activity,
-  Users,
-  Award,
-  Zap,
-} from "lucide-react";
-import { useInView } from "react-intersection-observer";
-import { motion, useAnimation } from "framer-motion";
-import { readPortfolioData } from "@/lib/portfolioReader";
-import { PortfolioData } from "@/lib/portfolioStorage";
-import { Badge } from "@/components/ui/badge";
-import { SECTION_NUMBERS } from "@/config/env";
+import { useLayoutEffect, useRef } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import { SECTION_NUMBERS } from '@/config/env';
+import { useGitHubDataset } from '../../shared/github/useGitHubDataset';
+import SectionHeading from './t1/SectionHeading';
+import { align } from './t1/layout';
+import { languageColor } from './t1/palette';
+import { sceneState } from './t1/sceneStore';
+import { ScrollTrigger } from './t1/gsap';
+import { useSectionChoreography } from './t1/useSectionChoreography';
+
+const LEGEND_SIZE = 8;
 
 const GitHubStats = () => {
-  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-  const controls = useAnimation();
+  const { dataset, isLoading } = useGitHubDataset();
+  const sectionRef = useRef<HTMLElement>(null);
+  const n = SECTION_NUMBERS.GITHUB_STATS;
+  const a = align(n);
 
-  useEffect(() => {
-    if (inView) {
-      controls.start("visible");
-    }
-  }, [controls, inView]);
+  useSectionChoreography(sectionRef, !isLoading, [dataset.repos.length]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
+  // Camera dolly: focus peaks while the section is centred in the viewport.
+  useLayoutEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const trigger = ScrollTrigger.create({
+      trigger: el,
+      start: 'top bottom',
+      end: 'bottom top',
+      onUpdate: (self) => {
+        sceneState.focus = Math.min(1, Math.max(0, (1 - Math.abs(self.progress - 0.5) * 2) * 1.7));
       },
-    },
+      onLeave: () => (sceneState.focus = 0),
+      onLeaveBack: () => (sceneState.focus = 0),
+    });
+    return () => {
+      trigger.kill();
+      sceneState.focus = 0;
+    };
+  }, [isLoading]);
+
+  const { totals, languages, repos, contributions } = dataset;
+  const legend = repos.slice(0, LEGEND_SIZE);
+  const maxCommits = Math.max(1, ...legend.map((r) => r.commits));
+  const maxDay = Math.max(1, ...contributions.map((c) => c.count));
+
+  const highlight = (name: string | null) => () => {
+    sceneState.highlighted = name;
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  // Extract GitHub username from the GitHub URL
-  const extractGithubUsername = (
-    githubUrl: string | undefined
-  ): string | null => {
-    if (!githubUrl) return null;
-    const match = githubUrl.match(/github\.com\/([^\/]+)/);
-    return match ? match[1] : null;
-  };
-
-  // Load portfolio data
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setIsLoading(true);
-        // Load portfolio data
-        const data = await readPortfolioData();
-        setPortfolioData(data);
-
-        // Extract GitHub username from social links
-        const extractedUsername = extractGithubUsername(
-          data?.socialLinks?.github
-        );
-        setUsername(extractedUsername);
-
-        if (!extractedUsername) {
-          console.error(
-            "GitHub username could not be extracted from portfolio data"
-          );
-          setError("GitHub username not found");
-        }
-      } catch (err) {
-        console.error("Error loading data:", err);
-        setError("Failed to load GitHub stats data");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadData();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <section
-        id="github-stats"
-        className="py-20 relative"
-        data-section-number={
-          SECTION_NUMBERS.GITHUB_STATS !== 0 ? SECTION_NUMBERS.GITHUB_STATS : 0
-        }
-      >
-        <div className="container mx-auto px-4 text-center">
-          <div className="w-4/5 mx-auto">
-            <h2 className="text-4xl font-bold mb-8">GitHub Stats</h2>
-            <div className="flex justify-center items-center h-40">
-              <div className="animate-pulse">Loading GitHub stats...</div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error || !portfolioData?.githubStats || !username) {
-    return (
-      <section
-        id="github-stats"
-        className="py-20 relative"
-        data-section-number={
-          SECTION_NUMBERS.GITHUB_STATS !== 0 ? SECTION_NUMBERS.GITHUB_STATS : 0
-        }
-      >
-        <div className="container mx-auto px-4 text-center">
-          <div className="w-4/5 mx-auto">
-            <h2 className="text-4xl font-bold mb-8">GitHub Public Stats</h2>
-            <div className="glass-panel p-6">
-              <p className="text-darktech-cyber-pink mb-4">
-                No GitHub statistics available. Connect your GitHub account to
-                view your coding activity.
-              </p>
-              {error && <p className="text-sm text-darktech-muted">{error}</p>}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const stats = [
+    { label: 'repositories', value: totals.repos, display: String(totals.repos) },
+    { label: 'stars', value: totals.stars, display: String(totals.stars) },
+    { label: 'forks', value: totals.forks, display: String(totals.forks) },
+    { label: 'commits', value: totals.commits, display: totals.commitsLabel },
+  ];
 
   return (
     <section
       id="github-stats"
-      className="py-20 relative"
-      data-section-number={
-        SECTION_NUMBERS.GITHUB_STATS !== 0 ? SECTION_NUMBERS.GITHUB_STATS : 0
-      }
+      ref={sectionRef}
+      className="relative pb-[30vh] pt-28"
+      data-section-number={n !== 0 ? n : 0}
     >
-      <div className="container mx-auto px-4">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={controls}
-          variants={containerVariants}
-          className={`w-4/5 ${
-            SECTION_NUMBERS.GITHUB_STATS === 0
-              ? "mx-auto"
-              : SECTION_NUMBERS.GITHUB_STATS % 2 === 0
-              ? "ml-auto mr-0"
-              : "mr-auto ml-0"
-          }`}
-        >
-          <div
-            className={`${
-              SECTION_NUMBERS.GITHUB_STATS === 0
-                ? "text-center"
-                : SECTION_NUMBERS.GITHUB_STATS % 2 === 0
-                ? "text-right"
-                : "text-left"
-            } mb-16`}
-          >
-            <motion.h2
-              variants={itemVariants}
-              className="text-4xl font-bold mb-4"
-            >
-              GitHub Public Stats
-            </motion.h2>
-            <motion.p
-              variants={itemVariants}
-              className={`text-darktech-muted max-w-2xl ${
-                SECTION_NUMBERS.GITHUB_STATS === 0
-                  ? "mx-auto"
-                  : SECTION_NUMBERS.GITHUB_STATS % 2 === 0
-                  ? "ml-auto"
-                  : "mr-auto"
-              }`}
-            >
-              A visualization of my coding activities and contributions on GitHub.
-            </motion.p>
-          </div>
+      <div className="container relative z-[1] mx-auto px-4">
+        <div className={`w-full md:w-4/5 ${a.block}`}>
+          <SectionHeading
+            n={n}
+            slug="github"
+            title="Commit Topology"
+            description="Public GitHub activity, rendered three ways across this site. Here: as a field of repositories."
+          />
 
-          {/* Primary Stats */}
-          <motion.div
-            variants={containerVariants}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-12"
-          >
-            <motion.div
-              variants={itemVariants}
-              className="glass-panel p-4 rounded-xl border border-darktech-border hover:border-darktech-neon-green/30 transition-all"
-            >
-              <div className="flex items-center justify-center mb-2">
-                <Github size={28} className="text-darktech-neon-green" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolioData.githubStats.totalPublicRepos}
-              </p>
-              <p className="text-sm text-darktech-muted">Repositories</p>
-            </motion.div>
+          {isLoading ? (
+            <p className="t1-label animate-pulse">fetching repository graph…</p>
+          ) : !dataset.hasData ? (
+            <div className="t1-panel p-6 text-darktech-muted">No GitHub statistics available yet.</div>
+          ) : (
+            <div className={`t1-panel w-full p-6 sm:p-8 lg:w-[min(36rem,60%)] ${a.push}`} data-reveal-group>
+              {/* Totals */}
+              <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[2px] bg-darktech-border sm:grid-cols-4" data-reveal>
+                {stats.map((s) => (
+                  <div key={s.label} className="bg-darktech-card px-4 py-4">
+                    <dt className="t1-label">{s.label}</dt>
+                    <dd
+                      className="t1-num mt-2 text-3xl font-medium text-darktech-text"
+                      data-count={/^\d+$/.test(s.display) ? s.value : undefined}
+                    >
+                      {s.display}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
 
-            <motion.div
-              variants={itemVariants}
-              className="glass-panel p-4 rounded-lg border border-darktech-border hover:border-darktech-neon-green/50 transition-all"
-            >
-              <div className="flex items-center justify-center mb-2">
-                <Star size={28} className="text-yellow-400" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolioData.githubStats.totalStars}
-              </p>
-              <p className="text-sm text-darktech-muted">Stars</p>
-            </motion.div>
+              {/* Language share — stacked bar, 2px surface gaps, labelled legend */}
+              {languages.length > 0 && (
+                <div className="mt-8" data-reveal>
+                  <p className="t1-label mb-3">languages · share of repositories</p>
+                  <div className="flex h-2 w-full gap-[2px]" role="img" aria-label={languages.map((l) => `${l.name} ${l.percent}%`).join(', ')}>
+                    {languages.map((l) => (
+                      <span
+                        key={l.name}
+                        className="h-full first:rounded-l-[2px] last:rounded-r-[2px]"
+                        style={{ width: `${l.percent}%`, backgroundColor: languageColor(l.name) }}
+                      />
+                    ))}
+                  </div>
+                  <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
+                    {languages.map((l) => (
+                      <li key={l.name} className="inline-flex items-center gap-1.5">
+                        <span className="h-2 w-2 rounded-[1px]" style={{ backgroundColor: languageColor(l.name) }} />
+                        <span className="text-darktech-text">{l.name}</span>
+                        <span className="t1-num text-darktech-muted">{l.percent}%</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-            <motion.div
-              variants={itemVariants}
-              className="glass-panel p-4 rounded-lg border border-darktech-border hover:border-darktech-neon-green/50 transition-all"
-            >
-              <div className="flex items-center justify-center mb-2">
-                <GitFork size={28} className="text-green-400" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolioData.githubStats.totalForks}
-              </p>
-              <p className="text-sm text-darktech-muted">Forks</p>
-            </motion.div>
+              {/* Repo legend — hovering a row lights its column in the scene */}
+              {legend.length > 0 && (
+                <div className="mt-8" data-reveal>
+                  <p className="t1-label mb-3">top repositories · by commits</p>
+                  <ul className="-mx-2" onMouseLeave={highlight(null)}>
+                    {legend.map((repo) => (
+                      <li key={repo.name}>
+                        <a
+                          href={repo.url || undefined}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onMouseEnter={highlight(repo.name)}
+                          onFocus={highlight(repo.name)}
+                          onBlur={highlight(null)}
+                          className="group grid grid-cols-[0.5rem_minmax(0,9rem)_1fr_auto] items-center gap-3 rounded-[2px] px-2 py-1.5 text-sm transition-colors hover:bg-darktech-lighter/60 focus-visible:bg-darktech-lighter/60"
+                        >
+                          <span className="h-2 w-2 rounded-[1px]" style={{ backgroundColor: languageColor(repo.language) }} />
+                          <span className="truncate text-darktech-text group-hover:text-darktech-neon-green">{repo.name}</span>
+                          <span className="h-[3px] rounded-r-[2px] bg-darktech-border">
+                            <span
+                              className="block h-full rounded-r-[2px] transition-[filter] group-hover:brightness-150"
+                              style={{ width: `${(repo.commits / maxCommits) * 100}%`, backgroundColor: languageColor(repo.language) }}
+                            />
+                          </span>
+                          <span className="t1-num w-12 text-right text-xs text-darktech-muted">{repo.commits}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-            <motion.div
-              variants={itemVariants}
-              className="glass-panel p-4 rounded-lg border border-darktech-border hover:border-darktech-neon-green/50 transition-all"
-            >
-              <div className="flex items-center justify-center mb-2">
-                <Calendar size={28} className="text-darktech-cyber-pink" />
-              </div>
-              <p className="text-3xl font-bold">
-                {portfolioData.githubStats.totalCommits}
-              </p>
-              <p className="text-sm text-darktech-muted">Commits</p>
-            </motion.div>
-          </motion.div>
+              {/* 90-day activity strip */}
+              {contributions.length > 0 && (
+                <div className="mt-8" data-reveal>
+                  <p className="t1-label mb-3">last {contributions.length} days</p>
+                  <svg
+                    viewBox={`0 0 ${contributions.length * 4} 28`}
+                    preserveAspectRatio="none"
+                    className="h-10 w-full"
+                    role="img"
+                    aria-label={`${dataset.contributionTotal} contributions over ${contributions.length} days`}
+                  >
+                    <line x1="0" x2={contributions.length * 4} y1="27.5" y2="27.5" stroke="rgb(var(--t1-line))" strokeWidth="1" />
+                    {contributions.map((c, i) => {
+                      const h = c.count > 0 ? 4 + (c.count / maxDay) * 22 : 0;
+                      return h > 0 ? (
+                        <rect key={c.date} x={i * 4 + 0.5} y={27 - h} width="3" height={h} rx="1" fill="rgb(var(--t1-signal))">
+                          <title>{`${c.date}: ${c.count} contribution${c.count === 1 ? '' : 's'}`}</title>
+                        </rect>
+                      ) : null;
+                    })}
+                  </svg>
+                  <p className="t1-num mt-2 text-xs text-darktech-muted">
+                    {dataset.contributionTotal} contributions · {dataset.activeDays} active days · longest streak {dataset.longestStreak}d
+                  </p>
+                </div>
+              )}
 
-          {/* Contribution Graph - Full Width */}
-          <motion.div
-            variants={itemVariants}
-            className="glass-panel p-6 rounded-xl border border-darktech-border hover:border-darktech-neon-green/30 transition-all mb-12"
-          >
-            <div className="flex items-center mb-4">
-              <Activity className="text-darktech-holo-cyan mr-2" size={20} />
-              <h3 className="text-xl font-semibold">Contribution Activity</h3>
-            </div>
-
-            <div className="flex items-center justify-center">
-              {username && (
-                <img
-                  src={`https://ghchart.rshah.org/008005/${username}`}
-                  alt="GitHub Contribution Graph"
-                  className="w-full"
-                  style={{ filter: "brightness(1.1)" }}
-                />
+              {dataset.profileUrl && (
+                <a
+                  href={dataset.profileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="t1-link mt-8 inline-flex items-center gap-1.5 font-jetbrains text-sm"
+                  data-reveal
+                >
+                  github.com/{dataset.username} <ArrowUpRight size={14} />
+                </a>
               )}
             </div>
-
-            <div className="flex justify-between px-2 mt-3">
-              <div className="flex items-center">
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 1)" }}
-                ></span>
-                <span className="text-xs text-darktech-muted pl-2">Less</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 0.8)" }}
-                ></span>
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 0.6)" }}
-                ></span>
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 0.4)" }}
-                ></span>
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 0.2)" }}
-                ></span>
-              </div>
-              <div className="flex items-center">
-                <span
-                  className="inline-block w-3 h-3 rounded-sm"
-                  style={{ backgroundColor: "rgba(0, 128, 0, 0.2)" }}
-                ></span>
-                <span className="text-xs text-darktech-muted pl-2">More</span>
-              </div>
-            </div>
-
-            <div className="mt-3 text-xs text-center text-darktech-muted flex justify-between px-2">
-              <span>12 months ago</span>
-              <span>6 months ago</span>
-              <span>Now</span>
-            </div>
-          </motion.div>
-
-          {/* Additional GitHub Stats with GitHub README Stats */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-12"
-          >
-            <div className="glass-panel p-6 rounded-xl border border-darktech-border hover:border-darktech-neon-green/30 transition-all">
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-6">
-                {/* GitHub Stats Card */}
-                <img
-                  src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&title_color=4ade80&icon_color=4ade80&text_color=ffffff&bg_color=00000000`}
-                  alt="GitHub Stats"
-                  className="w-full lg:w-1/2"
-                />
-                {/* Top Languages Card */}
-                <img
-                  src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&title_color=4ade80&icon_color=4ade80&text_color=ffffff&bg_color=00000000`}
-                  alt="Top Languages"
-                  className="w-full lg:w-1/2"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* GitHub Profile Link */}
-          <motion.div
-            variants={itemVariants}
-            className="text-center mt-10"
-          >
-            <a
-              href={portfolioData.socialLinks?.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-darktech-neon-green/20 hover:bg-darktech-neon-green/30 border border-darktech-neon-green/50 text-darktech-neon-green transition-all"
-            >
-              <Github size={20} />
-              <span>View Full GitHub Profile</span>
-            </a>
-          </motion.div>
-        </motion.div>
+          )}
+        </div>
       </div>
     </section>
   );
