@@ -1,0 +1,387 @@
+%-------------------------
+% Master CV in Latex
+% Author : Lakshya Jain
+% Formatting based on latest resume template (sb2nov style)
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+\usepackage{fontawesome5}
+\usepackage[bottom=.6in,top=.5in,left=.75in, right=.75in]{geometry}
+
+\usepackage{charter}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\setlength{\footskip}{5pt}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+}
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-1mm}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \small#2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% Project heading with a date column (kept from the master CV so project
+% timelines are not lost when adopting the newer template)
+\newcommand{\resumeProject}[4]{
+  \item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{\small #1} & \textit{\small #3} \\
+      \textit{\small #2} & \small #4 \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+% Positions of Responsibility / Extracurricular, single line with trailing dates
+\newcommand{\resumePOR}[3]{
+  \item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{\small #1}, \small #2 & \textit{\small #3} \\
+    \end{tabular*}\vspace{-7pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.10in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%---------- CENTRE HEADING ----------
+\begin{center}
+    \textbf{\Huge \scshape Lakshya Jain} \\ \vspace{1pt}
+    \small +91-7976123107 $|$ \href{mailto:lakshyajainrj19@gmail.com}{\faEnvelope \ \underline{lakshyajainrj19@gmail.com}} $|$
+    \href{https://www.linkedin.com/in/lakshyajain1503/}{\faLinkedin \ \underline{linkedin.com/in/lakshyajain1503}} $|$
+    \href{https://github.com/lakshyajain-0291}{\faGithub \ \underline{github.com/lakshyajain-0291}} \\ \vspace{2pt}
+    \href{https://me.lakshy.tech}{\faGlobe \ \underline{me.lakshy.tech}} $|$
+    \href{https://codeforces.com/profile/0291_lakshya}{\faCode \ \underline{codeforces.com/0291\_lakshya}}
+\end{center}
+\vspace{-5mm}
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Indian Institute of Technology Jodhpur}{2023 -- 2027}
+      {B.Tech. in Computer Science and Engineering}{CGPA: 8.97/10.0}
+    \resumeSubheading
+      {R.S. Memorial International School}{2020 -- 2022}
+      {Senior Secondary (CBSE)}{93.8\%}
+    \resumeSubheading
+      {St. Anne's Sr. Sec. School}{2012 -- 2020}
+      {Secondary (CBSE)}{94.6\%}
+  \resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Quant Developer Intern}{May 2026 -- Jul 2026}
+      {26 Miles Capital -- Quant Research Platform}{On-site, India}
+    \resumeItemListStart
+      \resumeItem{Built an end-to-end quant research platform consolidating the full research workflow — data, backtesting, and workbench — across \textbf{25 modules} (\textbf{64} data models) with auth/ACL, credits, RunBT orchestration, and S3 workspaces; sole owner from architecture (\textbf{14 ADRs}) to production.}
+      \resumeItem{Engineered multi-tenant isolated runtimes on \textbf{AWS ECS} with STS-scoped S3 access and idle-reclaim (\textbf{74\%} sessions auto-reclaimed, p50 start \textbf{$\sim$21s}); load-tested to \textbf{600+ concurrent users} at p95 \textbf{38ms} with zero errors and projected \textbf{27\%} AWS cost reduction.}
+      \resumeItem{Established engineering rigor with \textbf{C4-style} architecture documentation (\textbf{$\sim$91} active docs) and a KPI measurement pipeline tracking runtime, security, and test metrics (\textbf{65.1\%} test coverage, \textbf{76/100} auth security score, \textbf{$\sim$11ms} avg API p95); layered JWT auth, a central canAccess/requireRole ACL, and dual-OS-user isolation to keep firm credentials out of researcher runtimes.}
+    \resumeItemListEnd
+
+    \resumeSubheading
+      {Founder \& Lead Engineer}{Aug 2025 -- Mar 2026}
+      {\textbf{\textit{libr}} -- Censorship-Resilient Social Network}{\href{https://www.libr.social/}{\faGlobe \ \underline{Website}}}
+      \resumeItemListStart
+        \resumeItem{Founded and architected \textbf{\textit{libr}}, a censorship-resilient decentralized social network launched into a week-long public beta; attracted \textbf{250+ landing page visitors}, \textbf{570+ page views}, \textbf{100+ downloads}, and \textbf{1,000+ user posts}.}
+        \resumeItem{Designed a 3-tier system with clients, database nodes, and moderators; built core services in \textbf{Go} with \textbf{Docker}, \textbf{PostgreSQL}, \textbf{Kademlia DHT} for content routing, and cryptographic certificates for tamper-evident storage.}
+        \resumeItem{Implemented replicated \textbf{DHT}-based storage with partial immutability and \textbf{O(log n)} lookup, and designed a quorum-backed moderation layer, backed by risk analysis covering \textbf{20+} identified risks, to preserve content integrity across a distributed node set.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {Domain Lead -- Adobe Problem Statement}{Oct 2025 -- Dec 2025}
+      {Inter IIT Tech Meet 14.0}{\href{https://github.com/lakshyajain-0291/adobe-inter-iit}{ \faGithub \ \underline{Github}}}
+      \resumeItemListStart
+        \resumeItem{Led a cross-functional team to develop an AI-powered Flutter image editing app, integrating on-device \textbf{YOLO} segmentation for real-time object masking and a modular client--service architecture with edge inference \textbf{under a 200 MB} device footprint.}
+        \resumeItem{Developed isolated \textbf{Docker} AI compute containers on edge servers, orchestrating parallel editing pipelines (inpaint, erase, move, compositing) with \textbf{sub-30s end-to-end latency}; optimized the image editing pipeline for low-latency mobile interactions.}
+        \resumeItem{Directed integration of a multi-model AI pipeline -- \textbf{DDIM}-based latent move, YOLO-guided \textbf{Flux} inpainting, \textbf{U-Net} attention-based erase, and an instruction-tuned \textbf{Qwen2.5-3B}/Flux-Kontext compositing mode -- balancing on-device and edge-server inference across the feature set.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {SDE Intern -- Android Development}{Dec 2024 -- Apr 2025}
+      {PMStack}{\href{https://play.google.com/store/apps/details?id=com.reader.pinnzo}{\faGooglePlay \ \underline{Playstore}}}
+      \resumeItemListStart
+        \resumeItem{Engineered \textbf{Pinnzo}, a Flutter-based Android application for organizing and summarizing reading materials for working professionals, deployed to the \textbf{Google Play Store} with Firebase real-time data synchronization.}
+        \resumeItem{Partnered with startup founders to conceive and develop product features, reducing production time by \textbf{30\%} through implementing \textbf{Agile} methodologies and \textbf{2-week} sprint cycles.}
+        \resumeItem{Instrumented \textbf{Google Analytics} and \textbf{Crashlytics} to triage \textbf{163} critical bugs across Android versions, decreasing crash rates by \textbf{40\%} and improving app load speed by \textbf{25\%} to acquire \textbf{120+} beta users within the first month.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProject
+        {Mini-K8ts -- Container Orchestrator}
+        {Go, Docker, PostgreSQL, Control Plane, Prometheus, Grafana}
+        {2026}
+        {\href{https://github.com/lakshyajain-0291/mini-k8ts}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Developed a lightweight container orchestrator targeting edge environments with a \textbf{\textless{}50 MB control-plane RAM}, \textbf{25 MB binary}, and \textbf{\textless{}1 sec startup}; uses Go, Docker, and PostgreSQL as the ACID state store.}
+          \resumeItem{Built a reliability-aware, multi-stage scheduler with shadow resource tracking; sustains \textbf{220+ tasks/sec} throughput, \textbf{97.8--100\% scheduling efficiency}, converging 1000 tasks in \textbf{4.2 sec} and 2000 tasks in \textbf{9.1 sec}.}
+          \resumeItem{Hardened the system for production with token-based RBAC auth, per-client rate limiting, optional mTLS, and Postgres-backed leader election for HA, plus offline-tolerant edge workers validated by a \textbf{50-node/1,000-task} scale-test suite alongside Prometheus/Grafana monitoring.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {FileNest -- Multi-Modal P2P Search Engine}
+        {Go, Python, React, P2P (libp2p-kad-dht), CLIP, FAISS, Redis}
+        {Summer 2025}
+        {\href{https://github.com/AISocietyIITJ/FileNest}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Mentored a \textbf{hierarchical distributed tagging system} combining semantic embeddings with P2P routing (Kademlia DHT), enabling multi-modal search across text, PDFs, images, and video on a peer-to-peer network.}
+          \resumeItem{Designed an AI/ML pipeline integrating \textbf{BERT, Sentence-Transformers, and CLIP} for cross-modal understanding; targeted \textbf{15--20 files/sec} indexing throughput and sub-100ms query latency across 1000+ concurrent users.}
+          \resumeItem{Set up the project's \textbf{CI/CD} workflows and modular monorepo architecture (AI, backend, network, frontend) across the Go/Python/React stack, integrating Redis caching with SQLite/PostgreSQL metadata storage during \textbf{Summer RAID 2025} at IIT Jodhpur.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {GitCury -- AI-Powered Git Automation CLI}
+        {Go, Cobra CLI, Redis, NLP, Machine Learning}
+        {Apr. 2025}
+        {\href{https://github.com/lakshyajain-0291/GitCury}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Created an intelligent Git workflow automation tool that cut commit time \textbf{from 17 minutes to 32 seconds (97\% faster)}, handling 298 files with a 4 MB memory footprint via parallel AI-powered commit generation.}
+          \resumeItem{Reduced external API calls by \textbf{90\%} through semantic file clustering algorithms and batched operations; semantic clustering achieves \textbf{3.2$\times$ faster} processing than traditional approaches in multi-repository environments.}
+          \resumeItem{Architected a dependency-injected, interface-based codebase with a concurrent worker pool for multi-repo batch operations, exposing \textbf{3} selectable clustering strategies (directory, pattern, semantic) and shipping via Homebrew, Scoop, Docker, and \textbf{6} OS/architecture binaries.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {2nd Swap -- Secure, Intelligent Second-Hand Trading}
+        {Node.js, Express.js, MongoDB, Google OAuth 2.0, Cloudinary}
+        {Feb. 2025 -- Mar. 2025}
+        {\href{https://www.2ndswap.in/}{\faGlobe \ \underline{Website}}}
+        \resumeItemListStart
+          \resumeItem{Architected and deployed the complete backend within \textbf{1.5 weeks}, implementing \textbf{12+} RESTful API endpoints with \textbf{99.8\% uptime} for this startup.}
+          \resumeItem{Developed an AI-powered verification system that generates personalized, item-specific questions and automates the validation process, reducing manual intervention by \textbf{20\%} while processing over \textbf{30+} daily queries.}
+          \resumeItem{Implemented a secure object verification mechanism using \textbf{OCR-based code recognition} to uniquely identify and validate items, ensuring accurate verification for all listings.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {NIDS -- Network Intrusion Detection System}
+        {Python, FastAPI, Scapy, Machine Learning (Random Forest)}
+        {2025}
+        {\href{https://github.com/aradhya2708/nids}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Built an open-source network intrusion detection system in Python with a \textbf{FastAPI} backend that captures live traffic via \textbf{Scapy} and classifies packets as normal or anomalous in real time.}
+          \resumeItem{Implemented a custom \textbf{Random Forest} classifier -- bootstrapped feature-subspace sampling with information-gain decision trees -- trained on \textbf{14} engineered packet and connection features, including service/host tracking and statistical traffic patterns.}
+          \resumeItem{Exposed the detection pipeline through REST endpoints (health check, capture-and-classify) with configurable detection parameters, and documented a promiscuous-mode Linux deployment workflow for packet capture.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {C3P -- Collaborative Content Platform}
+        {React.js, Express.js, Node.js, MongoDB, Social Media APIs}
+        {Dec. 2024}
+        {\href{https://github.com/Aradhya2708/larv}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Constructed a full-stack platform enabling collaborative content creation with \textbf{8} user roles and streamlined publishing to \textbf{4} major social media platforms, reducing publishing time by \textbf{65\%}.}
+          \resumeItem{Devised role-based access control mechanisms and content ranking algorithms driven by \textbf{6} key engagement metrics, increasing user retention by \textbf{22\%}.}
+          \resumeItem{Orchestrated automated publishing workflows and revenue-sharing schemes for monetized content, processing \textbf{\$1200+} in transactions with \textbf{0} payment errors.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {RealmWeaver -- Dynamic Game Environment}
+        {C++, Gemini API, Data Structures and Algorithms}
+        {Sep. 2024 -- Nov. 2024}
+        {\href{https://github.com/lakshyajain-0291/RealmWeaver}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Engineered a dynamic game world with automated, AI-driven content generation, allowing the creation of \textbf{NPCs, quests, and locations in real-time}, ensuring a constantly evolving and personalized gameplay experience.}
+          \resumeItem{Optimized content generation by integrating \textbf{multiple round-robin API keys}, exponentially reducing creation time, speeding up the overall content creation from \textbf{5 mins} to \textbf{less than 1 min} for 3 keys.}
+          \resumeItem{Developed a centralized content management system that reduced the manual creation of NPCs, quests, and storylines by \textbf{100x}, enabling seamless and efficient world-building with minimal human input.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {GenCLI -- Semantic File Retrieval Tool}
+        {Go, Cobra, Gemini API}
+        {May 2024 -- Jun. 2024}
+        {\href{https://github.com/lakshyajain-0291/gencli}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Optimized file indexing performance from \textbf{19.2 seconds/file} to \textbf{1.2 seconds/file} by implementing batch processing and parallelization techniques, significantly improving efficiency.}
+          \resumeItem{Enhanced user experience with \textbf{7+ customizable themes}, providing a visually appealing and easy-to-use interface tailored to diverse user preferences.}
+          \resumeItem{Achieved \textbf{sub-second search response time}, enabling fast retrieval of indexed content across \textbf{50+ files} with advanced AI-driven semantic search capabilities.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {The Vindication -- Text-Based Adventure Game}
+        {C, JSON, ASCII Graphics}
+        {Apr. 2024 -- May. 2024}
+        {\href{https://github.com/lakshyajain-0291/Text-based-Adventure-Game-in-C}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Crafted an open-world adventure game featuring \textbf{27 quests} and \textbf{7 mini-games} using modular JSON-based data structures, achieving \textbf{10+ hours} of gameplay.}
+          \resumeItem{Programmed \textbf{120+} ASCII terminal graphics elements and integrated \textbf{15} in-game audio tracks to enhance user immersion, increasing average play session by \textbf{45\%}.}
+          \resumeItem{Formulated save/load functionality via JSON parsing to support \textbf{unlimited} unique game states and \textbf{25+} customization options with \textbf{100\%} data integrity.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {Image Filtration Program -- C-Based Image Processing}
+        {C, GCC, BMP File Format}
+        {Mar. 2024}
+        {\href{https://github.com/lakshyajain-0291/Image-filtration-in-C}{\faGithub \ \underline{Github}}}
+        \resumeItemListStart
+          \resumeItem{Programmed \textbf{6} image filters (Grayscale, Blur, Sharpen, Sobel Edge Detection, Reflect, Negative) for BMP file manipulation with \textbf{100\%} format compatibility.}
+          \resumeItem{Devised a robust image I/O system for processing 24-bit BMP files up to \textbf{4K resolution}, achieving an average processing time of under \textbf{3 seconds} for standard images.}
+          \resumeItem{Enhanced application reliability by debugging and refining filter algorithms to manage \textbf{15+} edge cases, reducing processing failures by \textbf{96\%}.}
+        \resumeItemListEnd
+
+      \resumeProject
+        {Travel Companion App -- Your Adventure, Simplified}
+        {Flutter, Firebase, Figma}
+        {Jan. 2024 -- Mar. 2024}
+        {\href{https://play.google.com/store/apps/details?id=com.devluplabs.travel_companiion}{\faGooglePlay \ \underline{Playstore}}}
+        \resumeItemListStart
+          \resumeItem{Developed a feature-rich mobile application exclusively for our college community, achieving \textbf{360+ registered users} and maintaining a \textbf{5-star rating} on user feedback.}
+          \resumeItem{Incorporated \textbf{7 core functionalities} including trip sharing, advanced filtering, and seamless search, enhancing the overall user experience.}
+          \resumeItem{Integrated a real-time user request system using Firebase, delivering \textbf{sub-1s} response times to ensure smooth coordination of trip join requests among \textbf{10+ concurrent users}.}
+        \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Go, C, C++, Java, Python, JavaScript, TypeScript, Dart} \\
+     \textbf{Frameworks \& Libraries}{: Flutter, React.js, Node.js, Express.js, Firebase, Cobra, Socket.io, Multer, Cloudinary, REST APIs} \\
+     \textbf{Databases \& Storage}{: PostgreSQL, MongoDB, Redis, Firestore, FAISS / Vector DBs} \\
+     \textbf{DevOps, Cloud \& Tools}{: Git, Docker, Kubernetes, Container Orchestration, Prometheus, Grafana, CI/CD (GitHub Actions), AWS (ECS/EC2/S3/STS), Postman, Trello} \\
+     \textbf{Systems \& Software Concepts}{: System Design, Distributed Systems, Microservices, P2P Networking, Multi-threading \& Concurrency, Computer Networks, Cryptography, Risk Analysis, Linux} \\
+     \textbf{AI / NLP Concepts}{: Vectorization, Embeddings, Semantic Search, AI-driven Querying, GPT Integration, Chatbot Development, Computer Vision (CLIP, YOLO), Fine-tuning} \\
+     \textbf{Soft Skills}{: Critical Thinking, Teamwork, Problem Solving, Communication, Leadership, Time Management} \\
+     \textbf{Other}{: Google OAuth 2.0, Responsive Design, Unit Testing, Debugging, OCR}
+    }}
+    \vspace{-1.5mm}
+ \end{itemize}
+
+%-----------COURSEWORK-----------
+\section{Coursework}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Computer Science}{: Data Structures \& Algorithms, Software Engineering (A), Database Management Systems (A), Operating Systems (A-), Computer Organization and Architecture (A), Embedded Systems (A), Computer Networks (A-), Cyber Security (A-), Blockchain (A), Virtualization and Cloud Computing (A-), Introduction to Computer Science (A*), Pattern Recognition and Machine Learning} \\
+     \textbf{Mathematics}{: Mathematics for Computing (A), Mathematics-I: Calculus (A), Mathematics-II: Linear Algebra (A-), Probability, Statistics and Stochastic Processes (A-), Foundations of Quantum Information (B)}
+    }}
+    \vspace{-1.5mm}
+ \end{itemize}
+
+%-----------ACHIEVEMENTS-----------
+\section{Achievements}
+ \resumeItemListStart
+    \resumeItem{\textbf{Ranked 6th among 23 IITs} at \textbf{Inter IIT Tech Meet 14.0} for the Adobe Problem Statement.}
+    \resumeItem{Serving as \textbf{Head/Coordinator} of \textbf{Devlup Labs}, the open-source community at IIT Jodhpur, mentoring \textbf{20+} contributors.}
+    \resumeItem{Delivered a \textbf{System Design} session to \textbf{100+} students covering scalable backend architecture and distributed systems.}
+    \resumeItem{Led the team to a \textbf{Gold Medal} in \textbf{Bug Bounty '25}, an open-source competition, by resolving critical bugs in existing projects.}
+    \resumeItem{Secured \textbf{Rs. 80,000+} in industry sponsorships as Assistant Head of \textbf{Prometeo '25} through corporate partnerships.}
+    \resumeItem{Increased \textbf{E-Cell Vandre '25} profit by \textbf{500\%} to \textbf{Rs. 2,28,153} through resource optimization and strategic planning.}
+    \resumeItem{Secured \textbf{1st place} in \textbf{CADastra} at \textbf{Prometeo '25}, IIT Jodhpur's Tech Fest, for innovative CAD design solutions.}
+    \resumeItem{Won \textbf{1st place} in \textbf{Pitch It} at \textbf{Initio '23}, E-Cell IIT Jodhpur's startup competition, with a compelling business proposal.}
+ \resumeItemListEnd
+
+%-----------POSITIONS OF RESPONSIBILITY-----------
+\section{Positions of Responsibility}
+  \resumeSubHeadingListStart
+    \resumePOR{Head/Coordinator}{DevlUp Labs, IIT Jodhpur}{Mar. 2025 -- Present}
+    \resumePOR{Core Member}{Quant Club, IIT Jodhpur}{May. 2024 -- Present}
+    \resumePOR{Associate}{Product Club, IIT Jodhpur}{May. 2024 -- Present}
+    \resumePOR{Senior Executive}{E-cell, IIT Jodhpur}{Jun. 2024 -- Present}
+  \resumeSubHeadingListEnd
+
+%-----------EXTRACURRICULAR-----------
+\section{Extracurricular}
+  \resumeSubHeadingListStart
+    \resumePOR{Student Guide}{Student Wellbeing Committee, IIT Jodhpur}{Jun. 2024 -- Apr. 2025}
+    \resumePOR{Assistant Head}{Prometeo X Econclave (Tech Fest), IIT Jodhpur}{2025}
+    \resumePOR{Volunteer}{Varshas (Sports Fest), IIT Jodhpur}{2024}
+  \resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
+
+% Hidden ATS Keywords
+\begin{comment}
+Backend Developer Frontend Developer Full Stack Developer Software Engineer SDE Software Development Engineer DevOps Engineer Mobile Developer Quantitative Developer Quant Developer
+Node.js Express.js REST API API Development MongoDB SQL Database NoSQL Database Firebase PostgreSQL Cloud Computing Distributed Systems
+Microservices System Architecture Docker Containerization Git Version Control CI/CD Continuous Integration Deployment Pipeline
+Go Programming Golang Dart Flutter Mobile Development Web Development JavaScript Python C++ Java React Redux Angular Vue
+Performance Optimization Scalability Cloud Infrastructure Software Testing System Design Algorithm Design Data Structures Object Oriented Programming
+Security Authentication OAuth JWT Agile Scrum GitHub Socket.io Real-time Applications Cross-platform Development Mobile Applications
+API Integration Third-party APIs Code Review Debugging Unit Testing Technical Documentation Team Collaboration Project Management
+Software Development Lifecycle SDLC Agile Development DevOps Practices Backend Architecture Frontend Architecture Database Design
+Middleware RESTful Services Multithreading Concurrency Database Management Web Services Mobile App Development Native Development
+Leadership Mentorship Problem-solving Data Analysis Analytical Thinking Technical Coaching Process Improvement Team Leadership
+Vector Embeddings Semantic Search Natural Language Processing Machine Learning AI Integration Cloud Services Google Cloud Firebase AWS ECS EC2 S3 STS
+Cryptography Blockchain DHT Distributed Hash Tables P2P Networks Network Programming Socket Programming TCP UDP HTTP HTTPS WebSockets
+UI UX Design User Interface User Experience Figma Design Patterns MVC MVP MVVM Clean Architecture Dependency Injection
+Test Driven Development Behavior Driven Development Code Coverage Integration Testing End to End Testing Automated Testing
+Continuous Deployment Blue Green Deployment Canary Deployment Rolling Updates Load Balancing High Availability Fault Tolerance
+Go Cobra CLI Android Development Gemini API Google Analytics Crashlytics Firebase Real-time Database Google Play Store App Development
+CLIP YOLO Flux Diffusion Models Fine-tuning Hugging Face Transformers Sentence Transformers BERT RoBERTa FAISS Milvus Vector Databases
+Backtesting Quantitative Research Financial Platform RunBT Strategy Evaluation Portfolio Management IP Security Data Access Control
+System Design Talk Technical Presentation Open Source Community Inter IIT Tech Meet Adobe Problem Statement AI Image Editing
+OCR Redis Cache Management Semantic File Clustering Byzantine Fault Tolerance Quorum-based Systems Kubernetes Container Orchestration Prometheus Grafana
+Cross-functional Partnerships Technical Workshops Data-driven Strategic Planning Resource Allocation Terminal UI Backend Infrastructure
+Code Quality Collaborative Development Repository Management Resource Optimization Quantitative Results Mentorship Student Guidance
+Algorithm Optimization Big O Notation Time Complexity Space Complexity Database Design Normalization Indexing Query Optimization
+API Design RESTful APIs GraphQL WebSockets Webhooks OAuth Authentication JWT Authorization HTTPS TLS/SSL
+Technical Leadership Team Collaboration Agile Methodologies Scrum Kanban Sprint Planning Story Points
+\end{comment}

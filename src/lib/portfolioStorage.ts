@@ -44,6 +44,7 @@ export interface PortfolioData {
     image?: string;
     phone?: string;
     email?: string;
+    collegeEmail?: string;
     location?: string;
   };
   experience?: Array<{

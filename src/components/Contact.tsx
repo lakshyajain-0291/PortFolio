@@ -42,7 +42,8 @@ const Contact = () => {
     },
   };
 
-  const email = portfolio?.email || DEFAULT_USER.EMAIL;
+  const email = portfolio?.socialLinks?.email || portfolio?.personalInfo?.email || DEFAULT_USER.EMAIL;
+  const collegeEmail = portfolio?.socialLinks?.collegeEmail || portfolio?.personalInfo?.collegeEmail;
   const linkedinUrl = portfolio?.socialLinks?.linkedin || DEFAULT_SOCIAL.LINKEDIN_URL;
   const githubUrl = portfolio?.socialLinks?.github || DEFAULT_SOCIAL.GITHUB_URL;
   
@@ -233,6 +234,11 @@ const Contact = () => {
                       <a href={`mailto:${email}`} className="text-darktech-muted hover:text-darktech-neon-green transition-colors break-all">
                         {email}
                       </a>
+                      {collegeEmail && (
+                        <a href={`mailto:${collegeEmail}`} className="block text-darktech-muted hover:text-darktech-neon-green transition-colors break-all">
+                          {collegeEmail}
+                        </a>
+                      )}
                     </div>
                   </div>
                   
