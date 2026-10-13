@@ -12,6 +12,7 @@ export default {
     "./src2/**/*.{ts,tsx}",
     "./src3/**/*.{ts,tsx}",
     "./shared/**/*.{ts,tsx}",
+    "./templates/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {

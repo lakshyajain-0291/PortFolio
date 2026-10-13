@@ -1,53 +1,52 @@
 import { useLayoutEffect, useRef } from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
 import { usePortfolio } from '@/hooks/PortfolioContext';
-import { DEFAULT_USER, SECTION_NUMBERS } from '@/config/env';
+import { SECTION_NUMBERS } from '@/config/env';
+import { PROFILE } from '../../shared/content/curated/profile';
 import { useGitHubDataset } from '../../shared/github/useGitHubDataset';
 import { gsap, SplitText } from './t1/gsap';
 import { align } from './t1/layout';
 
-const SECTION_IDS: Record<string, string> = {
-  EXPERIENCE: 'experience',
-  PROJECTS: 'projects',
-  GITHUB_STATS: 'github-stats',
-  TECH_STACK: 'tech-stack',
-  EDUCATION: 'education',
-  CONTACT: 'contact',
-};
-
-// The section that follows the hero in SECTION_NUMBERS order.
-const nextSectionId =
-  Object.entries(SECTION_IDS)
-    .map(([key, id]) => ({ id, order: SECTION_NUMBERS[key as keyof typeof SECTION_NUMBERS] }))
-    .filter((s) => s.order >= SECTION_NUMBERS.HERO)
-    .sort((a, b) => a.order - b.order)[0]?.id ?? 'projects';
+// The hero paints from curated PROFILE, so there is no loading state to show.
+const [FIRST_NAME, ...REST_NAME] = PROFILE.name.trim().split(/\s+/);
+const AVAILABILITY = `${PROFILE.institution}, graduating ${PROFILE.graduationYear}. Open to new-grad backend and infrastructure roles.`;
 
 const Hero = () => {
-  const { portfolio, isLoading } = usePortfolio();
+  const { portfolio } = usePortfolio();
   const { dataset } = useGitHubDataset();
   const sectionRef = useRef<HTMLElement>(null);
   const a = align(SECTION_NUMBERS.HERO);
-
-  const name = portfolio?.personalInfo?.name || DEFAULT_USER.NAME;
-  const title = portfolio?.personalInfo?.title || DEFAULT_USER.TITLE;
-  const bio = portfolio?.personalInfo?.summary || DEFAULT_USER.BIO;
-  const resumeUrl = portfolio?.resumeUrl || '/resume/resume.pdf';
-  const [first, ...rest] = name.trim().split(/\s+/);
-  const topLanguage = dataset.languages[0];
+  const centred = a.side === 'center';
+  const resumeUrl = portfolio?.resumeUrl || PROFILE.resumeUrl;
+  // Sentence breaks only where a capital follows, so "14.0" stays intact.
+  const aboutSentences = (portfolio?.personalInfo?.about ?? '').split(/(?<=[.!?])\s+(?=[A-Z])/);
+  const aboutLead = aboutSentences.slice(0, 2).join(' ');
+  const aboutRest = aboutSentences.slice(2).join(' ');
 
   useLayoutEffect(() => {
     const root = sectionRef.current;
-    if (!root || isLoading) return;
+    if (!root) return;
 
+    let cancelled = false;
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const split = SplitText.create(root.querySelectorAll('[data-hero-name]'), { type: 'chars', mask: 'chars' });
-        gsap
-          .timeline({ defaults: { ease: 'expo.out' } })
-          .from(split.chars, { yPercent: 115, duration: 1.2, stagger: 0.04 })
-          .from('[data-hero-in]', { y: 28, autoAlpha: 0, duration: 1, stagger: 0.09 }, '-=0.9')
-          .from('[data-hero-rule]', { scaleX: 0, transformOrigin: 'left center', duration: 1.2 }, '<');
+        const intro = root.querySelectorAll('h1, [data-hero-in], [data-hero-rule]');
+        // Hold the intro until the display face has loaded, so SplitText measures
+        // Rajdhani rather than the fallback.
+        gsap.set(intro, { autoAlpha: 0 });
+        (document.fonts?.ready ?? Promise.resolve()).then(() => {
+          if (cancelled) return;
+          ctx.add(() => {
+            gsap.set(intro, { autoAlpha: 1 });
+            const split = SplitText.create(root.querySelectorAll('[data-hero-name]'), { type: 'chars', mask: 'chars' });
+            gsap
+              .timeline({ defaults: { ease: 'expo.out' } })
+              .from(split.chars, { yPercent: 115, duration: 1.2, stagger: 0.04 })
+              .from('[data-hero-in]', { y: 28, autoAlpha: 0, duration: 1, stagger: 0.09 }, '-=0.9')
+              .from('[data-hero-rule]', { scaleX: 0, transformOrigin: 'left center', duration: 1.2 }, '<');
+          });
+        });
 
         // As the reader leaves the hero, the copy lifts and thins out of the scene's way.
         gsap.to('[data-hero-content]', {
@@ -59,8 +58,11 @@ const Hero = () => {
       });
     }, root);
 
-    return () => ctx.revert();
-  }, [isLoading, name]);
+    return () => {
+      cancelled = true;
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <section
@@ -70,92 +72,65 @@ const Hero = () => {
       data-section-number={SECTION_NUMBERS.HERO !== 0 ? SECTION_NUMBERS.HERO : 0}
     >
       <div className="container relative z-[1] mx-auto px-4">
-        {isLoading ? (
-          <p className="t1-label animate-pulse">booting profile…</p>
-        ) : (
-          <div data-hero-content className={`flex w-full flex-col md:w-4/5 ${a.block} ${a.items} ${a.text}`}>
-            <p data-hero-in className={`t1-label mb-8 flex items-center gap-3 ${a.justify}`}>
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-darktech-neon-green opacity-60 motion-safe:animate-ping" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-darktech-neon-green" />
+        <div
+          data-hero-content
+          className={`relative isolate flex w-full flex-col md:w-4/5 ${a.block} ${a.items} ${a.text}`}
+        >
+          {centred && <div aria-hidden="true" className="t1-hero-scrim" />}
+
+          <h1 className="font-rajdhani text-[clamp(3.6rem,12vw,9.5rem)] font-bold uppercase leading-[0.82] tracking-[-0.02em]">
+            <span className="sr-only">{PROFILE.name}</span>
+            <span aria-hidden="true" data-hero-name className="block">
+              {FIRST_NAME}
+            </span>
+            {REST_NAME.length > 0 && (
+              <span aria-hidden="true" data-hero-name className="block text-darktech-neon-green">
+                {REST_NAME.join(' ')}
               </span>
-              <span className="text-darktech-text">{title}</span>
-            </p>
-
-            <h1 className="font-rajdhani text-[clamp(3.6rem,12vw,9.5rem)] font-bold uppercase leading-[0.82] tracking-[-0.02em]">
-              <span className="sr-only">{name}</span>
-              <span aria-hidden="true" data-hero-name className="block">
-                {first}
-              </span>
-              {rest.length > 0 && (
-                <span aria-hidden="true" data-hero-name className="block text-darktech-neon-green">
-                  {rest.join(' ')}
-                </span>
-              )}
-            </h1>
-
-            <p data-hero-in className="mt-6 font-rajdhani text-2xl font-semibold text-darktech-text/80 sm:text-3xl">
-              Building the Future with Dev and AI
-            </p>
-
-            <div data-hero-rule className={`my-8 h-px w-full max-w-2xl bg-darktech-border ${a.push}`} />
-
-            <div data-hero-in className={`t1-panel max-w-2xl p-6 text-left ${a.push}`}>
-              <p className="t1-label mb-3">readme.md</p>
-              <p className="text-base leading-relaxed text-darktech-text/85 sm:text-lg">{bio}</p>
-            </div>
-
-            <div data-hero-in className={`mt-8 flex flex-wrap items-center gap-3 ${a.justify}`}>
-              <a
-                href="#projects"
-                className="group inline-flex items-center gap-3 rounded-[3px] bg-darktech-neon-green px-6 py-3.5 font-semibold text-darktech-background transition-colors hover:bg-darktech-neon-green/90"
-              >
-                View projects
-                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center rounded-[3px] border border-darktech-border bg-darktech-background/40 px-6 py-3.5 font-medium backdrop-blur transition-colors hover:border-darktech-neon-green/60"
-              >
-                Contact
-              </a>
-              <a href={resumeUrl} download className="t1-link inline-flex items-center gap-2 px-3 py-3.5 text-sm">
-                <FileText size={16} />
-                Resume
-              </a>
-            </div>
-
-            {dataset.hasData && (
-              <div data-hero-in className={`mt-12 flex max-w-2xl flex-col gap-2 ${a.items}`}>
-                <p className="t1-num flex flex-wrap gap-x-5 gap-y-1 text-sm text-darktech-text">
-                  <span><b className="font-medium text-darktech-neon-green">{dataset.totals.repos}</b> repos</span>
-                  <span><b className="font-medium text-darktech-neon-green">{dataset.totals.stars}</b> stars</span>
-                  <span><b className="font-medium text-darktech-neon-green">{dataset.totals.commitsLabel}</b> commits</span>
-                  {topLanguage && (
-                    <span>
-                      <b className="font-medium text-darktech-neon-green">{topLanguage.name}</b> {topLanguage.percent}%
-                    </span>
-                  )}
-                </p>
-                <p className="t1-label normal-case tracking-normal">
-                  ↳ every column in the field behind this text is one of my repositories — height is commits, glow is stars.
-                </p>
-              </div>
             )}
-          </div>
-        )}
-      </div>
+          </h1>
 
-      <a
-        href={`#${nextSectionId}`}
-        className="t1-label absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex"
-        aria-label="Scroll to next section"
-      >
-        scroll
-        <span className="block h-10 w-px overflow-hidden bg-darktech-border">
-          <span className="block h-1/2 w-px bg-darktech-neon-green motion-safe:animate-[t1-scroll-cue_1.8s_ease-in-out_infinite]" />
-        </span>
-      </a>
+          <p data-hero-in className="mt-6 font-rajdhani text-2xl font-semibold text-darktech-text sm:text-3xl">
+            {PROFILE.role}
+          </p>
+          <p data-hero-in className="mt-3 text-sm text-darktech-text/80 sm:text-base">
+            {AVAILABILITY}
+          </p>
+
+          <div data-hero-rule className={`my-8 h-px w-full max-w-2xl bg-darktech-border ${a.push}`} />
+
+          <p data-hero-in className={`max-w-2xl text-base leading-relaxed text-darktech-text/85 sm:text-lg ${a.push}`}>
+            {aboutLead}
+            {aboutRest && <span className="hidden sm:inline"> {aboutRest}</span>}
+          </p>
+
+          <div data-hero-in className={`mt-8 flex flex-wrap items-center gap-3 ${a.justify}`}>
+            <a
+              href={resumeUrl}
+              className="inline-flex items-center gap-2.5 rounded-[3px] bg-darktech-neon-green px-6 py-3.5 font-semibold text-darktech-background transition-colors hover:bg-darktech-neon-green/90"
+            >
+              <FileText size={18} />
+              Resume (PDF)
+            </a>
+            <a
+              href="#projects"
+              className="group inline-flex items-center gap-2.5 rounded-[3px] border border-darktech-border bg-darktech-background/40 px-6 py-3.5 font-medium backdrop-blur transition-colors hover:border-darktech-neon-green/60"
+            >
+              View projects
+              <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+            <a href="#contact" className="t1-link inline-flex items-center px-3 py-3.5">
+              Contact
+            </a>
+          </div>
+
+          {dataset.hasData && (
+            <p data-hero-in className="mt-12 max-w-2xl text-sm text-darktech-muted">
+              Every column in the field behind this text is one of my repositories: height is commits, glow is stars.
+            </p>
+          )}
+        </div>
+      </div>
     </section>
   );
 };

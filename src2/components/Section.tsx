@@ -21,3 +21,10 @@ const Section = ({ id, label, children, className = '' }: SectionProps) => (
 );
 
 export default Section;
+
+/**
+ * Stand-in while portfolio.json loads. Reserves a screen of height rather than
+ * printing "Loading…", so the sections below are already out of view when the
+ * content lands and nothing on screen is pushed down.
+ */
+export const SectionPending = () => <div aria-busy="true" className="min-h-screen" />;

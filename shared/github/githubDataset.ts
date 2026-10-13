@@ -6,7 +6,7 @@
  * every template renders in its own way. Nothing here fetches; it only reads the
  * PortfolioData object already loaded by PortfolioContext.
  */
-import type { PortfolioData } from '../../src/lib/portfolioStorage';
+import type { RawPortfolio as PortfolioData } from '../content/raw';
 
 export interface RepoStat {
   name: string;
@@ -232,7 +232,7 @@ export function buildGitHubDataset(portfolio: PortfolioData | null | undefined):
   }
 
   const raw = portfolio.githubData as RawGithubData | undefined;
-  const stats = portfolio.githubStats ?? {};
+  const stats: NonNullable<PortfolioData['githubStats']> = portfolio.githubStats ?? {};
 
   const rawRepos = reposFromRaw(raw);
   const repos = (rawRepos.length > 0 ? rawRepos : reposFromProjects(portfolio)).sort(

@@ -22,5 +22,3 @@ export function align(n: number) {
     from: side === 'right' ? 'right' : side === 'left' ? 'left' : 'up',
   } as const;
 }
-
-export const pad2 = (n: number) => String(n).padStart(2, '0');

@@ -1,8 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
-import { getTechStackWithIcons } from '../../src/lib/portfolioReader';
-import Section from './Section';
+import Section, { SectionPending } from './Section';
 import { EASE_PAPER, ink, leading, onScroll } from '../motion';
 
 /** Hairline proficiency rule; observes its track (a scaled-to-zero fill never intersects). */
@@ -25,24 +24,25 @@ const SkillRule = ({ value }: { value: number }) => {
 const TechStack = () => {
   const { portfolio, isLoading } = usePortfolio();
   const topSkills = useMemo(() => portfolio?.insights?.topSkills ?? [], [portfolio]);
-  const tools = getTechStackWithIcons(portfolio);
+  const tools = (portfolio?.techStack ?? []);
 
   const categories = useMemo(() => {
     const groups = new Map<string, typeof topSkills>();
     topSkills.forEach((s) => groups.set(s.category, [...(groups.get(s.category) ?? []), s]));
-    return [...groups.entries()].sort((a, b) => Math.max(...b[1].map((s) => s.proficiency)) - Math.max(...a[1].map((s) => s.proficiency)));
+    const top = (skills: typeof topSkills) => Math.max(0, ...skills.map((s) => s.proficiency ?? 0));
+    return [...groups.entries()].sort((a, b) => top(b[1]) - top(a[1]));
   }, [topSkills]);
 
   return (
     <Section id="tech-stack" label="Stack">
       {isLoading ? (
-        <p className="t2-meta">Loading…</p>
+        <SectionPending />
       ) : categories.length === 0 && tools.length === 0 ? (
         <p className="text-muted-foreground">No skills data yet.</p>
       ) : (
         <motion.div variants={leading(0.08)} {...onScroll}>
           <motion.p variants={ink} className="text-muted-foreground">
-            Scored from shipped work across my repositories — the number is confidence, not a badge.
+            Grouped by area, each with the work it was used in.
           </motion.p>
 
           <dl className="mt-10 space-y-8">
@@ -54,9 +54,15 @@ const TechStack = () => {
                     <div key={skill.name} className="group" title={skill.justification}>
                       <div className="flex items-baseline justify-between gap-4">
                         <span className="text-foreground">{skill.name}</span>
-                        <span className="t2-meta tabular-nums transition-colors group-hover:text-primary">{Math.round(skill.proficiency)}</span>
+                        {typeof skill.proficiency === 'number' && (
+                          <span className="t2-meta t2-num transition-colors group-hover:text-primary">{Math.round(skill.proficiency)}</span>
+                        )}
                       </div>
-                      <SkillRule value={skill.proficiency} />
+                      {typeof skill.proficiency === 'number' ? (
+                        <SkillRule value={skill.proficiency} />
+                      ) : (
+                        skill.justification && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{skill.justification}</p>
+                      )}
                     </div>
                   ))}
                 </dd>
@@ -65,17 +71,15 @@ const TechStack = () => {
           </dl>
 
           {tools.length > 0 && (
-            <motion.div variants={ink} className="mt-12 border-t border-border pt-6">
-              <p className="t2-meta mb-3 uppercase">Also in the toolbox</p>
-              <p className="t2-serif text-lg leading-relaxed text-foreground/85">
-                {tools.map((t, i) => (
-                  <span key={`${t.name}-${i}`}>
-                    {t.name}
-                    {i < tools.length - 1 && <span className="mx-2 text-primary/70">·</span>}
-                  </span>
-                ))}
-              </p>
-            </motion.div>
+            <motion.p variants={ink} className="mt-12 border-t border-border pt-6 leading-relaxed text-muted-foreground">
+              Also:{' '}
+              {tools.map((t, i) => (
+                <span key={`${t.name}-${i}`}>
+                  <span className="text-foreground">{t.name}</span>
+                  {i < tools.length - 1 ? <span className="text-primary/70">{' · '}</span> : '.'}
+                </span>
+              ))}
+            </motion.p>
           )}
         </motion.div>
       )}

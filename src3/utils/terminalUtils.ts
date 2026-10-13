@@ -1,175 +1,70 @@
 import React from 'react';
+import type { PortfolioData } from '../../src/lib/portfolioStorage';
 
 /**
- * Terminal utility functions for formatting and manipulating terminal output
+ * Terminal utility functions for formatting terminal output.
  */
 
-/**
- * Truncates a string and adds ellipsis if it exceeds the max length
- * @param str The string to truncate
- * @param maxLength Maximum length before truncation
- * @returns Truncated string with ellipsis if needed
- */
-export function truncateWithEllipsis(str: string, maxLength: number = 80): string {
-  if (!str) return '';
-  if (str.length <= maxLength) return str;
-  return `${str.substring(0, maxLength)}...`;
+const DEFAULT_RESUME_PATH = '/resume/resume.pdf';
+
+/** Absolute URL for a site path, so it prints as a clickable link. */
+export function absoluteUrl(path: string): string {
+  if (typeof window === 'undefined' || /^[a-z]+:/i.test(path)) return path;
+  return new URL(path, window.location.origin).href;
 }
 
-/**
- * Formats a date for terminal output
- * @param dateStr Date string to format
- * @returns Formatted date string
- */
-export function formatTerminalDate(dateStr?: string): string {
-  if (!dateStr) return 'N/A';
-  
-  try {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  } catch (error) {
-    return dateStr; // Return original if parsing fails
-  }
+/** The resume URL from the data, falling back to the bundled PDF. */
+export function resumeUrlOf(portfolio: PortfolioData | null | undefined): string {
+  return absoluteUrl(portfolio?.resumeUrl || DEFAULT_RESUME_PATH);
 }
 
-/**
- * Safely access nested properties in an object
- * @param obj Object to access
- * @param path Path to the property, using dot notation
- * @param defaultValue Default value if property doesn't exist
- * @returns The property value or default value
- */
-export function getNestedValue(obj: any, path: string, defaultValue: any = null): any {
-  if (!obj || !path) return defaultValue;
-  
-  const keys = path.split('.');
-  let value = obj;
-  
-  for (const key of keys) {
-    if (value === undefined || value === null || typeof value !== 'object') {
-      return defaultValue;
-    }
-    value = value[key];
-  }
-  
-  return value !== undefined ? value : defaultValue;
+/** Main site (Systems Paper edition). */
+export function mainSiteHref(): string {
+  return typeof window === 'undefined' ? '?template=paper' : `${window.location.pathname}?template=paper`;
 }
 
-/**
- * Format a date string
- * This is a compatibility function for the terminal component
- * @param dateString String to format as date
- * @returns Formatted date string
- */
-export function formatDate(dateString: string): string {
-  if (!dateString) return '';
-  
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  } catch (error) {
-    return dateString;
-  }
-}
+// http(s) URLs, explicit mailto: links, and bare email addresses.
+const LINK_PATTERN = /(https?:\/\/[^\s]+|mailto:[^\s]+|[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,})/g;
+// Sentence punctuation that follows a link rather than belonging to it.
+const TRAILING = /[.,;:!?)\]'"]+$/;
 
 /**
- * Parse text to detect URLs and convert them to clickable links
- * This improved version preserves line breaks and spacing
- * @param text The text to parse for URLs
- * @returns An array of text and JSX link elements
+ * Splits text into strings and clickable links (URLs and email addresses).
+ * Line breaks are kept as <br> elements.
  */
 export function parseTextForLinks(text: string): (string | JSX.Element)[] {
   if (!text) return [];
-  
-  // Split text by newlines to handle line breaks properly
-  const lines = text.split('\n');
-  
-  // Process each line for URLs
   const result: (string | JSX.Element)[] = [];
-  
-  lines.forEach((line, lineIndex) => {
-    // Add line break before each line (except the first)
-    if (lineIndex > 0) {
-      result.push(React.createElement('br', { key: `br-${lineIndex}` }));
-    }
-    
-    // Skip empty lines but preserve the line break
-    if (!line.trim()) {
-      return;
-    }
-    
-    // Regex to detect URLs - supports http, https, ftp protocols
-    const urlRegex = /(https?:\/\/|ftp:\/\/)[^\s]+/g;
-    const urlMatches = line.match(urlRegex);
-    
-    // If no URLs in this line, just add the text
-    if (!urlMatches) {
-      result.push(line);
-      return;
-    }
-    
-    // Process line with URLs
-    let lastIndex = 0;
-    const lineResult: (string | JSX.Element)[] = [];
-    
-    // Iterate through matches
-    urlMatches.forEach((url, urlIndex) => {
-      const urlIndex1 = line.indexOf(url, lastIndex);
-      
-      // Add text before URL
-      if (urlIndex1 > lastIndex) {
-        lineResult.push(line.substring(lastIndex, urlIndex1));
-      }
-      
-      // Convert src/ and public/ URLs to src3/ if needed
-      let targetUrl = url;
-      if (url.includes('/src/') || url.startsWith('src/')) {
-        targetUrl = url.replace(/\/src\/|^src\//, '/src3/');
-      } else if (url.includes('/public/') || url.startsWith('public/')) {
-        targetUrl = url.replace(/\/public\/|^public\//, '/src3/');
-      }
-      
-      // Add URL as clickable link
-      lineResult.push(
-        React.createElement('a', {
-          key: `link-${lineIndex}-${urlIndex}`,
-          href: targetUrl,
-          target: '_blank',
-          rel: 'noopener noreferrer',
-          className: 'terminal-link',
-          onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
-            // For local file links, prevent default behavior and handle specially
-            if (targetUrl.includes('/src3/') || targetUrl.includes('file://')) {
-              e.preventDefault();
-              // Create custom event to notify terminal of navigation to file
-              const event = new CustomEvent('terminalNavigate', {
-                detail: { url: targetUrl }
-              });
-              window.dispatchEvent(event);
-            }
-          }
-        }, url)
+
+  text.split('\n').forEach((line, lineIndex) => {
+    if (lineIndex > 0) result.push(React.createElement('br', { key: `br-${lineIndex}` }));
+    if (!line) return;
+
+    let last = 0;
+    for (const match of line.matchAll(LINK_PATTERN)) {
+      const start = match.index ?? 0;
+      const raw = match[0];
+      const label = raw.replace(TRAILING, '');
+      if (start > last) result.push(line.slice(last, start));
+
+      const isWeb = /^https?:\/\//i.test(label);
+      const href = isWeb || label.startsWith('mailto:') ? label : `mailto:${label}`;
+      result.push(
+        React.createElement(
+          'a',
+          {
+            key: `link-${lineIndex}-${start}`,
+            href,
+            className: 'terminal-link',
+            ...(isWeb ? { target: '_blank', rel: 'noopener noreferrer' } : {}),
+          },
+          label.replace(/^mailto:/, ''),
+        ),
       );
-      
-      lastIndex = urlIndex1 + url.length;
-    });
-    
-    // Add any remaining text after the last URL
-    if (lastIndex < line.length) {
-      lineResult.push(line.substring(lastIndex));
+      last = start + label.length;
     }
-    
-    // Add the processed line elements to the result
-    result.push(...lineResult);
+    if (last < line.length) result.push(line.slice(last));
   });
-  
+
   return result;
 }

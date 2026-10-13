@@ -2,9 +2,26 @@ import { createRoot } from 'react-dom/client'
 import { TEMPLATE_CONFIG } from './config/env'
 import './index.css'
 
+// Start the chosen template's fonts downloading in parallel with its chunk.
+const FONT_PRELOADS: Record<string, string[]> = {
+  atlas: ['/fonts/atlas/archivo-normal.woff2', '/fonts/atlas/martian-mono-normal.woff2'],
+  paper: ['/fonts/paper/source-serif-4-normal.woff2'],
+}
+for (const href of FONT_PRELOADS[String(TEMPLATE_CONFIG.TEMPLATE_NUMBER)] ?? []) {
+  const link = document.createElement('link')
+  Object.assign(link, { rel: 'preload', as: 'font', type: 'font/woff2', href, crossOrigin: 'anonymous' })
+  document.head.appendChild(link)
+}
+
 // Dynamically import the App component based on template number
 const getApp = async () => {
-  if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 3) {
+  if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 'atlas') {
+    const { default: App } = await import('../templates/atlas/App')
+    return App
+  } else if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 'paper') {
+    const { default: App } = await import('../templates/paper/App')
+    return App
+  } else if (TEMPLATE_CONFIG.TEMPLATE_NUMBER === 3) {
     // Load App from src3 directory for terminal template
     const { default: App } = await import('../src3/App')
     return App

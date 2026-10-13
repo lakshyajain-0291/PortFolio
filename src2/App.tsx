@@ -45,7 +45,7 @@ const App = () => {
             Skip to content
           </a>
           <Header />
-          <div className="relative z-[1] mx-auto min-h-screen max-w-screen-xl px-6 pb-12 pt-20 font-inter md:px-12 md:py-20 lg:px-24 lg:py-0">
+          <div className="relative z-[1] mx-auto min-h-screen max-w-screen-xl px-6 pb-12 pt-20 md:px-12 md:py-20 lg:px-24 lg:py-0">
             <div className="lg:flex lg:justify-between lg:gap-12">
               {/* Sticky identity column */}
               <Hero />

@@ -10,7 +10,7 @@ import { formatMonthYear } from '../../shared/github/githubDataset';
 import { EASE_PAPER } from '../motion';
 
 const ACCENT = 'hsl(var(--primary))';
-const INK_SOFT = 'hsl(var(--foreground) / 0.22)';
+const INK_SOFT = 'hsl(var(--foreground) / 0.4)';
 const RULE = 'hsl(var(--border))';
 
 /** Tracks an element's content width so SVG text stays at true pixel size. */
@@ -38,7 +38,7 @@ export function CommitsByRepo({ repos }: { repos: RepoStat[] }) {
   const [ref, width] = useWidth<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
   const max = Math.max(1, ...repos.map((r) => r.commits));
-  const labelW = width < 420 ? 104 : 136;
+  const labelW = width < 420 ? 116 : 148;
   const valueW = 44;
   const plotW = Math.max(0, width - labelW - valueW);
   const height = repos.length * ROW;
@@ -87,10 +87,10 @@ export function CommitsByRepo({ repos }: { repos: RepoStat[] }) {
                     y={ROW / 2}
                     dominantBaseline="central"
                     textAnchor="end"
-                    className="font-plex-mono text-[11px]"
+                    className="text-[12px]"
                     fill={isActive ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))'}
                   >
-                    {repo.name.length > 16 ? `${repo.name.slice(0, 15)}…` : repo.name}
+                    {repo.name.length > 14 ? `${repo.name.slice(0, 13)}…` : repo.name}
                   </text>
                   {/* 4px rounded data-end, square at the baseline (left rounding clipped) */}
                   <g clipPath={`url(#${clipId})`}>
@@ -110,7 +110,7 @@ export function CommitsByRepo({ repos }: { repos: RepoStat[] }) {
                     x={labelW + 1 + w + 8}
                     y={ROW / 2}
                     dominantBaseline="central"
-                    className="text-[12px] tabular-nums"
+                    className="font-plex-mono text-[12px] tabular-nums"
                     fill={isActive ? 'hsl(var(--foreground))' : 'hsl(var(--muted-foreground))'}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: seen ? 1 : 0 }}
@@ -144,7 +144,7 @@ export function LanguageRanks({ languages }: { languages: LanguageShare[] }) {
     <figure ref={ref}>
       <figcaption className="mb-4 flex items-baseline justify-between gap-4">
         <span className="font-medium text-foreground">Languages</span>
-        <span className="t2-meta">share of repositories</span>
+        <span className="t2-meta">share of featured repositories</span>
       </figcaption>
       <ul className="space-y-3">
         {languages.map((l, i) => (
@@ -159,7 +159,7 @@ export function LanguageRanks({ languages }: { languages: LanguageShare[] }) {
                 transition={{ duration: 1, delay: 0.06 * i, ease: EASE_PAPER }}
               />
             </span>
-            <span className="t2-meta text-right tabular-nums">{l.percent}%</span>
+            <span className="t2-meta t2-num text-right">{l.percent}%</span>
           </li>
         ))}
       </ul>
@@ -224,7 +224,7 @@ export function ActivityStrip({ points }: { points: ContributionPoint[] }) {
           </svg>
         )}
       </div>
-      <div className="t2-meta mt-2 flex justify-between">
+      <div className="t2-meta t2-num mt-2 flex justify-between">
         <span>{fmtDay(points[0].date)}</span>
         <span>{fmtDay(points[points.length - 1].date)}</span>
       </div>

@@ -1,32 +1,18 @@
-import { motion } from 'framer-motion';
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
-import { DEFAULT_USER } from '../../src/config/env';
 import Section from './Section';
-import { ink, leading, onScroll } from '../motion';
 
+/**
+ * No entrance motion: the text mounts when the JSON arrives, and a variant
+ * child of an already-fired parent would stay invisible. The block reserves
+ * its height so the arrival does not shift the page.
+ */
 const About = () => {
   const { portfolio } = usePortfolio();
-  const summary = portfolio?.personalInfo?.summary || DEFAULT_USER.BIO;
-  const trajectory = portfolio?.insights?.careerTrajectory as string | undefined;
-  const stack: string[] = portfolio?.insights?.technicalProfile?.primaryStack ?? [];
-
   return (
     <Section id="about" label="About">
-      <motion.div variants={leading(0.12)} {...onScroll} className="t2-prose space-y-5 text-muted-foreground">
-        <motion.p variants={ink} className="text-foreground/90">{summary}</motion.p>
-        {trajectory && <motion.p variants={ink}>{trajectory}</motion.p>}
-        {stack.length > 0 && (
-          <motion.p variants={ink}>
-            Most days that means{' '}
-            {stack.map((item, i) => (
-              <span key={item}>
-                <span className="text-foreground">{item}</span>
-                {i < stack.length - 2 ? ', ' : i === stack.length - 2 ? ' and ' : '.'}
-              </span>
-            ))}
-          </motion.p>
-        )}
-      </motion.div>
+      <div className="t2-prose min-h-[9lh]">
+        <p className="text-foreground/90">{portfolio?.personalInfo?.about}</p>
+      </div>
     </Section>
   );
 };

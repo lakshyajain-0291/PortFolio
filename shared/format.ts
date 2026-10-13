@@ -24,3 +24,6 @@ export function formatDateRange(range?: string | null): string {
   if (!start) return '';
   return `${start} – ${end}`;
 }
+
+/** Typesets a date range with an en dash: "Mar 2025 - Present" -> "Mar 2025 – Present", "2023-2027" -> "2023–2027". */
+export const dashRange = (s: string) => s.replace(/\s+-\s+/g, ' – ').replace(/(\d)-(\d)/g, '$1–$2');

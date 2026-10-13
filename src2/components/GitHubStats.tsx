@@ -1,17 +1,25 @@
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { useGitHubDataset } from '../../shared/github/useGitHubDataset';
-import Section from './Section';
+import { usePortfolio } from '../../src/hooks/PortfolioContext';
+import Section, { SectionPending } from './Section';
 import { ActivityStrip, CommitsByRepo, LanguageRanks } from './GitHubChart';
 import { ink, leading, onScroll, rule } from '../motion';
 
 const GitHubStats = () => {
   const { dataset, isLoading } = useGitHubDataset();
+  const { portfolio } = usePortfolio();
   const { totals } = dataset;
+  const stats = portfolio?.githubStats as { contributionsSince?: number; contributionsAsOf?: string } | undefined;
+  const since = stats?.contributionsSince;
+  const asOf = stats?.contributionsAsOf;
+  const asOfLabel = asOf
+    ? new Date(`${asOf}T00:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+    : null;
 
   const figures = [
     { label: 'Repositories', value: String(totals.repos) },
-    { label: 'Commits', value: totals.commitsLabel },
+    { label: since ? `Commits since ${since}` : 'Commits', value: totals.commitsLabel },
     { label: 'Stars', value: String(totals.stars) },
     { label: 'Forks', value: String(totals.forks) },
   ];
@@ -19,7 +27,7 @@ const GitHubStats = () => {
   return (
     <Section id="github-stats" label="GitHub">
       {isLoading ? (
-        <p className="t2-meta">Loading…</p>
+        <SectionPending />
       ) : !dataset.hasData ? (
         <p className="text-muted-foreground">No GitHub statistics available yet.</p>
       ) : (
@@ -28,14 +36,19 @@ const GitHubStats = () => {
             The public record: what I build in the open, measured rather than described.
           </motion.p>
 
-          <motion.dl variants={ink} className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-4">
+          <motion.dl variants={ink} className="mt-8 grid grid-cols-2 gap-y-6 sm:grid-cols-[0.85fr_1.45fr_0.85fr_0.85fr]">
             {figures.map((f) => (
               <div key={f.label} className="sm:border-l sm:border-border sm:pl-5 sm:first:border-l-0 sm:first:pl-0">
                 <dt className="t2-meta">{f.label}</dt>
-                <dd className="mt-1 text-3xl font-semibold tracking-tight text-foreground">{f.value}</dd>
+                <dd className="mt-1 text-3xl font-semibold tabular-nums tracking-tight text-foreground">{f.value}</dd>
               </div>
             ))}
           </motion.dl>
+          {asOfLabel && (
+            <motion.p variants={ink} className="t2-meta mt-4">
+              Counts as of <span className="t2-num">{asOfLabel}</span>.
+            </motion.p>
+          )}
 
           <motion.span variants={rule} aria-hidden="true" className="my-10 block h-px origin-left bg-border" />
 
@@ -59,8 +72,8 @@ const GitHubStats = () => {
           </div>
 
           {/* Table twin of the charts above */}
-          <details className="group mt-10 border-t border-border pt-5">
-            <summary className="t2-meta flex cursor-pointer list-none items-center gap-2 uppercase tracking-[0.12em] hover:text-foreground">
+          <details className="group mt-10 border-t border-border pt-2">
+            <summary className="t2-meta flex cursor-pointer list-none items-center gap-2 py-3 uppercase tracking-[0.12em] hover:text-foreground">
               <span className="inline-block transition-transform group-open:rotate-90">›</span>
               View as table
             </summary>

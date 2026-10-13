@@ -20,3 +20,12 @@ sketch
 # /src
 # /public/resume
 # /data
+
+/graphify-out
+/.claude
+
+/qa-output
+/.impeccable.root-owned
+/dist
+/.impeccable/review
+/.impeccable

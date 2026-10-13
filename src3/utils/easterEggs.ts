@@ -3,17 +3,11 @@
 import type { PortfolioData } from '../../src/lib/portfolioStorage';
 import type { GitHubDataset } from '../../shared/github/githubDataset';
 import { formatMonthYear, relativeTime } from '../../shared/github/githubDataset';
+import { formatDateRange, splitDateRange } from '../../shared/format';
 import { bar, bucket, heading, padEnd, padStart, sparkline } from './asciiCharts';
 
 // ASCII Arts Collection
 export const ASCII_ARTS = {
-  // ASCII glitch effect for typos or invalid commands
-  GLITCH: `
-▒█▀▀▄ █▀▀ █▄░▄█ █▀▀█ █▀▀█ █▀▀█ █░░    █▀▀ █▀▀█ █▀▀█ █▀▀█ █▀▀█ 
-▒█░▒█ █▀▀ █▒█▒█ █▄▄█ █░░█ █▄▄▀ █░░    █▀▀ █▄▄▀ █▄▄▀ █░░█ █▄▄▀ 
-▒█▄▄▀ ▀▀▀ ▀░░▒▀ ▀░░▀ █▀▀▀ ▀░▀▀ ▀▀▀    ▀▀▀ ▀░▀▀ ▀░▀▀ ▀▀▀▀ ▀░▀▀
-  `,
-  
   // ASCII coffee when typing "coffee" or "break"
   COFFEE: `
    ( (
@@ -197,100 +191,35 @@ export const generateRandomResponse = (command: string): string | null => {
   return null;
 };
 
-// Function to check if a command has a typo (for glitch effect)
-export const hasTypo = (command: string, validCommands: string[]): boolean => {
-  if (command.length < 3) return false;
-  
-  // Check if command is close to any valid command using Levenshtein distance
-  for (const validCommand of validCommands) {
-    const distance = levenshteinDistance(command, validCommand);
-    // If the command is close enough to a valid one but not exact
-    if (distance > 0 && distance <= 2) {
-      return true;
-    }
-  }
-  
-  return false;
-};
-
-// Levenshtein distance calculation for typo detection
+// Levenshtein distance, for "did you mean" suggestions
 const levenshteinDistance = (a: string, b: string): number => {
   if (a.length === 0) return b.length;
   if (b.length === 0) return a.length;
-
-  const matrix = [];
-
-  // Increment along the first column of each row
-  for (let i = 0; i <= b.length; i++) {
-    matrix[i] = [i];
-  }
-
-  // Increment each column in the first row
-  for (let j = 0; j <= a.length; j++) {
-    matrix[0][j] = j;
-  }
-
-  // Fill in the rest of the matrix
+  let prev = Array.from({ length: a.length + 1 }, (_, j) => j);
   for (let i = 1; i <= b.length; i++) {
+    const row = [i];
     for (let j = 1; j <= a.length; j++) {
-      if (b.charAt(i - 1) === a.charAt(j - 1)) {
-        matrix[i][j] = matrix[i - 1][j - 1];
-      } else {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j - 1] + 1, // substitution
-          Math.min(
-            matrix[i][j - 1] + 1,   // insertion
-            matrix[i - 1][j] + 1    // deletion
-          )
-        );
-      }
+      row[j] = b[i - 1] === a[j - 1] ? prev[j - 1] : 1 + Math.min(prev[j - 1], row[j - 1], prev[j]);
     }
+    prev = row;
   }
-
-  return matrix[b.length][a.length];
+  return prev[a.length];
 };
 
-// Generate glitch text effect for typos
-export const generateGlitchText = (text: string): string => {
-  const glitchChars = '!@#$%^&*()_+-={}[]|;:,.<>?/\\~`';
-  let result = '';
-  
-  for (let i = 0; i < text.length; i++) {
-    // About 20% chance to replace a character with a glitch character
-    if (Math.random() < 0.2) {
-      const glitchChar = glitchChars.charAt(Math.floor(Math.random() * glitchChars.length));
-      result += glitchChar;
-    } else {
-      result += text.charAt(i);
+/** The candidate closest to `input`, or null when nothing is plausibly what was meant. */
+export const closestCommand = (input: string, candidates: string[]): string | null => {
+  const word = input.trim().toLowerCase();
+  if (!word) return null;
+  let best: string | null = null;
+  let bestDistance = Infinity;
+  for (const candidate of candidates) {
+    const distance = levenshteinDistance(word, candidate);
+    if (distance < bestDistance) {
+      best = candidate;
+      bestDistance = distance;
     }
   }
-  
-  return result;
-};
-
-// Generate a blinking text effect for typos
-export const generateBlinkingEffect = (command: string): string[] => {
-  const frames = [];
-  const iterations = 6; // 6 frames of animation
-  
-  // Original command
-  frames.push(`Command not found: ${command}`);
-  
-  // Glitch frames
-  for (let i = 0; i < iterations; i++) {
-    if (i % 2 === 0) {
-      // Glitched version
-      frames.push(`C0mm@nd n0t f0und: ${generateGlitchText(command)}`);
-    } else {
-      // Normal version with different formatting
-      frames.push(`Command not found: ${command}`);
-    }
-  }
-  
-  // Final frame with suggestion
-  frames.push(`Command not found: ${command}. Type 'help' to see available commands.`);
-  
-  return frames;
+  return best !== null && bestDistance <= Math.max(2, Math.floor(word.length / 3)) ? best : null;
 };
 
 // Fun hidden games and features
@@ -331,26 +260,30 @@ export interface DataCommandContext {
   dataset: GitHubDataset;
   /** Usable character width of the terminal */
   cols: number;
+  /** Absolute URL of the resume PDF */
+  resumeUrl?: string;
 }
 
-export const DATA_COMMAND_HELP = `
-Data commands:
-  whoami               Who's behind this terminal
-  stats --github       GitHub stats as ASCII charts (alias: github, gh, stats)
-    --langs | --repos | --activity   show a single panel
-  git log              Recent pushes and repository activity
-`;
-
-const whoami = ({ portfolio, dataset }: DataCommandContext): string[] => {
-  const info = portfolio?.personalInfo ?? {};
-  const current = portfolio?.experience?.[0];
+const whoami = ({ portfolio, dataset, resumeUrl }: DataCommandContext): string[] => {
+  const info: { name?: string; title?: string; email?: string; location?: string; availability?: string } =
+    portfolio?.personalInfo ?? {};
+  const latest = portfolio?.experience?.[0];
+  const range = splitDateRange(latest?.dates || latest?.duration);
+  const role = latest ? `${latest.title || latest.role} @ ${latest.company}` : undefined;
   const login = dataset.username ?? (info.name ?? 'guest').toLowerCase().replace(/\s+/g, '-');
   const groups = dataset.languages.map((l) => l.name.toLowerCase()).join(',');
   const rows: Array<[string, string | undefined]> = [
     ['name', info.name],
     ['role', info.title],
-    ['now', current ? `${current.title || current.role} @ ${current.company}` : undefined],
+    // "now" only for a role that is still running; otherwise show when it was.
+    range.isCurrent || !range.start
+      ? ['now', role]
+      : ['latest', role && `${role} (${formatDateRange(latest?.dates || latest?.duration)})`],
+    // First sentence only: the motd above already prints availability in full.
+    ['status', info.availability?.split(/(?<=\.)\s+/)[0]],
     ['location', info.location],
+    ['email', info.email],
+    ['resume', resumeUrl],
     ['github', dataset.memberSince ? `member since ${formatMonthYear(dataset.memberSince)} · ${dataset.totals.followers} followers` : undefined],
     ['stack', (portfolio?.insights?.technicalProfile?.primaryStack ?? []).slice(0, 6).join(', ') || undefined],
   ];
@@ -363,7 +296,7 @@ const whoami = ({ portfolio, dataset }: DataCommandContext): string[] => {
 };
 
 const githubStats = ({ dataset, cols }: DataCommandContext, args: string[]): string[] => {
-  if (!dataset.hasData) return ['[warn] no GitHub data in portfolio.json — run `reload` to fetch it.'];
+  if (!dataset.hasData) return ['[warn] no GitHub data in portfolio.json yet.'];
 
   const only = ['--langs', '--repos', '--activity'].find((f) => args.includes(f));
   const show = (flag: string) => !only || only === flag;
@@ -381,7 +314,7 @@ const githubStats = ({ dataset, cols }: DataCommandContext, args: string[]): str
   if (show('--langs') && languages.length) {
     const barW = Math.max(8, width - 24);
     const max = Math.max(...languages.map((l) => l.percent));
-    out.push('', heading('languages', width));
+    out.push('', heading('languages · share of repos', width));
     languages.forEach((l) => out.push(`  ${padEnd(l.name, 11)} ${bar(l.percent, max, barW)} ${padStart(`${l.percent}%`, 6)}`));
   }
 

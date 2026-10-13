@@ -1,28 +1,41 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
-import { DEFAULT_ASSETS } from '../../src/config/env';
 import type { PortfolioData } from '../../src/lib/portfolioStorage';
-import Section from './Section';
+import type { MetricKind } from '../../shared/content/types';
+import Section, { SectionPending } from './Section';
 import { EASE_PAPER, ink, leading, onScroll } from '../motion';
 
 const FEATURED_COUNT = 5;
 
 type Project = NonNullable<PortfolioData['projects']>[number];
 
-const repoImage = (githubUrl?: string) => {
-  const match = githubUrl?.match(/github\.com\/([^/]+)\/([^/?#]+)/);
-  return match ? `https://opengraph.githubassets.com/1/${match[1]}/${match[2]}` : DEFAULT_ASSETS.PROJECT_IMAGE;
-};
-
 const primaryLink = (p: Project) => p.demo || p.github || undefined;
 const yearOf = (p: Project) => (p.timeline?.created_at ? new Date(p.timeline.created_at).getFullYear() : null);
 
-const onImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-  e.currentTarget.onerror = null;
-  e.currentTarget.src = DEFAULT_ASSETS.PROJECT_IMAGE;
+/** The headline metric a case study carries in portfolio.json. */
+type Metric = { value: string; unit?: string; label: string; kind: MetricKind; method?: string };
+
+const KIND_WORDS: Record<MetricKind, string> = {
+  measured: 'measured',
+  target: 'design target',
+  projected: 'modelled',
+  'self-reported': 'self-reported',
+  count: 'counted',
 };
+
+const ProjectMetric = ({ metric }: { metric: Metric }) => (
+  <p className="leading-snug" title={metric.method}>
+    <span className="t2-display block text-balance text-2xl text-foreground">
+      {metric.value}
+      {metric.unit && <span className="text-lg"> {metric.unit}</span>}
+    </span>
+    <span className="mt-1 block text-sm text-muted-foreground">
+      {metric.label} · {KIND_WORDS[metric.kind]}
+    </span>
+  </p>
+);
 
 const ProjectTitle = ({ project }: { project: Project }) => {
   const href = primaryLink(project);
@@ -53,10 +66,8 @@ const Projects = () => {
   const [archiveOpen, setArchiveOpen] = useState(false);
   const projects = useMemo(() => portfolio?.projects ?? [], [portfolio]);
 
-  const featured = useMemo(
-    () => [...projects].filter((p) => p.featured).sort((a, b) => (b.commits ?? 0) - (a.commits ?? 0)).slice(0, FEATURED_COUNT),
-    [projects],
-  );
+  // The JSON order is the owner's order; featured: false opts a project out.
+  const featured = useMemo(() => projects.filter((p) => p.featured !== false).slice(0, FEATURED_COUNT), [projects]);
   const archive = useMemo(
     () => [...projects].sort((a, b) => (yearOf(b) ?? 0) - (yearOf(a) ?? 0)),
     [projects],
@@ -65,53 +76,63 @@ const Projects = () => {
   return (
     <Section id="projects" label="Projects">
       {isLoading ? (
-        <p className="t2-meta">Loading…</p>
+        <SectionPending />
       ) : projects.length === 0 ? (
         <p className="text-muted-foreground">No projects to show yet.</p>
       ) : (
         <>
-          <motion.ul variants={leading(0.09)} {...onScroll} className="group/list space-y-12">
-            {(featured.length ? featured : projects.slice(0, FEATURED_COUNT)).map((project, i) => (
-              <motion.li key={project.id ?? i} variants={ink}>
-                <div className="group relative grid gap-4 pb-1 transition-opacity duration-300 sm:grid-cols-8 sm:gap-8 md:gap-4 lg:group-hover/list:opacity-45 lg:hover:!opacity-100 lg:focus-within:!opacity-100">
-                  <span
-                    aria-hidden="true"
-                    className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-[2px] transition-colors duration-300 lg:-inset-x-6 lg:block lg:group-hover:bg-card lg:group-hover:shadow-[0_1px_0_hsl(var(--border)),0_18px_40px_-28px_hsl(var(--t2-shadow))] lg:group-focus-within:bg-card"
-                  />
-                  <div className="relative z-10 sm:order-2 sm:col-span-6">
-                    <h3>
-                      <ProjectTitle project={project} />
-                    </h3>
-                    <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">{project.description}</p>
-                    {(project.stars !== undefined || project.commits !== undefined) && (
-                      <p className="t2-meta mt-3">
-                        {project.commits ?? 0} commits
-                        {project.stars ? <> · {project.stars} stars</> : null}
-                        {project.forks ? <> · {project.forks} forks</> : null}
-                      </p>
-                    )}
-                    {project.technologies?.length ? (
-                      <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Technologies used">
-                        {project.technologies.slice(0, 6).map((t) => (
-                          <li key={t} className="t2-tag">
-                            {t}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                  <div className="relative z-10 self-start overflow-hidden rounded-[2px] border border-border sm:order-1 sm:col-span-2 sm:mt-1">
-                    <img
-                      src={project.image || repoImage(project.github)}
-                      alt=""
-                      loading="lazy"
-                      onError={onImageError}
-                      className="aspect-[2/1] w-full object-cover saturate-[0.85] transition duration-500 ease-out group-hover:saturate-100"
+          <motion.ul variants={leading(0.09)} {...onScroll} className="space-y-12">
+            {featured.map((project, i) => {
+              const metric = (project as { headline?: Metric }).headline;
+              const role = project.role;
+              return (
+                <motion.li key={project.id ?? i} variants={ink}>
+                  <div className="group relative grid gap-4 pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4">
+                    <span
+                      aria-hidden="true"
+                      className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-[2px] transition-colors duration-300 lg:-inset-x-6 lg:block lg:group-hover:bg-card lg:group-hover:shadow-[0_1px_0_hsl(var(--border)),0_18px_40px_-28px_hsl(var(--t2-shadow))] lg:group-focus-within:bg-card"
                     />
+                    <div className="relative z-10 sm:order-2 sm:col-span-6 sm:col-start-3">
+                      <h3>
+                        <ProjectTitle project={project} />
+                      </h3>
+                      <p className="mt-2 text-[0.95rem] leading-relaxed text-muted-foreground">{project.description}</p>
+                      {(role || project.commits !== undefined || project.stars) && (
+                        <p className="t2-meta mt-3">
+                          {[
+                            role,
+                            project.commits !== undefined && <><span className="t2-num">{project.commits}</span> commits</>,
+                            project.stars ? <><span className="t2-num">{project.stars}</span> stars</> : null,
+                            project.forks ? <><span className="t2-num">{project.forks}</span> forks</> : null,
+                          ]
+                            .filter(Boolean)
+                            .map((part, k) => (
+                              <span key={k}>
+                                {k > 0 && ' · '}
+                                {part}
+                              </span>
+                            ))}
+                        </p>
+                      )}
+                      {project.technologies?.length ? (
+                        <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Technologies used">
+                          {project.technologies.slice(0, 6).map((t) => (
+                            <li key={t} className="t2-tag">
+                              {t}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                    {metric && (
+                      <div className="relative z-10 self-start sm:order-1 sm:col-span-2 sm:mt-0.5">
+                        <ProjectMetric metric={metric} />
+                      </div>
+                    )}
                   </div>
-                </div>
-              </motion.li>
-            ))}
+                </motion.li>
+              );
+            })}
           </motion.ul>
 
           <button
@@ -153,7 +174,7 @@ const Projects = () => {
                         const href = primaryLink(p);
                         return (
                           <tr key={p.id ?? i} className="border-b border-border/70 last:border-none">
-                            <td className="t2-meta py-4 pr-6 align-top tabular-nums">{yearOf(p) ?? '—'}</td>
+                            <td className="t2-meta t2-num py-4 pr-6 align-top">{yearOf(p) ?? '—'}</td>
                             <td className="py-4 pr-6 align-top font-medium leading-snug">{p.title}</td>
                             <td className="hidden py-4 pr-6 align-top text-sm text-muted-foreground md:table-cell">
                               {p.technologies?.slice(0, 4).join(' · ')}

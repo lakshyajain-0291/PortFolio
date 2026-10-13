@@ -49,10 +49,10 @@ const GitHubStats = () => {
   };
 
   const stats = [
-    { label: 'repositories', value: totals.repos, display: String(totals.repos) },
-    { label: 'stars', value: totals.stars, display: String(totals.stars) },
-    { label: 'forks', value: totals.forks, display: String(totals.forks) },
-    { label: 'commits', value: totals.commits, display: totals.commitsLabel },
+    { label: 'Repositories', value: totals.repos, display: String(totals.repos) },
+    { label: 'Stars', value: totals.stars, display: String(totals.stars) },
+    { label: 'Forks', value: totals.forks, display: String(totals.forks) },
+    { label: 'Commits', value: totals.commits, display: totals.commitsLabel },
   ];
 
   return (
@@ -66,22 +66,21 @@ const GitHubStats = () => {
         <div className={`w-full md:w-4/5 ${a.block}`}>
           <SectionHeading
             n={n}
-            slug="github"
-            title="Commit Topology"
+            title="GitHub"
             description="Public GitHub activity, rendered three ways across this site. Here: as a field of repositories."
           />
 
           {isLoading ? (
-            <p className="t1-label animate-pulse">fetching repository graph…</p>
+            <p className="animate-pulse text-sm text-darktech-muted">Loading GitHub activity…</p>
           ) : !dataset.hasData ? (
             <div className="t1-panel p-6 text-darktech-muted">No GitHub statistics available yet.</div>
           ) : (
-            <div className={`t1-panel w-full p-6 sm:p-8 lg:w-[min(36rem,60%)] ${a.push}`} data-reveal-group>
+            <div className={`t1-panel w-full p-6 sm:p-8 lg:w-[min(36rem,60%)] ${a.push}`}>
               {/* Totals */}
-              <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[2px] bg-darktech-border sm:grid-cols-4" data-reveal>
+              <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[2px] bg-darktech-border sm:grid-cols-4">
                 {stats.map((s) => (
                   <div key={s.label} className="bg-darktech-card px-4 py-4">
-                    <dt className="t1-label">{s.label}</dt>
+                    <dt className="text-xs font-medium text-darktech-muted">{s.label}</dt>
                     <dd
                       className="t1-num mt-2 text-3xl font-medium text-darktech-text"
                       data-count={/^\d+$/.test(s.display) ? s.value : undefined}
@@ -94,8 +93,8 @@ const GitHubStats = () => {
 
               {/* Language share — stacked bar, 2px surface gaps, labelled legend */}
               {languages.length > 0 && (
-                <div className="mt-8" data-reveal>
-                  <p className="t1-label mb-3">languages · share of repositories</p>
+                <div className="mt-8">
+                  <p className="mb-3 text-xs font-medium text-darktech-muted">Languages, by share of repositories</p>
                   <div className="flex h-2 w-full gap-[2px]" role="img" aria-label={languages.map((l) => `${l.name} ${l.percent}%`).join(', ')}>
                     {languages.map((l) => (
                       <span
@@ -119,8 +118,8 @@ const GitHubStats = () => {
 
               {/* Repo legend — hovering a row lights its column in the scene */}
               {legend.length > 0 && (
-                <div className="mt-8" data-reveal>
-                  <p className="t1-label mb-3">top repositories · by commits</p>
+                <div className="mt-8">
+                  <p className="mb-3 text-xs font-medium text-darktech-muted">Top repositories, by commits</p>
                   <ul className="-mx-2" onMouseLeave={highlight(null)}>
                     {legend.map((repo) => (
                       <li key={repo.name}>
@@ -151,8 +150,8 @@ const GitHubStats = () => {
 
               {/* 90-day activity strip */}
               {contributions.length > 0 && (
-                <div className="mt-8" data-reveal>
-                  <p className="t1-label mb-3">last {contributions.length} days</p>
+                <div className="mt-8">
+                  <p className="mb-3 text-xs font-medium text-darktech-muted">Last <span className="t1-num">{contributions.length}</span> days</p>
                   <svg
                     viewBox={`0 0 ${contributions.length * 4} 28`}
                     preserveAspectRatio="none"
@@ -182,7 +181,7 @@ const GitHubStats = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="t1-link mt-8 inline-flex items-center gap-1.5 font-jetbrains text-sm"
-                  data-reveal
+                 
                 >
                   github.com/{dataset.username} <ArrowUpRight size={14} />
                 </a>

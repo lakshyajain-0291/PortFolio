@@ -1,788 +1,1018 @@
 {
-  "statusCode": 200,
-  "success": true,
-  "message": "Portfolio data processed successfully",
-  "data": {
-    "personalInfo": {
-      "name": "Lakshya Jain",
-      "title": "Backend & Distributed Systems Engineer",
-      "summary": "CS undergrad at IIT Jodhpur building scalable backend, distributed and AI-powered systems — from a quant research platform on AWS and a censorship-resilient social network to a lightweight container orchestrator.",
-      "email": "lakshyajainrj19@gmail.com",
-      "collegeEmail": "b23cs1032@iitj.ac.in",
-      "phone": "+91-7976123107",
-      "location": "Jodhpur, India"
-    },
-    "experience": [
-      {
-        "company": "26 Miles Capital",
-        "title": "Quant Developer Intern",
-        "dates": "May 2026 - Jul 2026",
-        "location": "On-site, India",
-        "achievements": [
-          "Built an end-to-end quant research platform consolidating data, backtesting and workbench across 25 modules (64 data models) with auth/ACL, credits, RunBT orchestration and S3 workspaces; sole owner from architecture (14 ADRs) to production.",
-          "Engineered multi-tenant isolated runtimes on AWS ECS with STS-scoped S3 access and idle-reclaim (74% sessions auto-reclaimed, p50 start ~21s); load-tested to 600+ concurrent users at p95 38ms with zero errors and a projected 27% AWS cost reduction.",
-          "Established engineering rigor with C4-style architecture docs (~91 active docs) and a KPI pipeline tracking runtime, security and test metrics (65.1% test coverage, 76/100 auth security score, ~11ms avg API p95); layered JWT auth, central canAccess/requireRole ACL and dual-OS-user isolation."
-        ]
-      },
-      {
-        "company": "libr",
-        "title": "Founder & Lead Engineer",
-        "dates": "Aug 2025 - Mar 2026",
-        "link": "https://www.libr.social/",
-        "achievements": [
-          "Founded and architected libr, a censorship-resilient decentralized social network launched into a week-long public beta; attracted 250+ landing page visitors, 570+ page views, 100+ downloads and 1,000+ user posts.",
-          "Designed a 3-tier system of clients, database nodes and moderators; built core services in Go with Docker, PostgreSQL, Kademlia DHT for content routing and cryptographic certificates for tamper-evident storage.",
-          "Implemented replicated DHT-based storage with partial immutability and O(log n) lookup, and a quorum-backed moderation layer backed by risk analysis covering 20+ identified risks."
-        ]
-      },
-      {
-        "company": "Inter IIT Tech Meet 14.0",
-        "title": "Domain Lead - Adobe Problem Statement",
-        "dates": "Oct 2025 - Dec 2025",
-        "link": "https://github.com/lakshyajain-0291/adobe-inter-iit",
-        "achievements": [
-          "Led a cross-functional team building an AI-powered Flutter image editing app with on-device YOLO segmentation for real-time object masking and edge inference under a 200 MB device footprint.",
-          "Developed isolated Docker AI compute containers on edge servers, orchestrating parallel editing pipelines (inpaint, erase, move, compositing) with sub-30s end-to-end latency.",
-          "Directed integration of a multi-model AI pipeline - DDIM-based latent move, YOLO-guided Flux inpainting, U-Net attention-based erase and Qwen2.5-3B/Flux-Kontext compositing. Ranked 6th among 23 IITs."
-        ]
-      },
-      {
-        "company": "PMStack",
-        "title": "SDE Intern - Android Development",
-        "dates": "Dec 2024 - Apr 2025",
-        "link": "https://play.google.com/store/apps/details?id=com.reader.pinnzo",
-        "achievements": [
-          "Engineered Pinnzo, a Flutter-based Android app for organizing and summarizing reading material for working professionals, deployed to the Google Play Store with Firebase real-time sync.",
-          "Partnered with startup founders to shape product features, reducing production time by 30% with Agile methodology and 2-week sprints.",
-          "Instrumented Google Analytics and Crashlytics to triage 163 critical bugs across Android versions, cutting crash rates by 40% and improving load speed by 25%, reaching 120+ beta users in the first month."
-        ]
-      }
-    ],
-    "education": [
-      {
-        "institution": "Indian Institute of Technology Jodhpur",
-        "degree": "B.Tech Computer Science and Engineering",
-        "dates": "2023-2027",
-        "cgpa": "8.97/10"
-      },
-      {
-        "institution": "R.S. Memorial International School",
-        "degree": "Senior Secondary (CBSE)",
-        "dates": "2020-2022",
-        "cgpa": "93.8%"
-      },
-      {
-        "institution": "St. Anne's Sr. Sec. School",
-        "degree": "Secondary (CBSE)",
-        "dates": "2012-2020",
-        "cgpa": "94.6%"
-      }
-    ],
-    "projects": [
-      {
-        "id": "1",
-        "title": "Mini-K8ts - Container Orchestrator",
-        "description": "Lightweight container orchestrator for edge environments: <50 MB control-plane RAM, 25 MB binary, <1s startup, PostgreSQL as ACID state store. Reliability-aware multi-stage scheduler sustains 220+ tasks/sec (97.8-100% efficiency, 1000 tasks in 4.2s). Hardened with token RBAC, rate limiting, optional mTLS, Postgres-backed leader election and a 50-node/1,000-task scale-test suite with Prometheus/Grafana.",
-        "technologies": [
-          "Go",
-          "Docker",
-          "PostgreSQL",
-          "Control Plane",
-          "Prometheus",
-          "Grafana"
-        ],
-        "github": "https://github.com/lakshyajain-0291/mini-k8ts",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 0,
-        "forks": 0,
-        "commits": 27,
-        "topics": [
-          "kubernetes",
-          "orchestration",
-          "edge"
-        ],
-        "timeline": {
-          "created_at": "2026-03-21T14:32:16Z",
-          "updated_at": "2026-06-25T17:35:03Z",
-          "recent_commits": [
-            "2026-05-06T18:20:54Z",
-            "2026-05-06T18:20:33Z",
-            "2026-05-06T18:20:23Z",
-            "2026-05-06T18:20:09Z",
-            "2026-05-06T18:19:59Z",
-            "2026-05-06T18:19:36Z",
-            "2026-05-06T18:18:29Z",
-            "2026-05-04T18:43:09Z",
-            "2026-05-04T18:43:05Z",
-            "2026-05-04T18:43:01Z"
-          ],
-          "has_recent_activity": true
-        },
-        "source": "github"
-      },
-      {
-        "id": "2",
-        "title": "FileNest - Multi-Modal P2P Search Engine",
-        "description": "Hierarchical distributed tagging system combining semantic embeddings with Kademlia DHT P2P routing for multi-modal search across text, PDFs, images and video. BERT, Sentence-Transformers and CLIP pipeline targeting 15-20 files/sec indexing and sub-100ms queries; CI/CD and modular monorepo built during Summer RAID 2025 at IIT Jodhpur.",
-        "technologies": [
-          "Go",
-          "Python",
-          "React",
-          "libp2p-kad-dht",
-          "CLIP",
-          "FAISS",
-          "Redis"
-        ],
-        "github": "https://github.com/AISocietyIITJ/FileNest",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 11,
-        "forks": 8,
-        "commits": 26,
-        "topics": [
-          "p2p",
-          "semantic-search",
-          "clip"
-        ],
-        "timeline": {
-          "created_at": "2025-06-25T03:17:45Z",
-          "updated_at": "2026-09-20T15:13:21Z",
-          "recent_commits": [
-            "2025-06-25T09:57:19Z",
-            "2025-06-25T08:38:22Z",
-            "2025-06-25T08:37:55Z",
-            "2025-06-25T07:37:47Z",
-            "2025-06-25T07:31:14Z",
-            "2025-06-25T07:20:51Z",
-            "2025-06-25T05:54:16Z",
-            "2025-06-25T05:53:58Z",
-            "2025-06-25T05:51:34Z",
-            "2025-06-25T05:51:08Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "3",
-        "title": "LIBR - Censorship-Resilient Digital Forum",
-        "description": "Decentralized forum with quorum moderation and content filtering; Byzantine fault tolerance evaluated across 10+ nodes. Multithreaded Go architecture with Kademlia DHT logic and cryptographic certificates, later grown into the libr social network.",
-        "technologies": [
-          "Go",
-          "Docker",
-          "PostgreSQL",
-          "Distributed Systems",
-          "DHT",
-          "Cryptography"
-        ],
-        "github": "https://github.com/DALDA-IITJ/libr",
-        "demo": "https://www.libr.social/",
-        "image": "",
-        "featured": true,
-        "stars": 3,
-        "forks": 0,
-        "commits": 167,
-        "topics": [
-          "cryptography",
-          "distributed-hash-tables",
-          "forum",
-          "golang",
-          "postgresql"
-        ],
-        "timeline": {
-          "created_at": "2025-03-31T09:47:40Z",
-          "updated_at": "2026-02-08T13:24:56Z",
-          "recent_commits": [
-            "2025-05-04T08:25:24Z",
-            "2025-04-29T16:10:49Z",
-            "2025-04-17T13:03:46Z",
-            "2025-04-17T09:48:03Z",
-            "2025-04-17T09:47:18Z",
-            "2025-04-17T09:31:49Z",
-            "2025-04-17T08:47:44Z",
-            "2025-04-16T21:36:02Z",
-            "2025-04-16T21:24:37Z",
-            "2025-04-11T00:40:34Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "4",
-        "title": "Adobe Inter-IIT - AI Image Editor",
-        "description": "AI-powered Flutter image editing app for Inter IIT Tech Meet 14.0 (ranked 6th of 23 IITs): on-device YOLO segmentation, Dockerized edge AI pipelines for inpaint/erase/move/compositing with sub-30s latency under a 200 MB footprint.",
-        "technologies": [
-          "Flutter",
-          "Dart",
-          "Docker",
-          "YOLO",
-          "Flux",
-          "U-Net"
-        ],
-        "github": "https://github.com/lakshyajain-0291/adobe-inter-iit",
-        "demo": "https://adobe-inter-iit.vercel.app",
-        "image": "",
-        "featured": true,
-        "stars": 1,
-        "forks": 0,
-        "commits": 40,
-        "topics": [],
-        "timeline": {
-          "created_at": "2025-11-10T19:15:39Z",
-          "updated_at": "2025-12-25T17:52:38Z",
-          "recent_commits": [
-            "2025-12-25T17:17:24Z",
-            "2025-12-22T21:41:24Z",
-            "2025-12-22T21:41:13Z",
-            "2025-12-22T21:18:03Z",
-            "2025-12-04T18:05:14Z",
-            "2025-12-04T18:04:27Z",
-            "2025-12-04T18:02:19Z",
-            "2025-12-04T18:00:51Z",
-            "2025-12-04T17:57:32Z",
-            "2025-12-04T17:54:41Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "5",
-        "title": "GitCury - AI-Powered Git Automation CLI",
-        "description": "Git workflow automation that cut commit time from 17 minutes to 32 seconds (97% faster) across 298 files in a 4 MB footprint. Semantic file clustering reduces API calls by 90% (3.2x faster); 3 clustering strategies, concurrent worker pool, shipped via Homebrew, Scoop, Docker and 6 OS/arch binaries.",
-        "technologies": [
-          "Go",
-          "Cobra CLI",
-          "Redis",
-          "NLP",
-          "Machine Learning"
-        ],
-        "github": "https://github.com/lakshyajain-0291/GitCury",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 9,
-        "forks": 2,
-        "commits": 365,
-        "topics": [
-          "automation",
-          "cli",
-          "generative-ai",
-          "git",
-          "go",
-          "golang"
-        ],
-        "timeline": {
-          "created_at": "2025-03-27T17:48:55Z",
-          "updated_at": "2026-06-25T04:06:19Z",
-          "recent_commits": [
-            "2025-06-04T14:31:35Z",
-            "2025-06-04T14:30:09Z",
-            "2025-06-04T14:23:49Z",
-            "2025-06-04T10:42:49Z",
-            "2025-06-04T10:16:24Z",
-            "2025-06-04T10:06:48Z",
-            "2025-06-04T10:03:45Z",
-            "2025-06-04T08:57:16Z",
-            "2025-06-04T08:23:36Z",
-            "2025-06-04T08:23:12Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "2nd-swap",
-        "title": "2nd Swap - Secure, Intelligent Second-Hand Trading",
-        "description": "Backend for a second-hand trading startup built and deployed in 1.5 weeks: 12+ REST endpoints at 99.8% uptime, an AI verification system generating item-specific questions (20% less manual review, 30+ daily queries) and OCR-based code recognition for item verification.",
-        "technologies": [
-          "Node.js",
-          "Express.js",
-          "MongoDB",
-          "Google OAuth 2.0",
-          "Cloudinary",
-          "Socket.io"
-        ],
-        "github": "",
-        "demo": "https://www.2ndswap.in/",
-        "image": "",
-        "featured": true,
-        "timeline": {
-          "created_at": "2025-02-01T00:00:00Z",
-          "updated_at": "2025-03-31T00:00:00Z",
-          "has_recent_activity": false
-        },
-        "source": "resume"
-      },
-      {
-        "id": "nids",
-        "title": "NIDS - Network Intrusion Detection System",
-        "description": "Open-source network intrusion detection system: FastAPI backend captures live traffic via Scapy and classifies packets in real time using a custom Random Forest (bootstrapped feature sampling, information-gain trees) over 14 engineered features. Includes a Showcase NIDS web app.",
-        "technologies": [
-          "Python",
-          "FastAPI",
-          "Scapy",
-          "Random Forest",
-          "React",
-          "TypeScript"
-        ],
-        "github": "https://github.com/aradhya2708/nids",
-        "demo": "https://ml-showcase-site.vercel.app",
-        "image": "",
-        "featured": true,
-        "timeline": {
-          "created_at": "2025-03-17T13:08:13Z",
-          "updated_at": "2025-05-14T11:10:27Z",
-          "has_recent_activity": false
-        },
-        "source": "resume",
-        "showcaseRepo": "https://github.com/lakshyajain-0291/ml_showcase_site",
-        "stars": 0,
-        "forks": 3,
-        "commits": 107
-      },
-      {
-        "id": "c3p",
-        "title": "C3P - Collaborative Content Platform",
-        "description": "Full-stack platform for collaborative content creation with 8 user roles and one-click publishing to 4 social platforms (65% faster publishing); RBAC and engagement-based ranking on 6 metrics (+22% retention); automated publishing and revenue-sharing that processed $1200+ with 0 payment errors.",
-        "technologies": [
-          "React.js",
-          "Express.js",
-          "Node.js",
-          "MongoDB",
-          "Social Media APIs"
-        ],
-        "github": "https://github.com/Aradhya2708/larv",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "timeline": {
-          "created_at": "2024-09-11T08:32:59Z",
-          "updated_at": "2024-12-31T00:00:00Z",
-          "has_recent_activity": false
-        },
-        "source": "resume"
-      },
-      {
-        "id": "9",
-        "title": "RealmWeaver - Dynamic Game Environment",
-        "description": "Dynamic game world with AI-driven real-time generation of NPCs, quests and locations via the Gemini API. Round-robin API keys cut content generation from 5 min to under 1 min, and a centralized content system reduced manual world-building by 100x.",
-        "technologies": [
-          "C++",
-          "Gemini API",
-          "DSA"
-        ],
-        "github": "https://github.com/lakshyajain-0291/RealmWeaver",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 6,
-        "forks": 5,
-        "commits": 82,
-        "topics": [
-          "cpp",
-          "dsa",
-          "game",
-          "generative-ai",
-          "open-world-game"
-        ],
-        "timeline": {
-          "created_at": "2024-09-30T13:56:20Z",
-          "updated_at": "2026-05-05T03:00:36Z",
-          "recent_commits": [
-            "2025-06-02T16:01:17Z",
-            "2025-05-24T13:46:36Z",
-            "2024-12-01T10:16:17Z",
-            "2024-12-01T10:03:33Z",
-            "2024-11-10T15:30:53Z",
-            "2024-11-10T03:40:52Z",
-            "2024-11-09T17:55:02Z",
-            "2024-11-09T04:53:33Z",
-            "2024-11-09T04:52:49Z",
-            "2024-11-09T04:49:44Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "10",
-        "title": "GenCLI - Semantic File Retrieval Tool",
-        "description": "AI-powered CLI for intelligent file indexing and semantic search with Gemini. Indexing sped up from 19.2s to 1.2s per file via batching and parallelization, sub-second search across 50+ files and 7+ terminal themes.",
-        "technologies": [
-          "Go",
-          "Cobra",
-          "Gemini API",
-          "Vector Embeddings"
-        ],
-        "github": "https://github.com/lakshyajain-0291/gencli",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 3,
-        "forks": 1,
-        "commits": 57,
-        "topics": [
-          "cli",
-          "generative-ai",
-          "golang",
-          "indexing",
-          "searching"
-        ],
-        "timeline": {
-          "created_at": "2024-07-04T13:35:20Z",
-          "updated_at": "2026-05-05T03:00:47Z",
-          "recent_commits": [
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T07:56:00Z",
-            "2025-09-10T06:39:53Z",
-            "2025-09-10T06:09:56Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "11",
-        "title": "The Vindication - Text-Based Adventure Game",
-        "description": "Open-world text adventure in C with 27 quests, 7 mini-games, 120+ ASCII graphics elements, 15 audio tracks and JSON-driven content with unlimited save states and 100% data integrity.",
-        "technologies": [
-          "C",
-          "JSON",
-          "ASCII Graphics"
-        ],
-        "github": "https://github.com/lakshyajain-0291/Vindication",
-        "demo": "",
-        "image": "",
-        "featured": true,
-        "stars": 3,
-        "forks": 2,
-        "commits": 107,
-        "topics": [],
-        "timeline": {
-          "created_at": "2024-02-29T15:26:24Z",
-          "updated_at": "2026-05-05T03:00:16Z",
-          "recent_commits": [
-            "2024-04-29T16:35:06Z",
-            "2024-04-21T11:45:16Z",
-            "2024-04-21T11:42:39Z",
-            "2024-04-21T07:04:18Z",
-            "2024-04-21T07:03:42Z",
-            "2024-04-20T19:33:16Z",
-            "2024-04-20T19:23:57Z",
-            "2024-04-20T16:32:49Z",
-            "2024-04-20T15:09:09Z",
-            "2024-04-20T10:59:06Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "12",
-        "title": "Image Filtration Program",
-        "description": "6 image filters (Grayscale, Blur, Sharpen, Sobel Edge Detection, Reflect, Negative) for 24-bit BMP files up to 4K in under 3s, with 100% format compatibility and 15+ edge cases handled (96% fewer failures).",
-        "technologies": [
-          "C",
-          "GCC",
-          "BMP File Format"
-        ],
-        "github": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
-        "demo": "",
-        "image": "",
-        "featured": false,
-        "stars": 0,
-        "forks": 0,
-        "commits": 6,
-        "topics": [],
-        "timeline": {
-          "created_at": "2024-03-17T11:45:40Z",
-          "updated_at": "2026-05-05T03:01:33Z",
-          "recent_commits": [
-            "2024-03-19T11:19:55Z",
-            "2024-03-18T17:27:56Z",
-            "2024-03-18T17:22:05Z",
-            "2024-03-18T14:30:33Z",
-            "2024-03-18T12:47:35Z",
-            "2024-03-17T11:45:40Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      },
-      {
-        "id": "travel-companion",
-        "title": "Travel Companion App - Your Adventure, Simplified",
-        "description": "Campus mobile app with 360+ registered users and a 5-star rating: 7 core features (trip sharing, filtering, search) and a real-time Firebase request system with sub-1s responses for 10+ concurrent users.",
-        "technologies": [
-          "Flutter",
-          "Firebase",
-          "Figma",
-          "UX/UI Design"
-        ],
-        "github": "",
-        "demo": "https://play.google.com/store/apps/details?id=com.devluplabs.travel_companiion",
-        "image": "",
-        "featured": true,
-        "timeline": {
-          "created_at": "2024-01-01T00:00:00Z",
-          "updated_at": "2024-03-31T00:00:00Z",
-          "has_recent_activity": false
-        },
-        "source": "resume"
-      },
-      {
-        "id": "14",
-        "title": "Summer Project - Version Control for Content Creators",
-        "description": "Summer 2024 project exploring version control for content creators; precursor to the collaborative content ideas behind C3P.",
-        "technologies": [
-          "JavaScript",
-          "HTML",
-          "CSS"
-        ],
-        "github": "https://github.com/lakshyajain-0291/summer-project",
-        "demo": "",
-        "image": "",
-        "featured": false,
-        "stars": 0,
-        "forks": 4,
-        "commits": 27,
-        "topics": [],
-        "timeline": {
-          "created_at": "2024-05-17T17:05:02Z",
-          "updated_at": "2026-05-05T03:00:23Z",
-          "recent_commits": [
-            "2024-07-05T11:44:14Z",
-            "2024-07-05T07:18:39Z",
-            "2024-06-05T05:18:58Z",
-            "2024-06-05T05:09:58Z",
-            "2024-06-03T16:22:15Z",
-            "2024-06-03T12:08:08Z",
-            "2024-06-01T12:41:24Z",
-            "2024-06-01T12:38:33Z",
-            "2024-06-01T07:30:16Z",
-            "2024-06-01T07:27:17Z"
-          ],
-          "has_recent_activity": false
-        },
-        "source": "github"
-      }
-    ],
-    "skills": [
-      "Languages: Go, C, C++, Java, Python, JavaScript, TypeScript, Dart",
-      "Frameworks: Flutter, React.js, Node.js, Express.js, Firebase, Cobra, Socket.io, REST APIs",
-      "Databases & Storage: PostgreSQL, MongoDB, Redis, Firestore, FAISS / Vector DBs",
-      "DevOps & Cloud: Docker, Kubernetes, AWS (ECS/EC2/S3/STS), CI/CD, Prometheus, Grafana, Git",
-      "Systems: Distributed Systems, System Design, Microservices, P2P Networking, Concurrency, Cryptography, Linux",
-      "AI / NLP: Embeddings, Semantic Search, Computer Vision (CLIP, YOLO), Gemini API"
-    ],
-    "socialLinks": {
+  "schemaVersion": 2,
+  "updated": "2026-10-13",
+  "profile": {
+    "name": "Lakshya Jain",
+    "role": "Backend & Distributed Systems Engineer",
+    "institution": "IIT Jodhpur",
+    "graduationYear": 2027,
+    "location": "Jodhpur, India",
+    "about": "I am a final-year computer science student at IIT Jodhpur who builds backend and distributed systems. This summer I built a quant research platform at 26 Miles Capital and load-tested it to 500+ concurrent users. Before that I founded libr, a moderate yet censorship-resilient social network that ran a week-long public beta, and led our Adobe team at Inter IIT Tech Meet 14.0 to 6th of 23 IITs. I also led Devlup Labs, the open-source community on campus.",
+    "summary": "CS undergrad at IIT Jodhpur building scalable backend, distributed and AI-powered systems: a quant research platform on AWS, a censorship-resilient social network and a lightweight container orchestrator.",
+    "availability": "Graduating in 2027. Looking for new-grad roles in software engineering, backend, distributed systems, infrastructure, developer tools, AI infrastructure and quantitative technology, and for any hard, interesting problem.",
+    "email": "lakshyajainrj19@gmail.com",
+    "collegeEmail": "b23cs1032@iitj.ac.in",
+    "phone": "+91-7976123107",
+    "resume": "/resume/resume.pdf",
+    "links": {
       "github": "https://github.com/lakshyajain-0291",
       "linkedin": "https://www.linkedin.com/in/lakshyajain1503/",
-      "codeforces": "https://codeforces.com/profile/0291_lakshya",
       "website": "https://me.lakshy.tech",
-      "email": "lakshyajainrj19@gmail.com",
-      "collegeEmail": "b23cs1032@iitj.ac.in",
-      "phone": "+91-7976123107"
+      "codeforces": "https://codeforces.com/profile/0291_lakshya"
+    }
+  },
+  "experience": [
+    {
+      "org": "26 Miles Capital",
+      "title": "Quant Developer Intern",
+      "start": "May 2026",
+      "end": "Jul 2026",
+      "location": "On-site, India",
+      "points": [
+        "Built an end-to-end quant research platform consolidating data, backtesting and workbench across 25 modules (64 data models) with auth/ACL, credits, RunBT orchestration and S3 workspaces; sole owner from architecture (14 ADRs) to production.",
+        "Engineered multi-tenant isolated runtimes on AWS ECS with STS-scoped S3 access and idle-reclaim (74% sessions auto-reclaimed, p50 start 21s); load-tested to 500 concurrent users at p95 19ms with zero errors and a projected 27% AWS cost reduction.",
+        "Established engineering rigor with C4-style architecture docs (~91 active docs) and a KPI pipeline tracking runtime, security and test metrics (65.1% test coverage, 76/100 auth security score, ~11ms avg API p95); layered JWT auth, central canAccess/requireRole ACL and dual-OS-user isolation."
+      ],
+      "links": []
     },
-    "insights": {
-      "topSkills": [
+    {
+      "org": "libr",
+      "title": "Founder & Lead Engineer",
+      "start": "Aug 2025",
+      "end": "Mar 2026",
+      "points": [
+        "Founded and architected libr, a censorship-resilient decentralized social network launched into a week-long public beta; attracted 250+ landing page visitors, 570+ page views, 100+ downloads and 1,000+ user posts.",
+        "Designed a 3-tier system of clients, database nodes and moderators; built core services in Go with Docker, PostgreSQL, Kademlia DHT for content routing and cryptographic certificates for tamper-evident storage.",
+        "Implemented replicated DHT-based storage with partial immutability and O(log n) lookup, and a quorum-backed moderation layer backed by risk analysis covering 20+ identified risks."
+      ],
+      "links": [
         {
-          "name": "Go",
-          "category": "Backend",
-          "proficiency": 92,
-          "justification": "Primary language across mini-k8ts, libr, FileNest, GitCury and GenCLI; distributed systems, schedulers and CLI tooling."
+          "label": "libr.social",
+          "url": "https://www.libr.social/",
+          "kind": "website",
+          "status": "live",
+          "checkedAt": "2026-10-13"
         },
         {
-          "name": "Distributed Systems",
-          "category": "Architecture",
-          "proficiency": 88,
-          "justification": "Kademlia DHT, quorum moderation and BFT in libr/FileNest; leader election, scheduling and HA in Mini-K8ts."
+          "label": "libr-forum/libr",
+          "url": "https://github.com/libr-forum/libr",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "org": "Inter IIT Tech Meet 14.0",
+      "title": "Domain Lead - Adobe Problem Statement",
+      "start": "Oct 2025",
+      "end": "Dec 2025",
+      "points": [
+        "Led a cross-functional team building an AI-powered Flutter image editing app with on-device YOLO segmentation for real-time object masking and edge inference under a 200 MB device footprint.",
+        "Developed isolated Docker AI compute containers on edge servers, orchestrating parallel editing pipelines (inpaint, erase, move, compositing) with sub-30s end-to-end latency.",
+        "Directed integration of a multi-model AI pipeline - DDIM-based latent move, YOLO-guided Flux inpainting, U-Net attention-based erase and Qwen2.5-3B/Flux-Kontext compositing. Ranked 6th among 23 IITs."
+      ],
+      "links": [
+        {
+          "label": "lakshyajain-0291/adobe-inter-iit",
+          "url": "https://github.com/lakshyajain-0291/adobe-inter-iit",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ]
+    },
+    {
+      "org": "PMStack",
+      "title": "SDE Intern - Android Development",
+      "start": "Dec 2024",
+      "end": "Apr 2025",
+      "points": [
+        "Engineered Pinnzo, a Flutter-based Android app for organizing and summarizing reading material for working professionals, deployed to the Google Play Store with Firebase real-time sync.",
+        "Partnered with startup founders to shape product features, reducing production time by 30% with Agile methodology and 2-week sprints.",
+        "Instrumented Google Analytics and Crashlytics to triage 163 critical bugs across Android versions, cutting crash rates by 40% and improving load speed by 25%, reaching 120+ beta users in the first month."
+      ],
+      "links": [
+        {
+          "label": "play.google.com/store/apps/details?id=com.reader.pinnzo",
+          "url": "https://play.google.com/store/apps/details?id=com.reader.pinnzo",
+          "kind": "store",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "slug": "libr",
+      "title": "libr",
+      "tier": "system",
+      "summary": "A moderated, censorship-resilient social network framework.",
+      "description": "A moderated, censorship-resilient social network framework. Posts are stored on a replicated Kademlia DHT for partial immutability and are published only after a majority quorum of moderators approves them. Core services in Go with Docker, PostgreSQL and cryptographic certificates for tamper-evident storage, with a React web client. A week-long public beta drew 250+ landing-page visitors, 570+ page views, 100+ downloads and 1,000+ user posts.",
+      "role": "Founder & Lead Engineer",
+      "period": "Aug 2025 – Mar 2026",
+      "stack": [
+        "Go",
+        "Kademlia DHT",
+        "PostgreSQL",
+        "Docker",
+        "TypeScript",
+        "React"
+      ],
+      "repo": "libr-forum/libr",
+      "links": [
+        {
+          "label": "libr.social",
+          "url": "https://libr.social",
+          "kind": "website",
+          "status": "live",
+          "checkedAt": "2026-10-13"
         },
         {
-          "name": "System Design",
-          "category": "Architecture",
-          "proficiency": 85,
-          "justification": "Sole architect of a 25-module quant platform (14 ADRs) and libr's 3-tier network; delivered a System Design talk to 100+ students."
-        },
-        {
-          "name": "AWS / Cloud",
-          "category": "Cloud",
-          "proficiency": 80,
-          "justification": "Multi-tenant ECS runtimes with STS-scoped S3 access, load-tested to 600+ users with 27% projected cost reduction at 26 Miles Capital."
-        },
-        {
-          "name": "Docker / Kubernetes",
-          "category": "DevOps",
-          "proficiency": 80,
-          "justification": "Built a container orchestrator from scratch; Dockerized edge AI pipelines and Prometheus/Grafana monitoring."
-        },
-        {
-          "name": "PostgreSQL",
-          "category": "Databases",
-          "proficiency": 78,
-          "justification": "ACID state store for Mini-K8ts and libr; data models for the quant platform."
-        },
-        {
-          "name": "Flutter",
-          "category": "Mobile",
-          "proficiency": 80,
-          "justification": "Pinnzo at PMStack (Play Store), Travel Companion (360+ users) and the Adobe Inter-IIT image editor."
-        },
-        {
-          "name": "Node.js",
-          "category": "Backend",
-          "proficiency": 78,
-          "justification": "2nd Swap backend (12+ endpoints, 99.8% uptime) and C3P platform."
-        },
-        {
-          "name": "AI/ML Integration",
-          "category": "AI",
-          "proficiency": 78,
-          "justification": "CLIP/BERT semantic search in FileNest, YOLO/Flux/U-Net pipelines for Adobe, Gemini in GenCLI, GitCury and RealmWeaver."
-        },
-        {
-          "name": "Python",
-          "category": "Backend",
-          "proficiency": 70,
-          "justification": "NIDS Random Forest, FileNest AI pipeline and FastAPI services."
-        },
-        {
-          "name": "C / C++",
-          "category": "Systems",
-          "proficiency": 72,
-          "justification": "The Vindication, Image Filtration and RealmWeaver; systems-level coursework."
-        },
-        {
-          "name": "JavaScript / TypeScript",
-          "category": "Frontend",
-          "proficiency": 68,
-          "justification": "React/Express stacks across C3P, 2nd Swap, libr and this portfolio."
+          "label": "libr-forum/libr",
+          "url": "https://github.com/libr-forum/libr",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
         }
       ],
-      "technicalProfile": {
-        "primaryStack": [
+      "featured": true,
+      "problem": "Centralised platforms can remove content at will, while fully decentralised networks have no way to keep harmful content out. libr aims for a public forum that resists censorship and is still moderated.",
+      "approach": [
+        "Three roles: clients, database nodes and moderators.",
+        "Posts are stored on a replicated Kademlia DHT for partial immutability, which is cheaper and faster than writing every message to a blockchain.",
+        "A post is stored only after more than half of the community’s moderators sign it. A moderation certificate carries their signatures, so any node can check it, and no single moderator decides a post’s fate.",
+        "The co-authored paper models this as Byzantine fault-tolerant voting: with m moderators, up to ⌊(m − 1)/2⌋ faulty ones can neither block nor force a decision. It also proves safety, liveness and censorship resistance.",
+        "Core services are written in Go with Docker and PostgreSQL; cryptographic certificates make stored content tamper-evident.",
+        "Users run a desktop client with a Go backend and a TypeScript UI, distributed through a Windows installer and an APT repository."
+      ],
+      "metrics": [
+        {
+          "id": "libr-visitors",
+          "value": "250+",
+          "label": "landing-page visitors",
+          "kind": "count",
+          "method": "Week-long public beta",
+          "source": "resume"
+        },
+        {
+          "id": "libr-views",
+          "value": "570+",
+          "label": "page views",
+          "kind": "count",
+          "method": "Week-long public beta",
+          "source": "resume"
+        },
+        {
+          "id": "libr-downloads",
+          "value": "100+",
+          "label": "downloads",
+          "kind": "count",
+          "method": "Week-long public beta",
+          "source": "resume"
+        },
+        {
+          "id": "libr-posts",
+          "value": "1,000+",
+          "label": "user posts",
+          "kind": "count",
+          "method": "Week-long public beta",
+          "source": "resume"
+        },
+        {
+          "id": "libr-availability",
+          "value": "99.1%",
+          "label": "modelled availability",
+          "kind": "projected",
+          "method": "Analytical model: 5 moderators at 90% uptime, 3 replicas at 95%",
+          "source": "libr-paper"
+        }
+      ],
+      "diagram": "libr",
+      "sources": [
+        "resume",
+        "libr-paper",
+        "libr-readme",
+        "libr-doc",
+        "libr-code",
+        "owner"
+      ]
+    },
+    {
+      "slug": "mini-k8ts",
+      "title": "Mini-K8ts",
+      "tier": "system",
+      "summary": "A lightweight container orchestrator for edge environments.",
+      "description": "Lightweight container orchestrator for edge environments: <50 MB control-plane RAM, 25 MB binary, <1s startup, PostgreSQL as ACID state store. Reliability-aware multi-stage scheduler sustains 220+ tasks/sec (97.8-100% efficiency, 1000 tasks in 4.2s, 2000 in 9.1s). Heartbeat self-healing marks failed nodes down in 4s and requeues orphaned tasks within 2s; a horizontal job autoscaler, token RBAC, rate limiting, optional mTLS, Postgres-backed leader election and Prometheus/Grafana monitoring.",
+      "role": "Lead engineer, team of 5",
+      "context": "Course project, Virtualization and Cloud Computing",
+      "period": "Apr 2026",
+      "stack": [
+        "Go",
+        "Docker",
+        "PostgreSQL",
+        "Prometheus",
+        "Grafana"
+      ],
+      "repo": "lakshyajain-0291/mini-k8ts",
+      "links": [
+        {
+          "label": "lakshyajain-0291/mini-k8ts",
+          "url": "https://github.com/lakshyajain-0291/mini-k8ts",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        },
+        {
+          "label": "Technical report (PDF)",
+          "url": "https://github.com/lakshyajain-0291/mini-k8ts/blob/main/docs/reports/mini_k8ts_report.pdf",
+          "kind": "report",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true,
+      "problem": "Edge devices often have 512 MB to 4 GB of RAM and unreliable links, while a standard Kubernetes control plane assumes data-centre resources. Mini-K8ts keeps orchestration, scheduling and self-healing inside a small footprint.",
+      "approach": [
+        "A REST API server and a multi-stage scheduler (filter, score, bind) with shadow resource tracking, so it never over-commits a node between heartbeats.",
+        "Reliability-aware placement: nodes earn a reliability score from their heartbeat and task history, and high-priority tasks go to reliable nodes.",
+        "Workers register and send heartbeats with live CPU and memory every 2 seconds. A node is marked down after two missed heartbeats, and its orphaned tasks are requeued with exponential backoff.",
+        "PostgreSQL is the ACID state store, with lease-based leader election across scheduler replicas. A horizontal job autoscaler scales on pending-queue depth and cluster CPU.",
+        "Token RBAC, rate limiting, optional mTLS, Prometheus metrics with Grafana, and the m8s CLI."
+      ],
+      "metrics": [
+        {
+          "id": "k8ts-throughput",
+          "value": "220+",
+          "unit": "tasks/s",
+          "label": "scheduling throughput",
+          "kind": "measured",
+          "method": "2,000-task batch on a 50-node simulated cluster",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-1000",
+          "value": "4.2",
+          "unit": "s",
+          "label": "to converge 1,000 tasks",
+          "kind": "measured",
+          "method": "50-node simulated cluster, 98.5% efficiency",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-2000",
+          "value": "9.1",
+          "unit": "s",
+          "label": "to converge 2,000 tasks",
+          "kind": "measured",
+          "method": "50-node simulated cluster, 97.8% efficiency",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-detect",
+          "value": "4",
+          "unit": "s",
+          "label": "node failure detection",
+          "kind": "measured",
+          "method": "Two missed heartbeats, under 30% node failure",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-recover",
+          "value": "2",
+          "unit": "s",
+          "label": "orphaned task recovery",
+          "kind": "measured",
+          "method": "All orphaned running tasks requeued after detection",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-ram",
+          "value": "<50",
+          "unit": "MB",
+          "label": "control-plane RAM",
+          "kind": "measured",
+          "method": "Footprint comparison in the project report",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-binary",
+          "value": "25",
+          "unit": "MB",
+          "label": "binary",
+          "kind": "measured",
+          "method": "Footprint comparison in the project report",
+          "source": "k8ts-report"
+        },
+        {
+          "id": "k8ts-startup",
+          "value": "<1",
+          "unit": "s",
+          "label": "startup",
+          "kind": "measured",
+          "method": "Footprint comparison in the project report",
+          "source": "k8ts-report"
+        }
+      ],
+      "diagram": "mini-k8ts",
+      "sources": [
+        "resume",
+        "k8ts-readme",
+        "k8ts-report",
+        "k8ts-autoscaler",
+        "owner"
+      ]
+    },
+    {
+      "slug": "filenest",
+      "title": "FileNest",
+      "tier": "system",
+      "summary": "Semantic, multi-modal search over decentralized storage, with no central index.",
+      "description": "Mentored a hierarchical distributed tagging system that combines semantic embeddings with Kademlia DHT P2P routing for multi-modal search across text, PDFs, images and video. BERT, Sentence-Transformers and CLIP pipeline designed to target 15-20 files/sec indexing and sub-100ms queries; built during Summer RAID 2025 at IIT Jodhpur.",
+      "role": "Mentor, then co-author of the design paper",
+      "context": "Summer RAID 2025, then research at IIT Jodhpur",
+      "period": "2025 – present",
+      "stack": [
+        "Go",
+        "libp2p Kademlia DHT",
+        "Python",
+        "CLIP",
+        "Sentence-Transformers",
+        "FAISS",
+        "React"
+      ],
+      "repo": "lakshyajain-0291/FileNest",
+      "links": [
+        {
+          "label": "lakshyajain-0291/FileNest",
+          "url": "https://github.com/lakshyajain-0291/FileNest",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true,
+      "problem": "Content-addressed storage such as IPFS lets any peer serve a file, but finding content still depends on search services run by a single operator, who can filter, delist or reorder results. FileNest spreads the index itself across peers and finds content by meaning, not by an identifier the user must already know.",
+      "approach": [
+        "Files stay in the storage layer. FileNest indexes only each file’s content identifier, its embedding and the peer that offered it.",
+        "Embeddings are organised into a hierarchy of tagging vectors: routing points in embedding space, created as content arrives, under similarity thresholds that tighten with depth.",
+        "A Kademlia DHT assigns each tagging vector to a peer by hashing its value at creation. Similarity decides which region an embedding belongs to; the DHT decides where that region’s state lives, so no peer holds a whole subtree.",
+        "A query descends the same hierarchy. Each tagging vector keeps a covering radius, and a subtree is skipped only when the triangle inequality proves it holds no match, so pruning never drops a result.",
+        "Text, images, PDFs and video share one embedding space (Sentence-Transformers and CLIP in the RAID build)."
+      ],
+      "metrics": [
+        {
+          "id": "fn-index",
+          "value": "15-20",
+          "unit": "files/s",
+          "label": "indexing throughput",
+          "kind": "target",
+          "method": "Design target",
+          "source": "filenest-readme"
+        },
+        {
+          "id": "fn-query",
+          "value": "<100",
+          "unit": "ms",
+          "label": "query latency",
+          "kind": "target",
+          "method": "Design target",
+          "source": "filenest-readme"
+        },
+        {
+          "id": "fn-users",
+          "value": "1,000+",
+          "label": "concurrent users",
+          "kind": "target",
+          "method": "Design target",
+          "source": "filenest-readme"
+        }
+      ],
+      "diagram": "filenest",
+      "sources": [
+        "resume",
+        "filenest-paper",
+        "filenest-readme"
+      ]
+    },
+    {
+      "slug": "gitcury",
+      "title": "GitCury",
+      "tier": "supporting",
+      "summary": "A command-line tool that writes commit messages with AI and batches git work across many repositories.",
+      "description": "Git workflow automation that cut commit time from 17 minutes to 32 seconds (97% faster) across 298 files in a 4 MB footprint. Semantic file clustering reduces API calls by 90% (3.2x faster); 3 clustering strategies, concurrent worker pool, shipped via Homebrew, Scoop, Docker and 6 OS/arch binaries.",
+      "role": "Creator",
+      "stack": [
+        "Go",
+        "Cobra",
+        "Gemini API",
+        "Redis"
+      ],
+      "repo": "lakshyajain-0291/GitCury",
+      "links": [
+        {
+          "label": "lakshyajain-0291/GitCury",
+          "url": "https://github.com/lakshyajain-0291/GitCury",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true,
+      "problem": "Committing across many repositories means writing many messages and repeating the same git steps. GitCury automates both.",
+      "approach": [
+        "A Go CLI built on Cobra that generates commit messages with the Gemini API.",
+        "Batch operations commit, push and write messages across all configured repositories at once, using a pool of workers.",
+        "Related changes are grouped before generation, by directory, by file pattern or by semantic embedding, so one request covers a whole group.",
+        "Distributed through Homebrew, Scoop, Docker and prebuilt binaries for Linux, macOS and Windows."
+      ],
+      "metrics": [
+        {
+          "id": "gc-time",
+          "value": "17 min to 32 s",
+          "label": "commit time for 298 files (97% faster)",
+          "kind": "self-reported",
+          "source": "resume"
+        },
+        {
+          "id": "gc-api",
+          "value": "90%",
+          "label": "fewer external API calls through clustering and batching",
+          "kind": "self-reported",
+          "source": "resume"
+        },
+        {
+          "id": "gc-mem",
+          "value": "4",
+          "unit": "MB",
+          "label": "memory footprint",
+          "kind": "self-reported",
+          "source": "resume"
+        },
+        {
+          "id": "gc-speed",
+          "value": "3.2×",
+          "label": "faster processing with semantic clustering, multi-repository",
+          "kind": "self-reported",
+          "source": "resume"
+        }
+      ],
+      "sources": [
+        "resume",
+        "gitcury-readme"
+      ]
+    },
+    {
+      "slug": "adobe-inter-iit",
+      "title": "AI image editor, Inter IIT Tech Meet 14.0",
+      "tier": "supporting",
+      "summary": "A Flutter image editor with on-device segmentation and server-side AI editing pipelines, built for Adobe’s problem statement.",
+      "description": "AI-powered Flutter image editing app for Inter IIT Tech Meet 14.0 (ranked 6th of 23 IITs): on-device YOLO segmentation, Dockerized edge AI pipelines for inpaint/erase/move/compositing with sub-30s latency under a 200 MB footprint.",
+      "role": "Domain Lead",
+      "context": "Inter IIT Tech Meet 14.0, Adobe problem statement",
+      "period": "Oct 2025 – Dec 2025",
+      "stack": [
+        "Flutter",
+        "YOLO",
+        "Docker"
+      ],
+      "repo": "lakshyajain-0291/adobe-inter-iit",
+      "links": [
+        {
+          "label": "lakshyajain-0291/adobe-inter-iit",
+          "url": "https://github.com/lakshyajain-0291/adobe-inter-iit",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        },
+        {
+          "label": "Demo",
+          "url": "https://adobe-inter-iit.vercel.app",
+          "kind": "demo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true,
+      "problem": "Bring AI editing (inpaint, erase, move and compositing) to a phone without shipping heavy models to the device.",
+      "approach": [
+        "On-device YOLO segmentation produces object masks in real time, within a 200 MB device footprint.",
+        "A modular client-service design sends each edit to edge servers, where every pipeline runs in its own isolated Docker compute container.",
+        "The inpaint, erase, move and compositing pipelines run in parallel."
+      ],
+      "metrics": [
+        {
+          "id": "adobe-rank",
+          "value": "6th",
+          "label": "of 23 IITs",
+          "kind": "count",
+          "source": "resume"
+        },
+        {
+          "id": "adobe-latency",
+          "value": "<30",
+          "unit": "s",
+          "label": "end-to-end edit latency",
+          "kind": "self-reported",
+          "source": "resume"
+        },
+        {
+          "id": "adobe-footprint",
+          "value": "<200",
+          "unit": "MB",
+          "label": "on-device footprint",
+          "kind": "self-reported",
+          "source": "resume"
+        }
+      ],
+      "sources": [
+        "resume",
+        "adobe-readme"
+      ]
+    },
+    {
+      "slug": "2nd-swap",
+      "title": "2nd Swap - Secure, Intelligent Second-Hand Trading",
+      "tier": "other",
+      "summary": "Backend for a second-hand trading startup built and deployed in 1.5 weeks: 12+ REST endpoints at 99.8% uptime, an AI verification system generating item-specific questions (20% less manual review, 30+ daily queries) and OCR-based code recognition for item verification.",
+      "description": "Backend for a second-hand trading startup built and deployed in 1.5 weeks: 12+ REST endpoints at 99.8% uptime, an AI verification system generating item-specific questions (20% less manual review, 30+ daily queries) and OCR-based code recognition for item verification.",
+      "stack": [
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "Google OAuth 2.0",
+        "Cloudinary",
+        "Socket.io"
+      ],
+      "links": [],
+      "status": "offline",
+      "featured": true
+    },
+    {
+      "slug": "nids",
+      "title": "NIDS - Network Intrusion Detection System",
+      "tier": "other",
+      "summary": "Open-source network intrusion detection system: FastAPI backend captures live traffic via Scapy and classifies packets in real time using a custom Random Forest (bootstrapped feature sampling, information-gain trees) over 14 engineered features.",
+      "description": "Open-source network intrusion detection system: FastAPI backend captures live traffic via Scapy and classifies packets in real time using a custom Random Forest (bootstrapped feature sampling, information-gain trees) over 14 engineered features. Includes a Showcase NIDS web app.",
+      "role": "Co-developer",
+      "stack": [
+        "Python",
+        "FastAPI",
+        "Scapy",
+        "Random Forest",
+        "React",
+        "TypeScript"
+      ],
+      "repo": "aradhya2708/nids",
+      "links": [
+        {
+          "label": "aradhya2708/nids",
+          "url": "https://github.com/aradhya2708/nids",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "status": "offline",
+      "featured": true
+    },
+    {
+      "slug": "c3p",
+      "title": "C3P - Collaborative Content Platform",
+      "tier": "other",
+      "summary": "Full-stack platform for collaborative content creation with 8 user roles and one-click publishing to 4 social platforms (65% faster publishing); RBAC and engagement-based ranking on 6 metrics (+22% retention); automated publishing and revenue-sharing that processed $1200+ with 0 payment errors.",
+      "description": "Full-stack platform for collaborative content creation with 8 user roles and one-click publishing to 4 social platforms (65% faster publishing); RBAC and engagement-based ranking on 6 metrics (+22% retention); automated publishing and revenue-sharing that processed $1200+ with 0 payment errors.",
+      "role": "Co-developer",
+      "stack": [
+        "React.js",
+        "Express.js",
+        "Node.js",
+        "MongoDB",
+        "Social Media APIs"
+      ],
+      "repo": "aradhya2708/larv",
+      "links": [
+        {
+          "label": "aradhya2708/larv",
+          "url": "https://github.com/Aradhya2708/larv",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "realmweaver",
+      "title": "RealmWeaver - Dynamic Game Environment",
+      "tier": "other",
+      "summary": "Dynamic game world with AI-driven real-time generation of NPCs, quests and locations via the Gemini API.",
+      "description": "Dynamic game world with AI-driven real-time generation of NPCs, quests and locations via the Gemini API. Round-robin API keys cut content generation from 5 min to under 1 min, and a centralized content system reduced manual world-building by 100x.",
+      "stack": [
+        "C++",
+        "Gemini API",
+        "DSA"
+      ],
+      "repo": "lakshyajain-0291/realmweaver",
+      "links": [
+        {
+          "label": "lakshyajain-0291/realmweaver",
+          "url": "https://github.com/lakshyajain-0291/RealmWeaver",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "gencli",
+      "title": "GenCLI - Semantic File Retrieval Tool",
+      "tier": "other",
+      "summary": "AI-powered CLI for intelligent file indexing and semantic search with Gemini.",
+      "description": "AI-powered CLI for intelligent file indexing and semantic search with Gemini. Indexing sped up from 19.2s to 1.2s per file via batching and parallelization, sub-second search across 50+ files and 7+ terminal themes.",
+      "stack": [
+        "Go",
+        "Cobra",
+        "Gemini API",
+        "Vector Embeddings"
+      ],
+      "repo": "lakshyajain-0291/gencli",
+      "links": [
+        {
+          "label": "lakshyajain-0291/gencli",
+          "url": "https://github.com/lakshyajain-0291/gencli",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "the-vindication",
+      "title": "The Vindication - Text-Based Adventure Game",
+      "tier": "other",
+      "summary": "Open-world text adventure in C with 27 quests, 7 mini-games, 120+ ASCII graphics elements, 15 audio tracks and JSON-driven content with unlimited save states and 100% data integrity.",
+      "description": "Open-world text adventure in C with 27 quests, 7 mini-games, 120+ ASCII graphics elements, 15 audio tracks and JSON-driven content with unlimited save states and 100% data integrity.",
+      "stack": [
+        "C",
+        "JSON",
+        "ASCII Graphics"
+      ],
+      "repo": "lakshyajain-0291/vindication",
+      "links": [
+        {
+          "label": "lakshyajain-0291/vindication",
+          "url": "https://github.com/lakshyajain-0291/Vindication",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "travel-companion",
+      "title": "Travel Companion App - Your Adventure, Simplified",
+      "tier": "other",
+      "summary": "Campus mobile app with 360+ registered users and a 5-star rating: 7 core features (trip sharing, filtering, search) and a real-time Firebase request system with sub-1s responses for 10+ concurrent users.",
+      "description": "Campus mobile app with 360+ registered users and a 5-star rating: 7 core features (trip sharing, filtering, search) and a real-time Firebase request system with sub-1s responses for 10+ concurrent users.",
+      "stack": [
+        "Flutter",
+        "Firebase",
+        "Figma",
+        "UX/UI Design"
+      ],
+      "links": [
+        {
+          "label": "play.google.com/store/apps/details?id=com.devluplabs.travel_companiion",
+          "url": "https://play.google.com/store/apps/details?id=com.devluplabs.travel_companiion",
+          "kind": "store",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": true
+    },
+    {
+      "slug": "image-filtration-program",
+      "title": "Image Filtration Program",
+      "tier": "other",
+      "summary": "Command-line image filter program in C, built as an ICS minor project.",
+      "description": "Command-line image filter program in C, built as an ICS minor project. Reads and writes 24-bit BMP images and applies six filters (grayscale, blur, sharpen, Sobel edge detection, reflect, negative), writing the result to a new file.",
+      "stack": [
+        "C",
+        "BMP"
+      ],
+      "repo": "lakshyajain-0291/image-filtration-in-c",
+      "links": [
+        {
+          "label": "lakshyajain-0291/image-filtration-in-c",
+          "url": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": false
+    },
+    {
+      "slug": "summer-project",
+      "title": "Summer Project - Version Control for Content Creators",
+      "tier": "other",
+      "summary": "Summer 2024 project exploring version control for content creators.",
+      "description": "Summer 2024 project exploring version control for content creators.",
+      "stack": [
+        "JavaScript",
+        "HTML",
+        "CSS"
+      ],
+      "repo": "lakshyajain-0291/summer-project",
+      "links": [
+        {
+          "label": "lakshyajain-0291/summer-project",
+          "url": "https://github.com/lakshyajain-0291/summer-project",
+          "kind": "repo",
+          "status": "live",
+          "checkedAt": "2026-10-13"
+        }
+      ],
+      "featured": false
+    }
+  ],
+  "education": [
+    {
+      "institution": "Indian Institute of Technology Jodhpur",
+      "degree": "B.Tech Computer Science and Engineering",
+      "period": "2023-2027",
+      "grade": "8.97/10",
+      "courses": [
+        {
+          "name": "Data Structures and Algorithms",
+          "grade": "A"
+        },
+        {
+          "name": "Software Engineering",
+          "grade": "A"
+        },
+        {
+          "name": "Database Management Systems",
+          "grade": "A"
+        },
+        {
+          "name": "Operating Systems",
+          "grade": "A-"
+        },
+        {
+          "name": "Computer Organization and Architecture",
+          "grade": "A"
+        },
+        {
+          "name": "Embedded Systems",
+          "grade": "A"
+        },
+        {
+          "name": "Computer Networks",
+          "grade": "A-"
+        },
+        {
+          "name": "Cyber Security",
+          "grade": "A-"
+        },
+        {
+          "name": "Blockchain",
+          "grade": "A"
+        },
+        {
+          "name": "Virtualization and Cloud Computing",
+          "grade": "A-"
+        },
+        {
+          "name": "Introduction to Computer Science",
+          "grade": "A*"
+        },
+        {
+          "name": "Mathematics for Computing",
+          "grade": "A"
+        },
+        {
+          "name": "Calculus",
+          "grade": "A"
+        },
+        {
+          "name": "Linear Algebra",
+          "grade": "A-"
+        },
+        {
+          "name": "Probability, Statistics & Stochastic Processes",
+          "grade": "A-"
+        },
+        {
+          "name": "Foundations of Quantum Information",
+          "grade": "B"
+        }
+      ]
+    },
+    {
+      "institution": "R.S. Memorial International School",
+      "degree": "Senior Secondary (CBSE)",
+      "period": "2020-2022",
+      "grade": "93.8%",
+      "courses": []
+    },
+    {
+      "institution": "St. Anne's Sr. Sec. School",
+      "degree": "Secondary (CBSE)",
+      "period": "2012-2020",
+      "grade": "94.6%",
+      "courses": []
+    }
+  ],
+  "recognition": [
+    "Ranked 6th among 23 IITs at Inter IIT Tech Meet 14.0 for the Adobe Problem Statement",
+    "Head/Coordinator of Devlup Labs, the open-source community at IIT Jodhpur, mentoring 20+ contributors",
+    "Led the team to a Gold Medal in Bug Bounty '25 by resolving critical bugs in existing open-source projects",
+    "Delivered a System Design session to 100+ students on scalable backend architecture and distributed systems",
+    "Secured Rs. 80,000+ in industry sponsorships as Assistant Head of Prometeo '25",
+    "Increased E-Cell Vandre '25 profit by 500% to Rs. 2,28,153 through resource optimization",
+    "1st place in CADastra at Prometeo '25 and 1st place in Pitch It at Initio '23"
+  ],
+  "leadership": [
+    {
+      "role": "Head/Coordinator",
+      "org": "DevlUp Labs, IIT Jodhpur",
+      "period": "Mar 2025 - May 2026",
+      "description": "Heading the open-source community at IIT Jodhpur, mentoring 20+ contributors and shipping campus apps."
+    },
+    {
+      "role": "Head",
+      "org": "Prometeo X Econclave (Tech Fest), IIT Jodhpur",
+      "period": "Jan 2026",
+      "description": "Led industry partnerships and case competitions that secured Rs. 80,000+ in sponsorship."
+    },
+    {
+      "role": "Senior Executive",
+      "org": "E-Cell, IIT Jodhpur",
+      "period": "Jun 2024 - Mar 2025",
+      "description": "Orchestrated Vandre '25 through data-backed planning, achieving 500% profit growth to Rs. 2,28,153."
+    },
+    {
+      "role": "Core Member",
+      "org": "RAID (AI Society), IIT Jodhpur",
+      "period": "Mar 2025 - May 2026",
+      "description": "Active member of the institute AI society."
+    },
+    {
+      "role": "Core Member",
+      "org": "Quant Club, IIT Jodhpur",
+      "period": "May 2024 - Mar 2025",
+      "description": "Active member of the institute quantitative finance club."
+    },
+    {
+      "role": "Associate",
+      "org": "Product Club, IIT Jodhpur",
+      "period": "May 2024 - Mar 2025",
+      "description": "Contributing to product development and management initiatives."
+    },
+    {
+      "role": "Student Guide",
+      "org": "Student Wellbeing Committee, IIT Jodhpur",
+      "period": "Jun 2024 - Apr 2025",
+      "description": "Mentored first-year students through academic and personal transitions."
+    },
+    {
+      "role": "Volunteer",
+      "org": "Varshas (Sports Fest), IIT Jodhpur",
+      "period": "Sep 2024",
+      "description": "Volunteered in organizing the institute sports fest."
+    }
+  ],
+  "skills": {
+    "groups": [
+      {
+        "name": "Languages",
+        "items": [
           "Go",
-          "PostgreSQL",
-          "Docker",
-          "AWS",
-          "Kubernetes",
-          "Flutter",
-          "Node.js"
-        ],
-        "secondaryStack": [
-          "Python",
-          "C++",
           "C",
-          "JavaScript",
-          "TypeScript",
+          "C++",
+          "Python",
           "Dart",
+          "JavaScript",
+          "TypeScript"
+        ]
+      },
+      {
+        "name": "Web & Mobile",
+        "items": [
+          "React.js",
+          "Node.js",
+          "Express.js",
+          "REST APIs",
+          "Socket.io",
+          "Flutter",
+          "Firebase"
+        ]
+      },
+      {
+        "name": "Databases & Storage",
+        "items": [
+          "PostgreSQL",
           "Redis",
           "MongoDB",
-          "Firebase",
-          "React.js",
-          "Express.js"
-        ],
-        "languages": [
-          {
-            "name": "Go",
-            "proficiency": "expert"
-          },
-          {
-            "name": "C++",
-            "proficiency": "high"
-          },
-          {
-            "name": "C",
-            "proficiency": "high"
-          },
-          {
-            "name": "Python",
-            "proficiency": "high"
-          },
-          {
-            "name": "Dart",
-            "proficiency": "high"
-          },
-          {
-            "name": "JavaScript",
-            "proficiency": "high"
-          },
-          {
-            "name": "TypeScript",
-            "proficiency": "medium"
-          },
-          {
-            "name": "Java",
-            "proficiency": "medium"
-          }
-        ],
-        "methodologies": [
-          "Distributed Systems Design",
-          "System Design & ADRs",
-          "RESTful API Design",
-          "Microservices Architecture",
-          "CI/CD",
-          "Agile Development",
-          "Load & Scale Testing"
-        ],
-        "strengths": [
-          "Distributed Systems & P2P Networking",
-          "Backend Development (Go, Node.js)",
-          "Cloud & Container Infrastructure (AWS, Docker, Kubernetes)",
-          "System Design & Scalability",
-          "AI-Driven Application Development",
-          "Mobile Development (Flutter)",
-          "Technical Leadership & Mentoring"
-        ],
-        "growthAreas": [
-          "Advanced Machine Learning",
-          "Production Kubernetes Operations",
-          "Quantitative Finance",
-          "Frontend Framework Mastery"
+          "Firestore",
+          "FAISS / Vector DBs"
         ]
       },
-      "careerTrajectory": "Backend and distributed-systems engineer who has progressed from campus apps and CLI tools to sole-owning a production quant research platform on AWS, founding a decentralized social network and leading an Inter IIT team to 6th of 23 IITs.",
-      "careerRecommendations": {
-        "nextSteps": [
-          "Convert the Quant Developer internship into a full-time offer or a similar platform-engineering role",
-          "Open-source and document Mini-K8ts and libr for wider visibility",
-          "Pursue AWS/Kubernetes certifications to formalise cloud expertise",
-          "Keep mentoring through Devlup Labs and technical talks"
-        ],
-        "potentialRoles": [
-          "Backend Engineer",
-          "Distributed Systems Engineer",
-          "Quant Developer",
-          "Platform / Infrastructure Engineer",
-          "Full-Stack Developer",
-          "Software Development Engineer"
-        ],
-        "skillsToAcquire": [
-          "Production Kubernetes and service meshes",
-          "Observability at scale",
-          "Quantitative finance fundamentals",
-          "Advanced machine learning systems"
+      {
+        "name": "DevOps & Cloud",
+        "items": [
+          "Docker",
+          "Git",
+          "CI/CD (GitHub Actions)",
+          "Kubernetes",
+          "Container Orchestration",
+          "Prometheus",
+          "Grafana",
+          "AWS"
         ]
       },
-      "summary": {
-        "strengths_analysis": "Deep Go and distributed-systems skills backed by shipped systems: a sole-owned 25-module quant platform on AWS, a P2P search engine, a container orchestrator and a decentralized social network, supported by measurable performance results.",
-        "career_trajectory": "Rapid progression from mobile and CLI projects to owning production infrastructure, founding a product (libr), leading Inter IIT and heading the Devlup Labs community.",
-        "technical_focus": "Backend, distributed systems and cloud infrastructure, complemented by applied AI (semantic search, computer vision) and Flutter mobile development.",
-        "learning_recommendations": "Go deeper on production Kubernetes, observability and quantitative finance to grow into platform or quant-infrastructure leadership roles."
+      {
+        "name": "Systems & Performance",
+        "items": [
+          "Multi-threading",
+          "Concurrency",
+          "Linux",
+          "Distributed Systems",
+          "Microservices",
+          "P2P Networking"
+        ]
       }
-    },
-    "techStack": [
+    ],
+    "highlights": [
+      {
+        "name": "Go",
+        "area": "Backend",
+        "evidence": "Primary language across mini-k8ts, libr, FileNest, GitCury and GenCLI; distributed systems, schedulers and CLI tooling."
+      },
+      {
+        "name": "Distributed Systems",
+        "area": "Architecture",
+        "evidence": "Kademlia DHT and quorum moderation in libr, P2P routing in FileNest; leader election, scheduling and self-healing in Mini-K8ts."
+      },
+      {
+        "name": "System Design",
+        "area": "Architecture",
+        "evidence": "Sole architect of a 25-module quant platform (14 ADRs) and libr's 3-tier network; delivered a System Design talk to 100+ students."
+      },
+      {
+        "name": "AWS / Cloud",
+        "area": "Cloud",
+        "evidence": "Multi-tenant ECS runtimes with STS-scoped S3 access, load-tested to 500 concurrent users with a 27% projected cost reduction at 26 Miles Capital."
+      },
+      {
+        "name": "Docker / Kubernetes",
+        "area": "DevOps",
+        "evidence": "Built a container orchestrator from scratch; Dockerized edge AI pipelines and Prometheus/Grafana monitoring."
+      },
+      {
+        "name": "PostgreSQL",
+        "area": "Databases",
+        "evidence": "ACID state store for Mini-K8ts and storage for libr."
+      },
+      {
+        "name": "Flutter",
+        "area": "Mobile",
+        "evidence": "Pinnzo at PMStack (Play Store), Travel Companion (360+ users) and the Adobe Inter-IIT image editor."
+      },
+      {
+        "name": "Node.js",
+        "area": "Backend",
+        "evidence": "2nd Swap backend (12+ endpoints, 99.8% uptime) and C3P platform."
+      },
+      {
+        "name": "AI/ML Integration",
+        "area": "AI",
+        "evidence": "CLIP/BERT semantic search in FileNest, YOLO/Flux/U-Net pipelines for Adobe, Gemini in GenCLI, GitCury and RealmWeaver."
+      },
+      {
+        "name": "Python",
+        "area": "Backend",
+        "evidence": "NIDS Random Forest, FileNest AI pipeline and FastAPI services."
+      },
+      {
+        "name": "C / C++",
+        "area": "Systems",
+        "evidence": "The Vindication, Image Filtration and RealmWeaver; systems-level coursework."
+      },
+      {
+        "name": "JavaScript / TypeScript",
+        "area": "Frontend",
+        "evidence": "React/Express stacks across C3P, 2nd Swap, libr and this portfolio."
+      }
+    ],
+    "tools": [
       {
         "name": "Go",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg"
@@ -822,10 +1052,6 @@
       {
         "name": "C",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg"
-      },
-      {
-        "name": "Java",
-        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
       },
       {
         "name": "JavaScript",
@@ -879,843 +1105,806 @@
         "name": "Git",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
       }
-    ],
-    "resumeUrl": "/resume/resume.pdf",
-    "githubStats": {
+    ]
+  },
+  "sources": {
+    "resume": {
+      "label": "One-page resume",
+      "kind": "resume",
+      "url": "/resume/resume.pdf"
+    },
+    "cv": {
+      "label": "Master CV (docs/resume-sources, not published)",
+      "kind": "cv"
+    },
+    "owner": {
+      "label": "Confirmed by Lakshya Jain",
+      "kind": "owner"
+    },
+    "github-api": {
+      "label": "GitHub API, 2026-10-13",
+      "kind": "github-api",
+      "url": "https://github.com/lakshyajain-0291"
+    },
+    "libr-readme": {
+      "label": "libr README",
+      "kind": "readme",
+      "url": "https://github.com/libr-forum/libr#readme"
+    },
+    "libr-doc": {
+      "label": "libr project document",
+      "kind": "repo-doc",
+      "url": "https://github.com/libr-forum/libr/blob/main/docs/libr_project_doc.txt"
+    },
+    "libr-code": {
+      "label": "libr source: core/mod_client and core/db",
+      "kind": "code",
+      "url": "https://github.com/libr-forum/libr/tree/main/core"
+    },
+    "libr-paper": {
+      "label": "libr: A Moderated, Censorship-Resilient Social Network Framework. Co-authored paper, IIT Jodhpur (unpublished manuscript)",
+      "kind": "paper"
+    },
+    "k8ts-readme": {
+      "label": "Mini-K8ts README",
+      "kind": "readme",
+      "url": "https://github.com/lakshyajain-0291/mini-k8ts#readme"
+    },
+    "k8ts-report": {
+      "label": "Mini-K8ts technical report (April 2026)",
+      "kind": "report",
+      "url": "https://github.com/lakshyajain-0291/mini-k8ts/blob/main/docs/reports/mini_k8ts_report.pdf"
+    },
+    "k8ts-code": {
+      "label": "Mini-K8ts source: cmd/ and internal/",
+      "kind": "code",
+      "url": "https://github.com/lakshyajain-0291/mini-k8ts/tree/main/internal"
+    },
+    "k8ts-autoscaler": {
+      "label": "Mini-K8ts scheduler service (job autoscaler)",
+      "kind": "code",
+      "url": "https://github.com/lakshyajain-0291/mini-k8ts/blob/main/internal/scheduler/service.go"
+    },
+    "filenest-readme": {
+      "label": "FileNest README",
+      "kind": "readme",
+      "url": "https://github.com/lakshyajain-0291/FileNest#readme"
+    },
+    "filenest-paper": {
+      "label": "FileNest: Distributed Semantic Retrieval over Decentralized Data. Co-authored paper, IIT Jodhpur (manuscript in preparation)",
+      "kind": "paper"
+    },
+    "gitcury-readme": {
+      "label": "GitCury README",
+      "kind": "readme",
+      "url": "https://github.com/lakshyajain-0291/GitCury#readme"
+    },
+    "adobe-readme": {
+      "label": "Adobe Inter-IIT README",
+      "kind": "readme",
+      "url": "https://github.com/lakshyajain-0291/adobe-inter-iit#readme"
+    }
+  },
+  "github": {
+    "stats": {
       "totalPublicRepos": 36,
       "totalStars": 39,
       "totalForks": 28,
-      "totalCommits": "2800+",
-      "featuredRepos": 12
+      "totalCommits": "1,476",
+      "featuredRepos": 12,
+      "totalContributions": 2949,
+      "contributionsAsOf": "2026-10-13",
+      "contributionsSince": 2023
     },
-    "githubData": {
-      "user": {
-        "avatar_url": "https://avatars.githubusercontent.com/u/147808548?v=4",
-        "bio": "A passionate coder exploring automation and looking out to build cool stuff.",
-        "company": "IIT Jodhpur",
-        "created_at": "2023-10-13T08:31:05Z",
-        "followers": 26,
-        "following": 17,
-        "html_url": "https://github.com/lakshyajain-0291",
-        "location": "India",
-        "login": "lakshyajain-0291",
-        "name": "Lakshya Jain ",
-        "public_repos": 36,
-        "updated_at": "2026-09-19T00:12:28Z",
-        "email": "lakshyajainrj19@gmail.com"
-      },
-      "repositories": [
-        {
-          "name": "mini-k8ts",
-          "full_name": "lakshyajain-0291/mini-k8ts",
-          "html_url": "https://github.com/lakshyajain-0291/mini-k8ts",
-          "description": "",
-          "homepage": "",
-          "stargazers_count": 0,
-          "watchers_count": 0,
-          "forks_count": 0,
-          "language": "Go",
-          "topics": [],
-          "commits": 27,
-          "updated_at": "2026-06-25T17:35:03Z",
-          "created_at": "2026-03-21T14:32:16Z"
-        },
-        {
-          "name": "FileNest",
-          "full_name": "lakshyajain-0291/FileNest",
-          "html_url": "https://github.com/lakshyajain-0291/FileNest",
-          "description": "A Multi-Modal Intelligent Search Engine over Decentralized Data",
-          "homepage": "",
-          "stargazers_count": 11,
-          "watchers_count": 11,
-          "forks_count": 8,
-          "language": "Go",
-          "topics": [],
-          "commits": 26,
-          "updated_at": "2026-09-20T15:13:21Z",
-          "created_at": "2025-06-25T03:17:45Z"
-        },
-        {
-          "name": "libr",
-          "full_name": "DALDA-IITJ/libr",
-          "html_url": "https://github.com/DALDA-IITJ/libr",
-          "description": "A Moderated, Censorship-Resilient Digital Forum",
-          "homepage": "",
-          "stargazers_count": 3,
-          "watchers_count": 3,
-          "forks_count": 0,
-          "language": "Go",
-          "topics": [
-            "cryptography",
-            "distributed-hash-tables",
-            "forum",
-            "golang",
-            "postgresql"
-          ],
-          "commits": 167,
-          "updated_at": "2026-02-08T13:24:56Z",
-          "created_at": "2025-03-31T09:47:40Z"
-        },
-        {
-          "name": "adobe-inter-iit",
-          "full_name": "lakshyajain-0291/adobe-inter-iit",
-          "html_url": "https://github.com/lakshyajain-0291/adobe-inter-iit",
-          "description": "",
-          "homepage": "https://adobe-inter-iit.vercel.app",
-          "stargazers_count": 1,
-          "watchers_count": 1,
-          "forks_count": 0,
-          "language": "Dart",
-          "topics": [],
-          "commits": 40,
-          "updated_at": "2025-12-25T17:52:38Z",
-          "created_at": "2025-11-10T19:15:39Z"
-        },
-        {
-          "name": "GitCury",
-          "full_name": "lakshyajain-0291/GitCury",
-          "html_url": "https://github.com/lakshyajain-0291/GitCury",
-          "description": "🚀 GitCury: Your ultimate Git sidekick! 🎯 Built with Go, it automates your Git workflow with 🌟 AI-powered commit messages, 🗂️ root folder filtering, ⚡ alias-based commands, and 🛠️ CLI utilities. From single repos to multi-project management, GitCury's got your back! 🌈",
-          "homepage": "",
-          "stargazers_count": 9,
-          "watchers_count": 9,
-          "forks_count": 2,
-          "language": "Go",
-          "topics": [
-            "automation",
-            "cli",
-            "generative-ai",
-            "git",
-            "go",
-            "golang"
-          ],
-          "commits": 365,
-          "updated_at": "2026-06-25T04:06:19Z",
-          "created_at": "2025-03-27T17:48:55Z"
-        },
-        {
-          "name": "gencli",
-          "full_name": "lakshyajain-0291/gencli",
-          "html_url": "https://github.com/lakshyajain-0291/gencli",
-          "description": "GenCLI is an AI-powered CLI tool for intelligent file indexing and semantic search. Built with Go and powered by Google’s Gemini, it enables fast, natural language file discovery directly from the terminal, helping developers work more efficiently.",
-          "homepage": "https://www.youtube.com/watch?v=tOvPVUxiZBc",
-          "stargazers_count": 3,
-          "watchers_count": 3,
-          "forks_count": 1,
-          "language": "Go",
-          "topics": [
-            "cli",
-            "generative-ai",
-            "golang",
-            "indexing",
-            "searching"
-          ],
-          "commits": 57,
-          "updated_at": "2026-05-05T03:00:47Z",
-          "created_at": "2024-07-04T13:35:20Z"
-        },
-        {
-          "name": "RealmWeaver",
-          "full_name": "lakshyajain-0291/RealmWeaver",
-          "html_url": "https://github.com/lakshyajain-0291/RealmWeaver",
-          "description": "🎮 RealmWeaver: Step into a world of endless possibilities! ✨ This 2D open-ended game redefines interactive storytelling with 🧙 dynamic NPCs, 🗺️ unique locations, 🏹 quests, and 🎁 items—all generated through the powerful GEMINI API. No two adventures are ever the same! 🌟",
-          "homepage": "",
-          "stargazers_count": 6,
-          "watchers_count": 6,
-          "forks_count": 5,
-          "language": "C++",
-          "topics": [
-            "cpp",
-            "dsa",
-            "game",
-            "generative-ai",
-            "open-world-game"
-          ],
-          "commits": 82,
-          "updated_at": "2026-05-05T03:00:36Z",
-          "created_at": "2024-09-30T13:56:20Z"
-        },
-        {
-          "name": "Vindication",
-          "full_name": "lakshyajain-0291/Vindication",
-          "html_url": "https://github.com/lakshyajain-0291/Vindication",
-          "description": "⚔️ The Vindication: Dive into a text-based historical fiction adventure! 🏰 Built in C, this open-ended game world features 🎮 mini-games, 🤝 NPC interactions, 📜 quests, 🖼️ terminal ASCII graphics, and 🎵 immersive audio. Easily expand the experience with modifiable JSON game content! 🚀",
-          "homepage": "",
-          "stargazers_count": 3,
-          "watchers_count": 3,
-          "forks_count": 2,
-          "language": "C",
-          "topics": [],
-          "commits": 107,
-          "updated_at": "2026-05-05T03:00:16Z",
-          "created_at": "2024-02-29T15:26:24Z"
-        },
-        {
-          "name": "Image-filtration-in-C",
-          "full_name": "lakshyajain-0291/Image-filtration-in-C",
-          "html_url": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
-          "description": "",
-          "homepage": "",
-          "stargazers_count": 0,
-          "watchers_count": 0,
-          "forks_count": 0,
-          "language": "C",
-          "topics": [],
-          "commits": 6,
-          "updated_at": "2026-05-05T03:01:33Z",
-          "created_at": "2024-03-17T11:45:40Z"
-        },
-        {
-          "name": "ml_showcase_site",
-          "full_name": "lakshyajain-0291/ml_showcase_site",
-          "html_url": "https://github.com/lakshyajain-0291/ml_showcase_site",
-          "description": "",
-          "homepage": "https://ml-showcase-site.vercel.app",
-          "stargazers_count": 0,
-          "watchers_count": 0,
-          "forks_count": 0,
-          "language": "TypeScript",
-          "topics": [],
-          "commits": 87,
-          "updated_at": "2026-05-05T03:00:32Z",
-          "created_at": "2025-04-11T05:44:11Z"
-        },
-        {
-          "name": "summer-project",
-          "full_name": "lakshyajain-0291/summer-project",
-          "html_url": "https://github.com/lakshyajain-0291/summer-project",
-          "description": "Making a version control for content creators",
-          "homepage": "",
-          "stargazers_count": 0,
-          "watchers_count": 0,
-          "forks_count": 4,
-          "language": "JavaScript",
-          "topics": [],
-          "commits": 27,
-          "updated_at": "2026-05-05T03:00:23Z",
-          "created_at": "2024-05-17T17:05:02Z"
-        }
-      ],
-      "contributions": [
-        {
-          "date": "2026-10-09",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-08",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-07",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-06",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-05",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-04",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-03",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-02",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-10-01",
-          "count": 1,
-          "level": 1
-        },
-        {
-          "date": "2026-09-30",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-29",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-28",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-27",
-          "count": 2,
-          "level": 2
-        },
-        {
-          "date": "2026-09-26",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-25",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-24",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-23",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-22",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-21",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-20",
-          "count": 1,
-          "level": 1
-        },
-        {
-          "date": "2026-09-19",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-18",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-17",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-16",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-15",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-14",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-13",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-12",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-11",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-10",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-09",
-          "count": 3,
-          "level": 2
-        },
-        {
-          "date": "2026-09-08",
-          "count": 4,
-          "level": 3
-        },
-        {
-          "date": "2026-09-07",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-06",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-05",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-04",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-03",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-02",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-09-01",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-31",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-30",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-29",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-28",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-27",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-26",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-25",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-24",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-23",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-22",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-21",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-20",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-19",
-          "count": 3,
-          "level": 2
-        },
-        {
-          "date": "2026-08-18",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-17",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-16",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-15",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-14",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-13",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-12",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-11",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-10",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-09",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-08",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-07",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-06",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-05",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-04",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-03",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-02",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-08-01",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-31",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-30",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-29",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-28",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-27",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-26",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-25",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-24",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-23",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-22",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-21",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-20",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-19",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-18",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-17",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-16",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-15",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-14",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-13",
-          "count": 0,
-          "level": 0
-        },
-        {
-          "date": "2026-07-12",
-          "count": 0,
-          "level": 0
-        }
-      ],
-      "languageStats": {
-        "Go": 45.5,
-        "C": 18.2,
-        "Dart": 9.1,
-        "C++": 9.1,
-        "TypeScript": 9.1,
-        "JavaScript": 9.1
-      },
-      "recentActivity": [
-        {
-          "created_at": "2026-10-01T15:44:22Z",
-          "payload": {
-            "ref": "refs/heads/main"
-          },
-          "repo": "lakshyajain-0291/cv_assignment1",
-          "type": "PushEvent"
-        },
-        {
-          "created_at": "2026-10-01T14:28:39Z",
-          "payload": {
-            "ref": "refs/heads/main"
-          },
-          "repo": "lakshyajain-0291/cv_assignment1",
-          "type": "PushEvent"
-        },
-        {
-          "created_at": "2026-10-01T12:29:21Z",
-          "payload": {
-            "ref": "refs/heads/main"
-          },
-          "repo": "lakshyajain-0291/cv_assignment1",
-          "type": "PushEvent"
-        },
-        {
-          "created_at": "2026-10-01T14:27:25Z",
-          "payload": {
-            "ref": "refs/heads/main"
-          },
-          "repo": "lakshyajain-0291/cv_assignment1",
-          "type": "PushEvent"
-        },
-        {
-          "created_at": "2026-10-01T12:26:19Z",
-          "payload": {
-            "ref": "refs/heads/main"
-          },
-          "repo": "lakshyajain-0291/cv_assignment1",
-          "type": "PushEvent"
-        }
-      ]
+    "user": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/147808548?v=4",
+      "bio": "A passionate coder exploring automation and looking out to build cool stuff.",
+      "company": "IIT Jodhpur",
+      "created_at": "2023-10-13T08:31:05Z",
+      "followers": 26,
+      "following": 17,
+      "html_url": "https://github.com/lakshyajain-0291",
+      "location": "India",
+      "login": "lakshyajain-0291",
+      "name": "Lakshya Jain",
+      "public_repos": 36,
+      "updated_at": "2026-09-19T00:12:28Z",
+      "email": "lakshyajainrj19@gmail.com"
     },
-    "achievements": [
-      "Ranked 6th among 23 IITs at Inter IIT Tech Meet 14.0 for the Adobe Problem Statement",
-      "Head/Coordinator of Devlup Labs, the open-source community at IIT Jodhpur, mentoring 20+ contributors",
-      "Led the team to a Gold Medal in Bug Bounty '25 by resolving critical bugs in existing open-source projects",
-      "Delivered a System Design session to 100+ students on scalable backend architecture and distributed systems",
-      "Secured Rs. 80,000+ in industry sponsorships as Assistant Head of Prometeo '25",
-      "Increased E-Cell Vandre '25 profit by 500% to Rs. 2,28,153 through resource optimization",
-      "1st place in CADastra at Prometeo '25 and 1st place in Pitch It at Initio '23"
-    ],
-    "leadership": [
+    "repositories": [
       {
-        "role": "Head/Coordinator",
-        "organization": "DevlUp Labs, IIT Jodhpur",
-        "duration": "Mar 2025 - Present",
-        "description": "Heading the open-source community at IIT Jodhpur, mentoring 20+ contributors and shipping campus apps."
+        "name": "mini-k8ts",
+        "full_name": "lakshyajain-0291/mini-k8ts",
+        "html_url": "https://github.com/lakshyajain-0291/mini-k8ts",
+        "description": "",
+        "homepage": "",
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "forks_count": 0,
+        "language": "Go",
+        "topics": [],
+        "commits": 27,
+        "updated_at": "2026-06-25T17:35:03Z",
+        "created_at": "2026-03-21T14:32:16Z"
       },
       {
-        "role": "Core Member",
-        "organization": "Quant Club, IIT Jodhpur",
-        "duration": "May 2024 - Present",
-        "description": "Active member of the institute quantitative finance club."
+        "name": "FileNest",
+        "full_name": "lakshyajain-0291/FileNest",
+        "html_url": "https://github.com/lakshyajain-0291/FileNest",
+        "description": "A Multi-Modal Intelligent Search Engine over Decentralized Data",
+        "homepage": "",
+        "stargazers_count": 11,
+        "watchers_count": 11,
+        "forks_count": 8,
+        "language": "Go",
+        "topics": [],
+        "commits": 26,
+        "updated_at": "2026-09-20T15:13:21Z",
+        "created_at": "2025-06-25T03:17:45Z"
       },
       {
-        "role": "Associate",
-        "organization": "Product Club, IIT Jodhpur",
-        "duration": "May 2024 - Present",
-        "description": "Contributing to product development and management initiatives."
+        "name": "libr",
+        "full_name": "libr-forum/libr",
+        "html_url": "https://github.com/libr-forum/libr",
+        "description": "A Moderated, Censorship-Resilient Social Network Framework",
+        "homepage": "https://libr.social",
+        "stargazers_count": 17,
+        "watchers_count": 17,
+        "forks_count": 9,
+        "language": "TypeScript",
+        "topics": [
+          "blockchain",
+          "decentralized-applications",
+          "ethereum",
+          "golang",
+          "hacktoberfest",
+          "p2p",
+          "soc25"
+        ],
+        "commits": 233,
+        "updated_at": "2026-03-02T19:36:20Z",
+        "created_at": "2025-06-16T00:24:38Z"
       },
       {
-        "role": "Senior Executive",
-        "organization": "E-Cell, IIT Jodhpur",
-        "duration": "Jun 2024 - Present",
-        "description": "Orchestrated Vandre '25 through data-backed planning, achieving 500% profit growth to Rs. 2,28,153."
+        "name": "adobe-inter-iit",
+        "full_name": "lakshyajain-0291/adobe-inter-iit",
+        "html_url": "https://github.com/lakshyajain-0291/adobe-inter-iit",
+        "description": "",
+        "homepage": "https://adobe-inter-iit.vercel.app",
+        "stargazers_count": 1,
+        "watchers_count": 1,
+        "forks_count": 0,
+        "language": "Dart",
+        "topics": [],
+        "commits": 40,
+        "updated_at": "2025-12-25T17:52:38Z",
+        "created_at": "2025-11-10T19:15:39Z"
       },
       {
-        "role": "Assistant Head",
-        "organization": "Prometeo X Econclave (Tech Fest), IIT Jodhpur",
-        "duration": "2025",
-        "description": "Led industry partnerships and case competitions that secured Rs. 80,000+ in sponsorship."
+        "name": "GitCury",
+        "full_name": "lakshyajain-0291/GitCury",
+        "html_url": "https://github.com/lakshyajain-0291/GitCury",
+        "description": "🚀 GitCury: Your ultimate Git sidekick! 🎯 Built with Go, it automates your Git workflow with 🌟 AI-powered commit messages, 🗂️ root folder filtering, ⚡ alias-based commands, and 🛠️ CLI utilities. From single repos to multi-project management, GitCury's got your back! 🌈",
+        "homepage": "",
+        "stargazers_count": 9,
+        "watchers_count": 9,
+        "forks_count": 2,
+        "language": "Go",
+        "topics": [
+          "automation",
+          "cli",
+          "generative-ai",
+          "git",
+          "go",
+          "golang"
+        ],
+        "commits": 365,
+        "updated_at": "2026-06-25T04:06:19Z",
+        "created_at": "2025-03-27T17:48:55Z"
       },
       {
-        "role": "Student Guide",
-        "organization": "Student Wellbeing Committee, IIT Jodhpur",
-        "duration": "Jun 2024 - Apr 2025",
-        "description": "Mentored first-year students through academic and personal transitions."
+        "name": "gencli",
+        "full_name": "lakshyajain-0291/gencli",
+        "html_url": "https://github.com/lakshyajain-0291/gencli",
+        "description": "GenCLI is an AI-powered CLI tool for intelligent file indexing and semantic search. Built with Go and powered by Google’s Gemini, it enables fast, natural language file discovery directly from the terminal, helping developers work more efficiently.",
+        "homepage": "https://www.youtube.com/watch?v=tOvPVUxiZBc",
+        "stargazers_count": 3,
+        "watchers_count": 3,
+        "forks_count": 1,
+        "language": "Go",
+        "topics": [
+          "cli",
+          "generative-ai",
+          "golang",
+          "indexing",
+          "searching"
+        ],
+        "commits": 57,
+        "updated_at": "2026-05-05T03:00:47Z",
+        "created_at": "2024-07-04T13:35:20Z"
       },
       {
-        "role": "Volunteer",
-        "organization": "Varshas (Sports Fest), IIT Jodhpur",
-        "duration": "2024",
-        "description": "Volunteered in organizing the institute sports fest."
+        "name": "RealmWeaver",
+        "full_name": "lakshyajain-0291/RealmWeaver",
+        "html_url": "https://github.com/lakshyajain-0291/RealmWeaver",
+        "description": "🎮 RealmWeaver: Step into a world of endless possibilities! ✨ This 2D open-ended game redefines interactive storytelling with 🧙 dynamic NPCs, 🗺️ unique locations, 🏹 quests, and 🎁 items—all generated through the powerful GEMINI API. No two adventures are ever the same! 🌟",
+        "homepage": "",
+        "stargazers_count": 6,
+        "watchers_count": 6,
+        "forks_count": 5,
+        "language": "C++",
+        "topics": [
+          "cpp",
+          "dsa",
+          "game",
+          "generative-ai",
+          "open-world-game"
+        ],
+        "commits": 82,
+        "updated_at": "2026-05-05T03:00:36Z",
+        "created_at": "2024-09-30T13:56:20Z"
+      },
+      {
+        "name": "Vindication",
+        "full_name": "lakshyajain-0291/Vindication",
+        "html_url": "https://github.com/lakshyajain-0291/Vindication",
+        "description": "⚔️ The Vindication: Dive into a text-based historical fiction adventure! 🏰 Built in C, this open-ended game world features 🎮 mini-games, 🤝 NPC interactions, 📜 quests, 🖼️ terminal ASCII graphics, and 🎵 immersive audio. Easily expand the experience with modifiable JSON game content! 🚀",
+        "homepage": "",
+        "stargazers_count": 3,
+        "watchers_count": 3,
+        "forks_count": 2,
+        "language": "C",
+        "topics": [],
+        "commits": 107,
+        "updated_at": "2026-05-05T03:00:16Z",
+        "created_at": "2024-02-29T15:26:24Z"
+      },
+      {
+        "name": "Image-filtration-in-C",
+        "full_name": "lakshyajain-0291/Image-filtration-in-C",
+        "html_url": "https://github.com/lakshyajain-0291/Image-filtration-in-C",
+        "description": "",
+        "homepage": "",
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "forks_count": 0,
+        "language": "C",
+        "topics": [],
+        "commits": 6,
+        "updated_at": "2026-05-05T03:01:33Z",
+        "created_at": "2024-03-17T11:45:40Z"
+      },
+      {
+        "name": "ml_showcase_site",
+        "full_name": "lakshyajain-0291/ml_showcase_site",
+        "html_url": "https://github.com/lakshyajain-0291/ml_showcase_site",
+        "description": "",
+        "homepage": "",
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "forks_count": 0,
+        "language": "TypeScript",
+        "topics": [],
+        "commits": 87,
+        "updated_at": "2026-05-05T03:00:32Z",
+        "created_at": "2025-04-11T05:44:11Z"
+      },
+      {
+        "name": "summer-project",
+        "full_name": "lakshyajain-0291/summer-project",
+        "html_url": "https://github.com/lakshyajain-0291/summer-project",
+        "description": "Making a version control for content creators",
+        "homepage": "",
+        "stargazers_count": 0,
+        "watchers_count": 0,
+        "forks_count": 4,
+        "language": "JavaScript",
+        "topics": [],
+        "commits": 27,
+        "updated_at": "2026-05-05T03:00:23Z",
+        "created_at": "2024-05-17T17:05:02Z"
       }
     ],
-    "coursework": [
+    "languageStats": {
+      "Go": 36.4,
+      "TypeScript": 18.2,
+      "C": 18.2,
+      "Dart": 9.1,
+      "C++": 9.1,
+      "JavaScript": 9.1
+    },
+    "contributions": [
       {
-        "course": "Data Structures and Algorithms",
-        "grade": "A"
+        "date": "2026-10-09",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Software Engineering",
-        "grade": "A"
+        "date": "2026-10-08",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Database Management Systems",
-        "grade": "A"
+        "date": "2026-10-07",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Operating Systems",
-        "grade": "A-"
+        "date": "2026-10-06",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Computer Organization and Architecture",
-        "grade": "A"
+        "date": "2026-10-05",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Embedded Systems",
-        "grade": "A"
+        "date": "2026-10-04",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Computer Networks",
-        "grade": "A-"
+        "date": "2026-10-03",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Cyber Security",
-        "grade": "A-"
+        "date": "2026-10-02",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Blockchain",
-        "grade": "A"
+        "date": "2026-10-01",
+        "count": 1,
+        "level": 1
       },
       {
-        "course": "Virtualization and Cloud Computing",
-        "grade": "A-"
+        "date": "2026-09-30",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Introduction to Computer Science",
-        "grade": "A*"
+        "date": "2026-09-29",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Mathematics for Computing",
-        "grade": "A"
+        "date": "2026-09-28",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Calculus",
-        "grade": "A"
+        "date": "2026-09-27",
+        "count": 2,
+        "level": 2
       },
       {
-        "course": "Linear Algebra",
-        "grade": "A-"
+        "date": "2026-09-26",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Probability, Statistics & Stochastic Processes",
-        "grade": "A-"
+        "date": "2026-09-25",
+        "count": 0,
+        "level": 0
       },
       {
-        "course": "Foundations of Quantum Information",
-        "grade": "B"
+        "date": "2026-09-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-20",
+        "count": 1,
+        "level": 1
+      },
+      {
+        "date": "2026-09-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-09",
+        "count": 3,
+        "level": 2
+      },
+      {
+        "date": "2026-09-08",
+        "count": 4,
+        "level": 3
+      },
+      {
+        "date": "2026-09-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-09-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-19",
+        "count": 3,
+        "level": 2
+      },
+      {
+        "date": "2026-08-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-12",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-11",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-10",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-09",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-08",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-07",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-06",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-05",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-04",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-03",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-02",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-08-01",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-31",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-30",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-29",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-28",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-27",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-26",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-25",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-24",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-23",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-22",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-21",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-20",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-19",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-18",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-17",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-16",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-15",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-14",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-13",
+        "count": 0,
+        "level": 0
+      },
+      {
+        "date": "2026-07-12",
+        "count": 0,
+        "level": 0
+      }
+    ],
+    "recentActivity": [
+      {
+        "created_at": "2026-10-01T15:44:22Z",
+        "payload": {
+          "ref": "refs/heads/main"
+        },
+        "repo": "lakshyajain-0291/cv_assignment1",
+        "type": "PushEvent"
+      },
+      {
+        "created_at": "2026-10-01T14:28:39Z",
+        "payload": {
+          "ref": "refs/heads/main"
+        },
+        "repo": "lakshyajain-0291/cv_assignment1",
+        "type": "PushEvent"
+      },
+      {
+        "created_at": "2026-10-01T12:29:21Z",
+        "payload": {
+          "ref": "refs/heads/main"
+        },
+        "repo": "lakshyajain-0291/cv_assignment1",
+        "type": "PushEvent"
+      },
+      {
+        "created_at": "2026-10-01T14:27:25Z",
+        "payload": {
+          "ref": "refs/heads/main"
+        },
+        "repo": "lakshyajain-0291/cv_assignment1",
+        "type": "PushEvent"
+      },
+      {
+        "created_at": "2026-10-01T12:26:19Z",
+        "payload": {
+          "ref": "refs/heads/main"
+        },
+        "repo": "lakshyajain-0291/cv_assignment1",
+        "type": "PushEvent"
       }
     ]
   }

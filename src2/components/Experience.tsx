@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { usePortfolio } from '../../src/hooks/PortfolioContext';
 import { formatDateRange } from '../../shared/format';
-import Section from './Section';
+import Section, { SectionPending } from './Section';
 import { ink, leading, onScroll, rule } from '../motion';
 
 const Experience = () => {
@@ -11,20 +11,20 @@ const Experience = () => {
   return (
     <Section id="experience" label="Experience">
       {isLoading ? (
-        <p className="t2-meta">Loading…</p>
+        <SectionPending />
       ) : items.length === 0 ? (
         <p className="text-muted-foreground">No professional experience to display yet.</p>
       ) : (
-        <motion.ol variants={leading(0.1)} {...onScroll} className="group/list">
+        <motion.ol variants={leading(0.1)} {...onScroll}>
           {items.map((exp, index) => (
             <motion.li key={`${exp.company}-${index}`} variants={ink} className="mb-12 last:mb-0">
-              <div className="group relative grid gap-2 pb-1 transition-opacity duration-300 sm:grid-cols-8 sm:gap-8 md:gap-4 lg:group-hover/list:opacity-45 lg:hover:!opacity-100">
+              <div className="group relative grid gap-2 pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4">
                 {/* Hover plate — extends past the text block so the row reads as one object */}
                 <span
                   aria-hidden="true"
                   className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-[2px] transition-colors duration-300 lg:-inset-x-6 lg:block lg:group-hover:bg-card lg:group-hover:shadow-[0_1px_0_hsl(var(--border)),0_18px_40px_-28px_hsl(var(--t2-shadow))]"
                 />
-                <p className="t2-meta relative z-10 mb-1 mt-1 uppercase sm:col-span-2" aria-label={exp.dates || exp.duration}>
+                <p className="t2-meta t2-num relative z-10 mb-1 mt-1 uppercase sm:col-span-2" aria-label={exp.dates || exp.duration}>
                   {formatDateRange(exp.dates || exp.duration)}
                 </p>
                 <div className="relative z-10 sm:col-span-6">

@@ -11,13 +11,30 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SceneBackdrop from './components/t1/SceneBackdrop';
 import SmoothScroll from './components/t1/SmoothScroll';
-import CustomCursor from './components/t1/CustomCursor';
 import { ScrollTrigger } from './components/t1/gsap';
 import { useOverdrive } from './components/t1/useOverdrive';
 import { PortfolioProvider, usePortfolio } from './hooks/PortfolioContext';
 import { Toaster } from '@/components/ui/toaster';
 import { SECTION_NUMBERS } from '@/config/env';
 import TemplateSwitcher from './components/TemplateSwitcher';
+
+/**
+ * Start fetching the hero's faces as soon as this chunk evaluates, ahead of the
+ * first render. Templates 0/1 only, so this can't be a static tag in index.html.
+ */
+const PRELOAD_FONTS = ['/fonts/t1/rajdhani-700-latin.woff2', '/fonts/t1/inter-latin-var.woff2'];
+if (typeof document !== 'undefined') {
+  for (const href of PRELOAD_FONTS) {
+    if (document.head.querySelector(`link[rel="preload"][href="${href}"]`)) continue;
+    const link = document.createElement('link');
+    link.rel = 'preload';
+    link.as = 'font';
+    link.type = 'font/woff2';
+    link.href = href;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  }
+}
 
 /** Re-measure scroll-linked animations once data and fonts have settled. */
 const LayoutSync = () => {
@@ -58,7 +75,7 @@ const App = () => {
       <SceneBackdrop />
       <SmoothScroll />
       <LayoutSync />
-      <div className="relative z-10 min-h-screen text-darktech-text">
+      <div className="relative z-10 min-h-screen overflow-x-clip text-darktech-text">
         <Header />
         <main>
           {/* Render sections in the order specified in env.ts */}
@@ -70,10 +87,10 @@ const App = () => {
         </main>
         <Footer />
         <Toaster />
-        <TemplateSwitcher />
+        {/* Floats on sm+; below 640px the footer carries an inline copy so nothing is covered. */}
+        <TemplateSwitcher className="hidden sm:block" />
       </div>
       <div className="t1-grain" aria-hidden="true" />
-      <CustomCursor />
     </PortfolioProvider>
   );
 };
